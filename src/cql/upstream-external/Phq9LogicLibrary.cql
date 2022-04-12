@@ -114,14 +114,42 @@ define CurrentResponses:
     answer: I.answer.value[0] // Assuming only one answer per question
   }
 
+/*
+ @param question linkId of type FHIR.String
+ @return answer element with that linkId
+ */
+define function getCurrentResponseByQuestionId(qid String):
+  (
+    CurrentResponses R
+    where R.id = qid
+    return R.answer
+  )
+
+/*
+ retrieve concept code of the selected answer option
+ @param question index of type FHIR.Integer
+ @return code value for the answer
+ */
+define function getAnswerOptionCodeValue(qIndex Integer):
+  if Phq9Questionnaire.item[qIndex] is not null then
+    Phq9Questionnaire.item[qIndex].answerOption.value.code.value
+  else
+    null
+
+/*
+ * retrieve the numeric value for the answer from extension
+ * @param a list of elements of type FHIR.Extension
+ * @return the value as Integer
+ */
+define function getAnswerOptionExtensionValue(extList List<FHIR.Extension>):
+  (singleton from (extList e where e.url ~ 'http://hl7.org/fhir/StructureDefinition/ordinalValue')).value.value as Integer
+
 // Question 1
 define Phq9AnswerOptionsQuestion1:
-  Phq9Questionnaire.item[IndexOfQuestion.one].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.one)
 
 define CurrentResponse1:
-  CurrentResponses R
-  where R.id = question1LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question1LinkId)
 
 define Phq9ResponseIndex1:
   if Exists(CurrentResponse1) then
@@ -131,18 +159,16 @@ define Phq9ResponseIndex1:
 
 define Phq9ScoreQuestion1:
   if Phq9ResponseIndex1 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.one].answerOption[Phq9ResponseIndex1].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.one].answerOption[Phq9ResponseIndex1].extension)
   else
     0
 
 // Question 2
 define Phq9AnswerOptionsQuestion2:
-  Phq9Questionnaire.item[IndexOfQuestion.two].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.two)
 
 define CurrentResponse2:
-  CurrentResponses R
-  where R.id = question2LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question2LinkId)
 
 define Phq9ResponseIndex2:
   if Exists(CurrentResponse2) then
@@ -152,18 +178,16 @@ define Phq9ResponseIndex2:
 
 define Phq9ScoreQuestion2:
   if Phq9ResponseIndex2 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.two].answerOption[Phq9ResponseIndex2].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.two].answerOption[Phq9ResponseIndex2].extension)
   else
     0
 
 // Question 3
 define Phq9AnswerOptionsQuestion3:
-  Phq9Questionnaire.item[IndexOfQuestion.three].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.three)
 
 define CurrentResponse3:
-  CurrentResponses R
-  where R.id = question3LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question3LinkId)
 
 define Phq9ResponseIndex3:
   if Exists(CurrentResponse3) then
@@ -173,18 +197,16 @@ define Phq9ResponseIndex3:
 
 define Phq9ScoreQuestion3:
   if Phq9ResponseIndex3 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.three].answerOption[Phq9ResponseIndex3].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.three].answerOption[Phq9ResponseIndex3].extension)
   else
     0
 
 // Question 4
 define Phq9AnswerOptionsQuestion4:
-  Phq9Questionnaire.item[IndexOfQuestion.four].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.four)
 
 define CurrentResponse4:
-  CurrentResponses R
-  where R.id = question4LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question4LinkId)
 
 define Phq9ResponseIndex4:
   if Exists(CurrentResponse4) then
@@ -194,18 +216,16 @@ define Phq9ResponseIndex4:
 
 define Phq9ScoreQuestion4:
   if Phq9ResponseIndex4 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.four].answerOption[Phq9ResponseIndex4].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.four].answerOption[Phq9ResponseIndex4].extension)
   else
     0
 
 // Question 5
 define Phq9AnswerOptionsQuestion5:
-  Phq9Questionnaire.item[IndexOfQuestion.five].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.five)
 
 define CurrentResponse5:
-  CurrentResponses R
-  where R.id = question5LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question5LinkId)
 
 define Phq9ResponseIndex5:
   if Exists(CurrentResponse5) then
@@ -215,18 +235,16 @@ define Phq9ResponseIndex5:
 
 define Phq9ScoreQuestion5:
   if Phq9ResponseIndex5 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.five].answerOption[Phq9ResponseIndex5].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.five].answerOption[Phq9ResponseIndex5].extension)
   else
     0
 
 // Question 6
 define Phq9AnswerOptionsQuestion6:
-  Phq9Questionnaire.item[IndexOfQuestion.six].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.six)
 
 define CurrentResponse6:
-  CurrentResponses R
-  where R.id = question6LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question6LinkId)
 
 define Phq9ResponseIndex6:
   if Exists(CurrentResponse6) then
@@ -236,18 +254,16 @@ define Phq9ResponseIndex6:
 
 define Phq9ScoreQuestion6:
   if Phq9ResponseIndex6 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.six].answerOption[Phq9ResponseIndex6].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.six].answerOption[Phq9ResponseIndex6].extension)
   else
     0
 
 // Question 7
 define Phq9AnswerOptionsQuestion7:
-  Phq9Questionnaire.item[IndexOfQuestion.seven].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.seven)
 
 define CurrentResponse7:
-  CurrentResponses R
-  where R.id = question7LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question7LinkId)
 
 define Phq9ResponseIndex7:
   if Exists(CurrentResponse7) then
@@ -257,18 +273,16 @@ define Phq9ResponseIndex7:
 
 define Phq9ScoreQuestion7:
   if Phq9ResponseIndex7 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.seven].answerOption[Phq9ResponseIndex7].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.seven].answerOption[Phq9ResponseIndex7].extension)
   else
     0
 
 // Question 8
 define Phq9AnswerOptionsQuestion8:
-  Phq9Questionnaire.item[IndexOfQuestion.eight].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.eight)
 
 define CurrentResponse8:
-  CurrentResponses R
-  where R.id = question8LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question8LinkId)
 
 define Phq9ResponseIndex8:
   if Exists(CurrentResponse8) then
@@ -278,18 +292,16 @@ define Phq9ResponseIndex8:
 
 define Phq9ScoreQuestion8:
   if Phq9ResponseIndex8 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.eight].answerOption[Phq9ResponseIndex8].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.eight].answerOption[Phq9ResponseIndex8].extension)
   else
     0
 
 // Question 9
 define Phq9AnswerOptionsQuestion9:
-  Phq9Questionnaire.item[IndexOfQuestion.nine].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.nine)
 
 define CurrentResponse9:
-  CurrentResponses R
-  where R.id = question9LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question9LinkId)
 
 define Phq9ResponseIndex9:
   if Exists(CurrentResponse9) then
@@ -299,18 +311,16 @@ define Phq9ResponseIndex9:
 
 define Phq9ScoreQuestion9:
   if Phq9ResponseIndex9 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.nine].answerOption[Phq9ResponseIndex9].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.nine].answerOption[Phq9ResponseIndex9].extension)
   else
     0
 
 // Question 10
 define Phq9AnswerOptionsQuestion10:
-  Phq9Questionnaire.item[IndexOfQuestion.ten].answerOption.value.code.value
+  getAnswerOptionCodeValue(IndexOfQuestion.ten)
 
 define CurrentResponse10:
-  CurrentResponses R
-  where R.id = question10LinkId
-  return R.answer
+  getCurrentResponseByQuestionId(question10LinkId)
 
 define Phq9ResponseIndex10:
   if Exists(CurrentResponse10) then
@@ -320,7 +330,7 @@ define Phq9ResponseIndex10:
 
 define Phq9ScoreQuestion10:
   if Phq9ResponseIndex10 != -1 then
-    Phq9Questionnaire.item[IndexOfQuestion.ten].answerOption[Phq9ResponseIndex10].extension[0].value.value as Integer
+    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.ten].answerOption[Phq9ResponseIndex10].extension)
   else
     0
 
