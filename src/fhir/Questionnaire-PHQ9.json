@@ -1,6 +1,7 @@
 {
   "resourceType": "Questionnaire",
   "id": "loinc-44249-1",
+  "url": "http://www.cdc.gov/ncbddd/fasd/phq9",
   "meta": {
     "versionId": "1",
     "lastUpdated": "2022-03-31T17:37:39.938+00:00",
@@ -53,12 +54,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -69,12 +70,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -85,12 +86,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -101,12 +102,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -146,12 +147,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -162,12 +163,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -178,12 +179,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -194,12 +195,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -239,12 +240,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -255,12 +256,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -271,12 +272,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -287,12 +288,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -332,12 +333,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -348,12 +349,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -364,12 +365,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -380,12 +381,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -425,12 +426,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -441,12 +442,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -457,12 +458,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -473,12 +474,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -518,12 +519,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -534,12 +535,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -550,12 +551,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -566,12 +567,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -611,12 +612,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -627,12 +628,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -643,12 +644,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -659,12 +660,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -704,12 +705,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -720,12 +721,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -736,12 +737,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -752,12 +753,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -797,12 +798,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 0
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "0"
             }
           ],
           "valueCoding": {
@@ -813,12 +814,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 1
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "1"
             }
           ],
           "valueCoding": {
@@ -829,12 +830,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "2"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 2
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "2"
             }
           ],
           "valueCoding": {
@@ -845,12 +846,12 @@
         {
           "extension": [
             {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "3"
-            },
-            {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
               "valueDecimal": 3
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
+              "valueString": "3"
             }
           ],
           "valueCoding": {
@@ -891,25 +892,49 @@
           "valueCoding": {
             "code": "LA6572-7",
             "display": "Not difficult at all"
-          }
+          },
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+              "valueDecimal": 0
+            }
+          ]
         },
         {
           "valueCoding": {
             "code": "LA6573-5",
             "display": "Somewhat difficult"
-          }
+          },
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+              "valueDecimal": 1
+            }
+          ]
         },
         {
           "valueCoding": {
             "code": "LA6575-0",
             "display": "Very difficult"
-          }
+          },
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+              "valueDecimal": 2
+            }
+          ]
         },
         {
           "valueCoding": {
             "code": "LA6574-3",
             "display": "Extremely difficult"
-          }
+          },
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+              "valueDecimal": 3
+            }
+          ]
         }
       ],
       "item": [
@@ -938,11 +963,15 @@
     {
       "extension": [
         {
-          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-unit",
-          "valueCoding": {
-            "system": "http://unitsofmeasure.org",
-            "code": "{score}",
-            "display": "{score}"
+          "url": "http://hl7.org/fhir/StructureDefinition/designNote",
+          "valueMarkdown": "Display PHQ-9 Score"
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullPhq9",
+            "reference": "#Phq9LogicLibrary|1.0"
           }
         }
       ],
@@ -956,6 +985,7 @@
       "text": "Patient health questionnaire 9 item total score",
       "type": "decimal",
       "required": false,
+      "readOnly": true,
       "item": [
         {
           "extension": [
