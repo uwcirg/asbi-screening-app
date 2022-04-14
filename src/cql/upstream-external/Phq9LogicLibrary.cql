@@ -144,209 +144,75 @@ define function getAnswerOptionCodeValue(qIndex Integer):
 define function getAnswerOptionExtensionValue(extList List<FHIR.Extension>):
   (singleton from (extList e where e.url ~ 'http://hl7.org/fhir/StructureDefinition/ordinalValue')).value.value as Integer
 
+/* @param qIndex, question index,
+ * @param qId, question id, e.g. linkId
+ * @return score for the question
+ */
+define function getQuestionScore(qIndex Integer, qId String):
+    (singleton from getCurrentResponseByQuestionId(qId)) qResponse
+    let
+      qAnswerOptionCode: getAnswerOptionCodeValue(qIndex),
+      qResponseIndex: if qResponse is not null then IndexOf(qAnswerOptionCode, qResponse.code.value as String) else -1
+    return
+      if qResponseIndex != -1 then
+        getAnswerOptionExtensionValue(Phq9Questionnaire.item[qIndex].answerOption[qResponseIndex].extension)
+      else
+        0
+      
 // Question 1
-define Phq9AnswerOptionsQuestion1:
-  getAnswerOptionCodeValue(IndexOfQuestion.one)
-
-define CurrentResponse1:
-  getCurrentResponseByQuestionId(question1LinkId)
-
-define Phq9ResponseIndex1:
-  if Exists(CurrentResponse1) then
-    IndexOf(Phq9AnswerOptionsQuestion1, singleton from CurrentResponse1.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion1:
-  if Phq9ResponseIndex1 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.one].answerOption[Phq9ResponseIndex1].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.one, question1LinkId)
 
 // Question 2
-define Phq9AnswerOptionsQuestion2:
-  getAnswerOptionCodeValue(IndexOfQuestion.two)
-
-define CurrentResponse2:
-  getCurrentResponseByQuestionId(question2LinkId)
-
-define Phq9ResponseIndex2:
-  if Exists(CurrentResponse2) then
-    IndexOf(Phq9AnswerOptionsQuestion2, singleton from CurrentResponse2.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion2:
-  if Phq9ResponseIndex2 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.two].answerOption[Phq9ResponseIndex2].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.two, question2LinkId)
 
 // Question 3
-define Phq9AnswerOptionsQuestion3:
-  getAnswerOptionCodeValue(IndexOfQuestion.three)
-
-define CurrentResponse3:
-  getCurrentResponseByQuestionId(question3LinkId)
-
-define Phq9ResponseIndex3:
-  if Exists(CurrentResponse3) then
-    IndexOf(Phq9AnswerOptionsQuestion3, singleton from CurrentResponse3.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion3:
-  if Phq9ResponseIndex3 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.three].answerOption[Phq9ResponseIndex3].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.three, question3LinkId)
 
 // Question 4
-define Phq9AnswerOptionsQuestion4:
-  getAnswerOptionCodeValue(IndexOfQuestion.four)
-
-define CurrentResponse4:
-  getCurrentResponseByQuestionId(question4LinkId)
-
-define Phq9ResponseIndex4:
-  if Exists(CurrentResponse4) then
-    IndexOf(Phq9AnswerOptionsQuestion4, singleton from CurrentResponse4.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion4:
-  if Phq9ResponseIndex4 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.four].answerOption[Phq9ResponseIndex4].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.four, question4LinkId)
 
 // Question 5
-define Phq9AnswerOptionsQuestion5:
-  getAnswerOptionCodeValue(IndexOfQuestion.five)
-
-define CurrentResponse5:
-  getCurrentResponseByQuestionId(question5LinkId)
-
-define Phq9ResponseIndex5:
-  if Exists(CurrentResponse5) then
-    IndexOf(Phq9AnswerOptionsQuestion5, singleton from CurrentResponse5.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion5:
-  if Phq9ResponseIndex5 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.five].answerOption[Phq9ResponseIndex5].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.five, question5LinkId)
 
 // Question 6
-define Phq9AnswerOptionsQuestion6:
-  getAnswerOptionCodeValue(IndexOfQuestion.six)
-
-define CurrentResponse6:
-  getCurrentResponseByQuestionId(question6LinkId)
-
-define Phq9ResponseIndex6:
-  if Exists(CurrentResponse6) then
-    IndexOf(Phq9AnswerOptionsQuestion6, singleton from CurrentResponse6.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion6:
-  if Phq9ResponseIndex6 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.six].answerOption[Phq9ResponseIndex6].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.six, question6LinkId)
 
 // Question 7
-define Phq9AnswerOptionsQuestion7:
-  getAnswerOptionCodeValue(IndexOfQuestion.seven)
-
-define CurrentResponse7:
-  getCurrentResponseByQuestionId(question7LinkId)
-
-define Phq9ResponseIndex7:
-  if Exists(CurrentResponse7) then
-    IndexOf(Phq9AnswerOptionsQuestion7, singleton from CurrentResponse7.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion7:
-  if Phq9ResponseIndex7 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.seven].answerOption[Phq9ResponseIndex7].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.seven, question7LinkId)
 
 // Question 8
-define Phq9AnswerOptionsQuestion8:
-  getAnswerOptionCodeValue(IndexOfQuestion.eight)
-
-define CurrentResponse8:
-  getCurrentResponseByQuestionId(question8LinkId)
-
-define Phq9ResponseIndex8:
-  if Exists(CurrentResponse8) then
-    IndexOf(Phq9AnswerOptionsQuestion8, singleton from CurrentResponse8.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion8:
-  if Phq9ResponseIndex8 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.eight].answerOption[Phq9ResponseIndex8].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.eight, question8LinkId)
 
 // Question 9
-define Phq9AnswerOptionsQuestion9:
-  getAnswerOptionCodeValue(IndexOfQuestion.nine)
-
-define CurrentResponse9:
-  getCurrentResponseByQuestionId(question9LinkId)
-
-define Phq9ResponseIndex9:
-  if Exists(CurrentResponse9) then
-    IndexOf(Phq9AnswerOptionsQuestion9, singleton from CurrentResponse9.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion9:
-  if Phq9ResponseIndex9 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.nine].answerOption[Phq9ResponseIndex9].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.nine, question9LinkId)
 
 // Question 10
-define Phq9AnswerOptionsQuestion10:
-  getAnswerOptionCodeValue(IndexOfQuestion.ten)
-
-define CurrentResponse10:
-  getCurrentResponseByQuestionId(question10LinkId)
-
-define Phq9ResponseIndex10:
-  if Exists(CurrentResponse10) then
-    IndexOf(Phq9AnswerOptionsQuestion10, singleton from CurrentResponse10.code.value as String)
-  else
-    -1
-
 define Phq9ScoreQuestion10:
-  if Phq9ResponseIndex10 != -1 then
-    getAnswerOptionExtensionValue(Phq9Questionnaire.item[IndexOfQuestion.ten].answerOption[Phq9ResponseIndex10].extension)
-  else
-    0
+  getQuestionScore(IndexOfQuestion.ten, question10LinkId)
 
 // Should the score for the Full PHQ9 be displayed?
 define DisplayScoreFullPhq9:
-    (CurrentResponse1 is not null or
-    CurrentResponse2 is not null or
-    CurrentResponse3 is not null or
-    CurrentResponse4 is not null or
-    CurrentResponse5 is not null or
-    CurrentResponse6 is not null or
-    CurrentResponse7 is not null or
-    CurrentResponse8 is not null or
-    CurrentResponse9 is not null or
-    CurrentResponse10 is not null
-    )
+   (
+    (singleton from getCurrentResponseByQuestionId(question1LinkId)) is not null or 
+    (singleton from getCurrentResponseByQuestionId(question2LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question3LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question4LinkId)) is not null or 
+    (singleton from getCurrentResponseByQuestionId(question5LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question6LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question7LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question8LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question9LinkId)) is not null or
+    (singleton from getCurrentResponseByQuestionId(question10LinkId)) is not null
+   ) // at least one response for all the questions
     and DisplayScreeningScores // Input parameter which allows score display to be disabled
 
 // Calculate the score for the Full PHQ9
