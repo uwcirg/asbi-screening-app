@@ -725,128 +725,10 @@
                }
             }
          }, {
-            "name" : "Phq9AnswerOptionsQuestion1",
+            "name" : "getCurrentResponseByQuestionId",
             "context" : "Patient",
             "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "one",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse1",
-            "context" : "Patient",
-            "accessLevel" : "Public",
+            "type" : "FunctionDef",
             "expression" : {
                "type" : "Query",
                "source" : [ {
@@ -864,8 +746,8 @@
                      "scope" : "R",
                      "type" : "Property"
                   }, {
-                     "name" : "question1LinkId",
-                     "type" : "ExpressionRef"
+                     "name" : "qid",
+                     "type" : "OperandRef"
                   } ]
                },
                "return" : {
@@ -875,153 +757,54 @@
                      "type" : "Property"
                   }
                }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex1",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse1",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
-                  "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion1",
-                     "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse1",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
-                  }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
+            },
+            "operand" : [ {
+               "name" : "qid",
+               "operandTypeSpecifier" : {
+                  "name" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "NamedTypeSpecifier"
                }
-            }
+            } ]
          }, {
-            "name" : "Phq9ScoreQuestion1",
+            "name" : "getAnswerOptionCodeValue",
             "context" : "Patient",
             "accessLevel" : "Public",
+            "type" : "FunctionDef",
             "expression" : {
                "type" : "If",
                "condition" : {
                   "type" : "Not",
                   "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex1",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
+                     "type" : "IsNull",
+                     "operand" : {
+                        "type" : "Indexer",
+                        "operand" : [ {
+                           "path" : "item",
+                           "type" : "Property",
+                           "source" : {
+                              "name" : "Phq9Questionnaire",
+                              "type" : "ExpressionRef"
+                           }
+                        }, {
+                           "name" : "qIndex",
+                           "type" : "OperandRef"
+                        } ]
+                     }
                   }
                },
                "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
+                  "type" : "Query",
+                  "source" : [ {
+                     "alias" : "$this",
+                     "expression" : {
+                        "type" : "Query",
+                        "source" : [ {
+                           "alias" : "$this",
+                           "expression" : {
+                              "type" : "Query",
+                              "source" : [ {
+                                 "alias" : "$this",
+                                 "expression" : {
                                     "path" : "answerOption",
                                     "type" : "Property",
                                     "source" : {
@@ -1034,55 +817,284 @@
                                              "type" : "ExpressionRef"
                                           }
                                        }, {
-                                          "path" : "one",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
+                                          "name" : "qIndex",
+                                          "type" : "OperandRef"
                                        } ]
                                     }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex1",
-                                    "type" : "ExpressionRef"
-                                 } ]
+                                 }
+                              } ],
+                              "where" : {
+                                 "type" : "Not",
+                                 "operand" : {
+                                    "type" : "IsNull",
+                                    "operand" : {
+                                       "path" : "value",
+                                       "type" : "Property",
+                                       "source" : {
+                                          "name" : "$this",
+                                          "type" : "AliasRef"
+                                       }
+                                    }
+                                 }
+                              },
+                              "return" : {
+                                 "distinct" : false,
+                                 "expression" : {
+                                    "path" : "value",
+                                    "type" : "Property",
+                                    "source" : {
+                                       "name" : "$this",
+                                       "type" : "AliasRef"
+                                    }
+                                 }
                               }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
+                           }
+                        } ],
+                        "where" : {
+                           "type" : "Not",
+                           "operand" : {
+                              "type" : "IsNull",
+                              "operand" : {
+                                 "path" : "code",
+                                 "type" : "Property",
+                                 "source" : {
+                                    "name" : "$this",
+                                    "type" : "AliasRef"
+                                 }
+                              }
+                           }
+                        },
+                        "return" : {
+                           "distinct" : false,
+                           "expression" : {
+                              "path" : "code",
+                              "type" : "Property",
+                              "source" : {
+                                 "name" : "$this",
+                                 "type" : "AliasRef"
+                              }
+                           }
+                        }
+                     }
+                  } ],
+                  "where" : {
+                     "type" : "Not",
+                     "operand" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "path" : "value",
+                           "type" : "Property",
+                           "source" : {
+                              "name" : "$this",
+                              "type" : "AliasRef"
+                           }
                         }
                      }
                   },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
+                  "return" : {
+                     "distinct" : false,
+                     "expression" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "$this",
+                           "type" : "AliasRef"
+                        }
+                     }
                   }
                },
                "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "ListTypeSpecifier",
+                     "elementType" : {
+                        "name" : "{urn:hl7-org:elm-types:r1}String",
+                        "type" : "NamedTypeSpecifier"
+                     }
+                  }
                }
-            }
+            },
+            "operand" : [ {
+               "name" : "qIndex",
+               "operandTypeSpecifier" : {
+                  "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "type" : "NamedTypeSpecifier"
+               }
+            } ]
          }, {
-            "name" : "Phq9AnswerOptionsQuestion2",
+            "name" : "getAnswerOptionExtensionValue",
             "context" : "Patient",
             "accessLevel" : "Public",
+            "type" : "FunctionDef",
+            "expression" : {
+               "strict" : false,
+               "type" : "As",
+               "operand" : {
+                  "path" : "value",
+                  "type" : "Property",
+                  "source" : {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "type" : "SingletonFrom",
+                        "operand" : {
+                           "type" : "Query",
+                           "source" : [ {
+                              "alias" : "e",
+                              "expression" : {
+                                 "name" : "extList",
+                                 "type" : "OperandRef"
+                              }
+                           } ],
+                           "relationship" : [ ],
+                           "where" : {
+                              "type" : "Equivalent",
+                              "operand" : [ {
+                                 "name" : "ToString",
+                                 "libraryName" : "FHIRHelpers",
+                                 "type" : "FunctionRef",
+                                 "operand" : [ {
+                                    "path" : "url",
+                                    "scope" : "e",
+                                    "type" : "Property"
+                                 } ]
+                              }, {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                                 "value" : "http://hl7.org/fhir/StructureDefinition/ordinalValue",
+                                 "type" : "Literal"
+                              } ]
+                           }
+                        }
+                     }
+                  }
+               },
+               "asTypeSpecifier" : {
+                  "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "type" : "NamedTypeSpecifier"
+               }
+            },
+            "operand" : [ {
+               "name" : "extList",
+               "operandTypeSpecifier" : {
+                  "type" : "ListTypeSpecifier",
+                  "elementType" : {
+                     "name" : "{http://hl7.org/fhir}Extension",
+                     "type" : "NamedTypeSpecifier"
+                  }
+               }
+            } ]
+         }, {
+            "name" : "getQuestionScore",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "type" : "FunctionDef",
             "expression" : {
                "type" : "Query",
                "source" : [ {
-                  "alias" : "$this",
+                  "alias" : "qResponse",
                   "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
+                     "type" : "SingletonFrom",
+                     "operand" : {
+                        "name" : "getCurrentResponseByQuestionId",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "name" : "qId",
+                           "type" : "OperandRef"
+                        } ]
+                     }
+                  }
+               } ],
+               "let" : [ {
+                  "identifier" : "qAnswerOptionCode",
+                  "expression" : {
+                     "name" : "getAnswerOptionCodeValue",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "name" : "qIndex",
+                        "type" : "OperandRef"
+                     } ]
+                  }
+               }, {
+                  "identifier" : "qResponseIndex",
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "IsNull",
+                           "operand" : {
+                              "name" : "qResponse",
+                              "type" : "AliasRef"
+                           }
+                        }
+                     },
+                     "then" : {
+                        "type" : "IndexOf",
+                        "source" : {
+                           "name" : "qAnswerOptionCode",
+                           "type" : "QueryLetRef"
+                        },
+                        "element" : {
+                           "strict" : false,
+                           "type" : "As",
+                           "operand" : {
+                              "path" : "value",
+                              "type" : "Property",
+                              "source" : {
+                                 "path" : "code",
+                                 "scope" : "qResponse",
+                                 "type" : "Property"
+                              }
+                           },
+                           "asTypeSpecifier" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }
+                     },
+                     "else" : {
+                        "type" : "Negate",
+                        "operand" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        }
+                     }
+                  }
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "qResponseIndex",
+                              "type" : "QueryLetRef"
+                           }, {
+                              "type" : "Negate",
+                              "operand" : {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "1",
+                                 "type" : "Literal"
+                              }
+                           } ]
+                        }
+                     },
+                     "then" : {
+                        "name" : "getAnswerOptionExtensionValue",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "path" : "extension",
+                           "type" : "Property",
+                           "source" : {
+                              "type" : "Indexer",
+                              "operand" : [ {
                                  "path" : "answerOption",
                                  "type" : "Property",
                                  "source" : {
@@ -1095,3054 +1107,227 @@
                                           "type" : "ExpressionRef"
                                        }
                                     }, {
-                                       "path" : "two",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
+                                       "name" : "qIndex",
+                                       "type" : "OperandRef"
                                     } ]
                                  }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
+                              }, {
+                                 "name" : "qResponseIndex",
+                                 "type" : "QueryLetRef"
+                              } ]
                            }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
+                        } ]
                      },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
+                     "else" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
                      }
                   }
                }
-            }
-         }, {
-            "name" : "CurrentResponse2",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question2LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
+            },
+            "operand" : [ {
+               "name" : "qIndex",
+               "operandTypeSpecifier" : {
+                  "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "type" : "NamedTypeSpecifier"
                }
-            }
+            }, {
+               "name" : "qId",
+               "operandTypeSpecifier" : {
+                  "name" : "{urn:hl7-org:elm-types:r1}String",
+                  "type" : "NamedTypeSpecifier"
+               }
+            } ]
          }, {
-            "name" : "Phq9ResponseIndex2",
+            "name" : "Phq9ScoreQuestion1",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse2",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "one",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion2",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse2",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question1LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion2",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex2",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "two",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex2",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion3",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "three",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse3",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question3LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex3",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse3",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "two",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion3",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse3",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question2LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion3",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex3",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "three",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex3",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion4",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "four",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse4",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question4LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex4",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse4",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "three",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion4",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse4",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question3LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion4",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex4",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "four",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex4",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion5",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "five",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse5",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question5LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex5",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse5",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "four",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion5",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse5",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question4LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion5",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex5",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "five",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex5",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion6",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "six",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse6",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question6LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex6",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse6",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "five",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion6",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse6",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question5LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion6",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex6",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "six",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex6",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion7",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "seven",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse7",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question7LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex7",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse7",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "six",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion7",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse7",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question6LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion7",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex7",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "seven",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex7",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion8",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "eight",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse8",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question8LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex8",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse8",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "seven",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion8",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse8",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question7LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion8",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex8",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "eight",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex8",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion9",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "nine",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse9",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question9LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex9",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse9",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "eight",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion9",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse9",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question8LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion9",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex9",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
-                  }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "nine",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex9",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
-            }
-         }, {
-            "name" : "Phq9AnswerOptionsQuestion10",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "$this",
-                  "expression" : {
-                     "type" : "Query",
-                     "source" : [ {
-                        "alias" : "$this",
-                        "expression" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "path" : "ten",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "IndexOfQuestion",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    } ]
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     } ],
-                     "where" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "path" : "code",
-                              "type" : "Property",
-                              "source" : {
-                                 "name" : "$this",
-                                 "type" : "AliasRef"
-                              }
-                           }
-                        }
-                     },
-                     "return" : {
-                        "distinct" : false,
-                        "expression" : {
-                           "path" : "code",
-                           "type" : "Property",
-                           "source" : {
-                              "name" : "$this",
-                              "type" : "AliasRef"
-                           }
-                        }
-                     }
-                  }
-               } ],
-               "where" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "IsNull",
-                     "operand" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "$this",
-                           "type" : "AliasRef"
-                        }
-                     }
-                  }
-               },
-               "return" : {
-                  "distinct" : false,
-                  "expression" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "name" : "$this",
-                        "type" : "AliasRef"
-                     }
-                  }
-               }
-            }
-         }, {
-            "name" : "CurrentResponse10",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "R",
-                  "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "question10LinkId",
-                     "type" : "ExpressionRef"
-                  } ]
-               },
-               "return" : {
-                  "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }
-               }
-            }
-         }, {
-            "name" : "Phq9ResponseIndex10",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Exists",
-                  "operand" : {
-                     "name" : "CurrentResponse10",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "IndexOf",
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "nine",
+                  "type" : "Property",
                   "source" : {
-                     "name" : "Phq9AnswerOptionsQuestion10",
+                     "name" : "IndexOfQuestion",
                      "type" : "ExpressionRef"
-                  },
-                  "element" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
-                           "type" : "Query",
-                           "source" : [ {
-                              "alias" : "$this",
-                              "expression" : {
-                                 "type" : "Query",
-                                 "source" : [ {
-                                    "alias" : "$this",
-                                    "expression" : {
-                                       "name" : "CurrentResponse10",
-                                       "type" : "ExpressionRef"
-                                    }
-                                 } ],
-                                 "where" : {
-                                    "type" : "Not",
-                                    "operand" : {
-                                       "type" : "IsNull",
-                                       "operand" : {
-                                          "path" : "code",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "$this",
-                                             "type" : "AliasRef"
-                                          }
-                                       }
-                                    }
-                                 },
-                                 "return" : {
-                                    "distinct" : false,
-                                    "expression" : {
-                                       "path" : "code",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "$this",
-                                          "type" : "AliasRef"
-                                       }
-                                    }
-                                 }
-                              }
-                           } ],
-                           "where" : {
-                              "type" : "Not",
-                              "operand" : {
-                                 "type" : "IsNull",
-                                 "operand" : {
-                                    "path" : "value",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "name" : "$this",
-                                       "type" : "AliasRef"
-                                    }
-                                 }
-                              }
-                           },
-                           "return" : {
-                              "distinct" : false,
-                              "expression" : {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "name" : "$this",
-                                    "type" : "AliasRef"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
                   }
-               },
-               "else" : {
-                  "type" : "Negate",
-                  "operand" : {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  }
-               }
+               }, {
+                  "name" : "question9LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "Phq9ScoreQuestion10",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "Not",
-                  "operand" : {
-                     "type" : "Equal",
-                     "operand" : [ {
-                        "name" : "Phq9ResponseIndex10",
-                        "type" : "ExpressionRef"
-                     }, {
-                        "type" : "Negate",
-                        "operand" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "1",
-                           "type" : "Literal"
-                        }
-                     } ]
+               "name" : "getQuestionScore",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "path" : "ten",
+                  "type" : "Property",
+                  "source" : {
+                     "name" : "IndexOfQuestion",
+                     "type" : "ExpressionRef"
                   }
-               },
-               "then" : {
-                  "strict" : false,
-                  "type" : "As",
-                  "operand" : {
-                     "path" : "value",
-                     "type" : "Property",
-                     "source" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "type" : "Indexer",
-                           "operand" : [ {
-                              "path" : "extension",
-                              "type" : "Property",
-                              "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "answerOption",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "item",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "Phq9Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       }, {
-                                          "path" : "ten",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "name" : "IndexOfQuestion",
-                                             "type" : "ExpressionRef"
-                                          }
-                                       } ]
-                                    }
-                                 }, {
-                                    "name" : "Phq9ResponseIndex10",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
-                           }, {
-                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "value" : "0",
-                              "type" : "Literal"
-                           } ]
-                        }
-                     }
-                  },
-                  "asTypeSpecifier" : {
-                     "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "type" : "NamedTypeSpecifier"
-                  }
-               },
-               "else" : {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               }
+               }, {
+                  "name" : "question10LinkId",
+                  "type" : "ExpressionRef"
+               } ]
             }
          }, {
             "name" : "DisplayScoreFullPhq9",
@@ -4173,8 +1358,15 @@
                                              "operand" : {
                                                 "type" : "IsNull",
                                                 "operand" : {
-                                                   "name" : "CurrentResponse1",
-                                                   "type" : "ExpressionRef"
+                                                   "type" : "SingletonFrom",
+                                                   "operand" : {
+                                                      "name" : "getCurrentResponseByQuestionId",
+                                                      "type" : "FunctionRef",
+                                                      "operand" : [ {
+                                                         "name" : "question1LinkId",
+                                                         "type" : "ExpressionRef"
+                                                      } ]
+                                                   }
                                                 }
                                              }
                                           }, {
@@ -4182,8 +1374,15 @@
                                              "operand" : {
                                                 "type" : "IsNull",
                                                 "operand" : {
-                                                   "name" : "CurrentResponse2",
-                                                   "type" : "ExpressionRef"
+                                                   "type" : "SingletonFrom",
+                                                   "operand" : {
+                                                      "name" : "getCurrentResponseByQuestionId",
+                                                      "type" : "FunctionRef",
+                                                      "operand" : [ {
+                                                         "name" : "question2LinkId",
+                                                         "type" : "ExpressionRef"
+                                                      } ]
+                                                   }
                                                 }
                                              }
                                           } ]
@@ -4192,8 +1391,15 @@
                                           "operand" : {
                                              "type" : "IsNull",
                                              "operand" : {
-                                                "name" : "CurrentResponse3",
-                                                "type" : "ExpressionRef"
+                                                "type" : "SingletonFrom",
+                                                "operand" : {
+                                                   "name" : "getCurrentResponseByQuestionId",
+                                                   "type" : "FunctionRef",
+                                                   "operand" : [ {
+                                                      "name" : "question3LinkId",
+                                                      "type" : "ExpressionRef"
+                                                   } ]
+                                                }
                                              }
                                           }
                                        } ]
@@ -4202,8 +1408,15 @@
                                        "operand" : {
                                           "type" : "IsNull",
                                           "operand" : {
-                                             "name" : "CurrentResponse4",
-                                             "type" : "ExpressionRef"
+                                             "type" : "SingletonFrom",
+                                             "operand" : {
+                                                "name" : "getCurrentResponseByQuestionId",
+                                                "type" : "FunctionRef",
+                                                "operand" : [ {
+                                                   "name" : "question4LinkId",
+                                                   "type" : "ExpressionRef"
+                                                } ]
+                                             }
                                           }
                                        }
                                     } ]
@@ -4212,8 +1425,15 @@
                                     "operand" : {
                                        "type" : "IsNull",
                                        "operand" : {
-                                          "name" : "CurrentResponse5",
-                                          "type" : "ExpressionRef"
+                                          "type" : "SingletonFrom",
+                                          "operand" : {
+                                             "name" : "getCurrentResponseByQuestionId",
+                                             "type" : "FunctionRef",
+                                             "operand" : [ {
+                                                "name" : "question5LinkId",
+                                                "type" : "ExpressionRef"
+                                             } ]
+                                          }
                                        }
                                     }
                                  } ]
@@ -4222,8 +1442,15 @@
                                  "operand" : {
                                     "type" : "IsNull",
                                     "operand" : {
-                                       "name" : "CurrentResponse6",
-                                       "type" : "ExpressionRef"
+                                       "type" : "SingletonFrom",
+                                       "operand" : {
+                                          "name" : "getCurrentResponseByQuestionId",
+                                          "type" : "FunctionRef",
+                                          "operand" : [ {
+                                             "name" : "question6LinkId",
+                                             "type" : "ExpressionRef"
+                                          } ]
+                                       }
                                     }
                                  }
                               } ]
@@ -4232,8 +1459,15 @@
                               "operand" : {
                                  "type" : "IsNull",
                                  "operand" : {
-                                    "name" : "CurrentResponse7",
-                                    "type" : "ExpressionRef"
+                                    "type" : "SingletonFrom",
+                                    "operand" : {
+                                       "name" : "getCurrentResponseByQuestionId",
+                                       "type" : "FunctionRef",
+                                       "operand" : [ {
+                                          "name" : "question7LinkId",
+                                          "type" : "ExpressionRef"
+                                       } ]
+                                    }
                                  }
                               }
                            } ]
@@ -4242,8 +1476,15 @@
                            "operand" : {
                               "type" : "IsNull",
                               "operand" : {
-                                 "name" : "CurrentResponse8",
-                                 "type" : "ExpressionRef"
+                                 "type" : "SingletonFrom",
+                                 "operand" : {
+                                    "name" : "getCurrentResponseByQuestionId",
+                                    "type" : "FunctionRef",
+                                    "operand" : [ {
+                                       "name" : "question8LinkId",
+                                       "type" : "ExpressionRef"
+                                    } ]
+                                 }
                               }
                            }
                         } ]
@@ -4252,8 +1493,15 @@
                         "operand" : {
                            "type" : "IsNull",
                            "operand" : {
-                              "name" : "CurrentResponse9",
-                              "type" : "ExpressionRef"
+                              "type" : "SingletonFrom",
+                              "operand" : {
+                                 "name" : "getCurrentResponseByQuestionId",
+                                 "type" : "FunctionRef",
+                                 "operand" : [ {
+                                    "name" : "question9LinkId",
+                                    "type" : "ExpressionRef"
+                                 } ]
+                              }
                            }
                         }
                      } ]
@@ -4262,8 +1510,15 @@
                      "operand" : {
                         "type" : "IsNull",
                         "operand" : {
-                           "name" : "CurrentResponse10",
-                           "type" : "ExpressionRef"
+                           "type" : "SingletonFrom",
+                           "operand" : {
+                              "name" : "getCurrentResponseByQuestionId",
+                              "type" : "FunctionRef",
+                              "operand" : [ {
+                                 "name" : "question10LinkId",
+                                 "type" : "ExpressionRef"
+                              } ]
+                           }
                         }
                      }
                   } ]
