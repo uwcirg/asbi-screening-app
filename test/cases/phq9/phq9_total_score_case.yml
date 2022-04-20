@@ -72,9 +72,10 @@ data:
     -
       valueCoding:
         code: LA6573-5
-        display: Somewhat difficult
+        display: Somewhat difficult # 1
   
 results:
-  ScoreFullPhq9: 12
+  ScoreFullPhq9: 12  # PHQ 9 total score
+  
 
  
