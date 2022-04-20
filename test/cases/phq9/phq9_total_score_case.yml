@@ -78,6 +78,3 @@ results:
   Phq9Questionnaire: $should exist # make sure questionnaire is returned
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   ScoreFullPhq9: 12  # PHQ 9 total score
-  
-
- 

@@ -23,6 +23,4 @@ results:
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   Phq9ScoreQuestion5: 1
 
-
-
  
