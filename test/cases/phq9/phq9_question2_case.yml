@@ -17,9 +17,10 @@ data:
     linkId: *q2LinkId
     answer:
     -
-      valueCoding: *answerOption2ValueCode
+      valueCoding: *answerOption2ValueCode # Note: can change to different answer option to test
 results:
+  Phq9Questionnaire: $should exist # make sure questionnaire is returned
+  CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   Phq9ScoreQuestion2: 1
-
 
  

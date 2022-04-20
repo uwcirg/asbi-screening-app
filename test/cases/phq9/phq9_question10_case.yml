@@ -19,6 +19,8 @@ data:
     -
       valueCoding:
         code: LA6574-3
-        display: Extremely difficult
+        display: Extremely difficult  # Note can change to different answer option to test
 results:
+  Phq9Questionnaire: $should exist # make sure questionnaire is returned
+  CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   Phq9ScoreQuestion10: 3

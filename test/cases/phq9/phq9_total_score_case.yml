@@ -19,7 +19,7 @@ data:
   - *Phq9Question9
   - *Phq9Question10
 -
-  <<: *questionnaireResponses
+  <<: *questionnaireResponses  # answers are randomly assigned to test; can change to test; the goal is to test that the sum total from the scores is correct
   item:
   -  # question 10
     linkId: *q10LinkId
@@ -75,6 +75,8 @@ data:
         display: Somewhat difficult # 1
   
 results:
+  Phq9Questionnaire: $should exist # make sure questionnaire is returned
+  CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   ScoreFullPhq9: 12  # PHQ 9 total score
   
 
