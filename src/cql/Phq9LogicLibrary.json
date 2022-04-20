@@ -583,6 +583,13 @@
                      "name" : "CurrentQuestionnaireURL",
                      "type" : "ExpressionRef"
                   } ]
+               },
+               "sort" : {
+                  "by" : [ {
+                     "direction" : "desc",
+                     "path" : "authored",
+                     "type" : "ByColumn"
+                  } ]
                }
             }
          }, {

@@ -97,6 +97,7 @@ define IndexOfQuestion:
 define QuestionnaireResponses:
   ([QuestionnaireResponse] QR
     where QR.questionnaire.value = CurrentQuestionnaireURL
+    sort by authored desc
   )
 
 // Load the QuestionnaireResponse currently being filled out
