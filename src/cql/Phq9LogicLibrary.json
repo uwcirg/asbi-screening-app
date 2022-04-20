@@ -555,6 +555,37 @@
                } ]
             }
          }, {
+            "name" : "QuestionnaireResponses",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                     "type" : "Retrieve"
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "Equal",
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "path" : "questionnaire",
+                        "scope" : "QR",
+                        "type" : "Property"
+                     }
+                  }, {
+                     "name" : "CurrentQuestionnaireURL",
+                     "type" : "ExpressionRef"
+                  } ]
+               }
+            }
+         }, {
             "name" : "CurrentQuestionnaireResponse",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -565,9 +596,8 @@
                   "source" : [ {
                      "alias" : "QR",
                      "expression" : {
-                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
-                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
-                        "type" : "Retrieve"
+                        "name" : "QuestionnaireResponses",
+                        "type" : "ExpressionRef"
                      }
                   } ],
                   "relationship" : [ ],
@@ -590,7 +620,7 @@
                               "type" : "ExpressionRef"
                            } ]
                         }, {
-                           "type" : "SameAs",
+                           "type" : "GreaterOrEqual",
                            "operand" : [ {
                               "type" : "DateFrom",
                               "operand" : {
@@ -732,29 +762,95 @@
             "expression" : {
                "type" : "Query",
                "source" : [ {
-                  "alias" : "R",
+                  "alias" : "CR",
                   "expression" : {
-                     "name" : "CurrentResponses",
-                     "type" : "ExpressionRef"
+                     "type" : "Query",
+                     "source" : [ {
+                        "alias" : "R",
+                        "expression" : {
+                           "name" : "CurrentResponses",
+                           "type" : "ExpressionRef"
+                        }
+                     } ],
+                     "relationship" : [ ],
+                     "where" : {
+                        "type" : "Equal",
+                        "operand" : [ {
+                           "path" : "id",
+                           "scope" : "R",
+                           "type" : "Property"
+                        }, {
+                           "name" : "qid",
+                           "type" : "OperandRef"
+                        } ]
+                     }
                   }
                } ],
                "relationship" : [ ],
-               "where" : {
-                  "type" : "Equal",
-                  "operand" : [ {
-                     "path" : "id",
-                     "scope" : "R",
-                     "type" : "Property"
-                  }, {
-                     "name" : "qid",
-                     "type" : "OperandRef"
-                  } ]
-               },
                "return" : {
                   "expression" : {
-                     "path" : "answer",
-                     "scope" : "R",
-                     "type" : "Property"
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "IsNull",
+                           "operand" : {
+                              "name" : "CR",
+                              "type" : "AliasRef"
+                           }
+                        }
+                     },
+                     "then" : {
+                        "path" : "answer",
+                        "scope" : "CR",
+                        "type" : "Property"
+                     },
+                     "else" : {
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        },
+                        "asTypeSpecifier" : {
+                           "type" : "ChoiceTypeSpecifier",
+                           "choice" : [ {
+                              "name" : "{http://hl7.org/fhir}boolean",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}decimal",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}integer",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}date",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}dateTime",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}time",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}string",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}uri",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}Attachment",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}Coding",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}Quantity",
+                              "type" : "NamedTypeSpecifier"
+                           }, {
+                              "name" : "{http://hl7.org/fhir}Reference",
+                              "type" : "NamedTypeSpecifier"
+                           } ]
+                        }
+                     }
                   }
                }
             },
@@ -939,8 +1035,8 @@
                      "path" : "value",
                      "type" : "Property",
                      "source" : {
-                        "type" : "SingletonFrom",
-                        "operand" : {
+                        "type" : "Indexer",
+                        "operand" : [ {
                            "type" : "Query",
                            "source" : [ {
                               "alias" : "e",
@@ -967,7 +1063,11 @@
                                  "type" : "Literal"
                               } ]
                            }
-                        }
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        } ]
                      }
                   }
                },
@@ -996,15 +1096,19 @@
                "source" : [ {
                   "alias" : "qResponse",
                   "expression" : {
-                     "type" : "SingletonFrom",
-                     "operand" : {
+                     "type" : "Indexer",
+                     "operand" : [ {
                         "name" : "getCurrentResponseByQuestionId",
                         "type" : "FunctionRef",
                         "operand" : [ {
                            "name" : "qId",
                            "type" : "OperandRef"
                         } ]
-                     }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     } ]
                   }
                } ],
                "let" : [ {
@@ -1064,6 +1168,36 @@
                         }
                      }
                   }
+               }, {
+                  "identifier" : "extensionItem",
+                  "expression" : {
+                     "path" : "extension",
+                     "type" : "Property",
+                     "source" : {
+                        "type" : "Indexer",
+                        "operand" : [ {
+                           "path" : "answerOption",
+                           "type" : "Property",
+                           "source" : {
+                              "type" : "Indexer",
+                              "operand" : [ {
+                                 "path" : "item",
+                                 "type" : "Property",
+                                 "source" : {
+                                    "name" : "Phq9Questionnaire",
+                                    "type" : "ExpressionRef"
+                                 }
+                              }, {
+                                 "name" : "qIndex",
+                                 "type" : "OperandRef"
+                              } ]
+                           }
+                        }, {
+                           "name" : "qResponseIndex",
+                           "type" : "QueryLetRef"
+                        } ]
+                     }
+                  }
                } ],
                "relationship" : [ ],
                "return" : {
@@ -1087,36 +1221,30 @@
                         }
                      },
                      "then" : {
-                        "name" : "getAnswerOptionExtensionValue",
-                        "type" : "FunctionRef",
-                        "operand" : [ {
-                           "path" : "extension",
-                           "type" : "Property",
-                           "source" : {
-                              "type" : "Indexer",
-                              "operand" : [ {
-                                 "path" : "answerOption",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "type" : "Indexer",
-                                    "operand" : [ {
-                                       "path" : "item",
-                                       "type" : "Property",
-                                       "source" : {
-                                          "name" : "Phq9Questionnaire",
-                                          "type" : "ExpressionRef"
-                                       }
-                                    }, {
-                                       "name" : "qIndex",
-                                       "type" : "OperandRef"
-                                    } ]
-                                 }
-                              }, {
-                                 "name" : "qResponseIndex",
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Not",
+                           "operand" : {
+                              "type" : "IsNull",
+                              "operand" : {
+                                 "name" : "extensionItem",
                                  "type" : "QueryLetRef"
-                              } ]
+                              }
                            }
-                        } ]
+                        },
+                        "then" : {
+                           "name" : "getAnswerOptionExtensionValue",
+                           "type" : "FunctionRef",
+                           "operand" : [ {
+                              "name" : "extensionItem",
+                              "type" : "QueryLetRef"
+                           } ]
+                        },
+                        "else" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        }
                      },
                      "else" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
@@ -1358,15 +1486,12 @@
                                              "operand" : {
                                                 "type" : "IsNull",
                                                 "operand" : {
-                                                   "type" : "SingletonFrom",
-                                                   "operand" : {
-                                                      "name" : "getCurrentResponseByQuestionId",
-                                                      "type" : "FunctionRef",
-                                                      "operand" : [ {
-                                                         "name" : "question1LinkId",
-                                                         "type" : "ExpressionRef"
-                                                      } ]
-                                                   }
+                                                   "name" : "getCurrentResponseByQuestionId",
+                                                   "type" : "FunctionRef",
+                                                   "operand" : [ {
+                                                      "name" : "question1LinkId",
+                                                      "type" : "ExpressionRef"
+                                                   } ]
                                                 }
                                              }
                                           }, {
@@ -1374,15 +1499,12 @@
                                              "operand" : {
                                                 "type" : "IsNull",
                                                 "operand" : {
-                                                   "type" : "SingletonFrom",
-                                                   "operand" : {
-                                                      "name" : "getCurrentResponseByQuestionId",
-                                                      "type" : "FunctionRef",
-                                                      "operand" : [ {
-                                                         "name" : "question2LinkId",
-                                                         "type" : "ExpressionRef"
-                                                      } ]
-                                                   }
+                                                   "name" : "getCurrentResponseByQuestionId",
+                                                   "type" : "FunctionRef",
+                                                   "operand" : [ {
+                                                      "name" : "question2LinkId",
+                                                      "type" : "ExpressionRef"
+                                                   } ]
                                                 }
                                              }
                                           } ]
@@ -1391,15 +1513,12 @@
                                           "operand" : {
                                              "type" : "IsNull",
                                              "operand" : {
-                                                "type" : "SingletonFrom",
-                                                "operand" : {
-                                                   "name" : "getCurrentResponseByQuestionId",
-                                                   "type" : "FunctionRef",
-                                                   "operand" : [ {
-                                                      "name" : "question3LinkId",
-                                                      "type" : "ExpressionRef"
-                                                   } ]
-                                                }
+                                                "name" : "getCurrentResponseByQuestionId",
+                                                "type" : "FunctionRef",
+                                                "operand" : [ {
+                                                   "name" : "question3LinkId",
+                                                   "type" : "ExpressionRef"
+                                                } ]
                                              }
                                           }
                                        } ]
@@ -1408,15 +1527,12 @@
                                        "operand" : {
                                           "type" : "IsNull",
                                           "operand" : {
-                                             "type" : "SingletonFrom",
-                                             "operand" : {
-                                                "name" : "getCurrentResponseByQuestionId",
-                                                "type" : "FunctionRef",
-                                                "operand" : [ {
-                                                   "name" : "question4LinkId",
-                                                   "type" : "ExpressionRef"
-                                                } ]
-                                             }
+                                             "name" : "getCurrentResponseByQuestionId",
+                                             "type" : "FunctionRef",
+                                             "operand" : [ {
+                                                "name" : "question4LinkId",
+                                                "type" : "ExpressionRef"
+                                             } ]
                                           }
                                        }
                                     } ]
@@ -1425,15 +1541,12 @@
                                     "operand" : {
                                        "type" : "IsNull",
                                        "operand" : {
-                                          "type" : "SingletonFrom",
-                                          "operand" : {
-                                             "name" : "getCurrentResponseByQuestionId",
-                                             "type" : "FunctionRef",
-                                             "operand" : [ {
-                                                "name" : "question5LinkId",
-                                                "type" : "ExpressionRef"
-                                             } ]
-                                          }
+                                          "name" : "getCurrentResponseByQuestionId",
+                                          "type" : "FunctionRef",
+                                          "operand" : [ {
+                                             "name" : "question5LinkId",
+                                             "type" : "ExpressionRef"
+                                          } ]
                                        }
                                     }
                                  } ]
@@ -1442,15 +1555,12 @@
                                  "operand" : {
                                     "type" : "IsNull",
                                     "operand" : {
-                                       "type" : "SingletonFrom",
-                                       "operand" : {
-                                          "name" : "getCurrentResponseByQuestionId",
-                                          "type" : "FunctionRef",
-                                          "operand" : [ {
-                                             "name" : "question6LinkId",
-                                             "type" : "ExpressionRef"
-                                          } ]
-                                       }
+                                       "name" : "getCurrentResponseByQuestionId",
+                                       "type" : "FunctionRef",
+                                       "operand" : [ {
+                                          "name" : "question6LinkId",
+                                          "type" : "ExpressionRef"
+                                       } ]
                                     }
                                  }
                               } ]
@@ -1459,15 +1569,12 @@
                               "operand" : {
                                  "type" : "IsNull",
                                  "operand" : {
-                                    "type" : "SingletonFrom",
-                                    "operand" : {
-                                       "name" : "getCurrentResponseByQuestionId",
-                                       "type" : "FunctionRef",
-                                       "operand" : [ {
-                                          "name" : "question7LinkId",
-                                          "type" : "ExpressionRef"
-                                       } ]
-                                    }
+                                    "name" : "getCurrentResponseByQuestionId",
+                                    "type" : "FunctionRef",
+                                    "operand" : [ {
+                                       "name" : "question7LinkId",
+                                       "type" : "ExpressionRef"
+                                    } ]
                                  }
                               }
                            } ]
@@ -1476,15 +1583,12 @@
                            "operand" : {
                               "type" : "IsNull",
                               "operand" : {
-                                 "type" : "SingletonFrom",
-                                 "operand" : {
-                                    "name" : "getCurrentResponseByQuestionId",
-                                    "type" : "FunctionRef",
-                                    "operand" : [ {
-                                       "name" : "question8LinkId",
-                                       "type" : "ExpressionRef"
-                                    } ]
-                                 }
+                                 "name" : "getCurrentResponseByQuestionId",
+                                 "type" : "FunctionRef",
+                                 "operand" : [ {
+                                    "name" : "question8LinkId",
+                                    "type" : "ExpressionRef"
+                                 } ]
                               }
                            }
                         } ]
@@ -1493,15 +1597,12 @@
                         "operand" : {
                            "type" : "IsNull",
                            "operand" : {
-                              "type" : "SingletonFrom",
-                              "operand" : {
-                                 "name" : "getCurrentResponseByQuestionId",
-                                 "type" : "FunctionRef",
-                                 "operand" : [ {
-                                    "name" : "question9LinkId",
-                                    "type" : "ExpressionRef"
-                                 } ]
-                              }
+                              "name" : "getCurrentResponseByQuestionId",
+                              "type" : "FunctionRef",
+                              "operand" : [ {
+                                 "name" : "question9LinkId",
+                                 "type" : "ExpressionRef"
+                              } ]
                            }
                         }
                      } ]
@@ -1510,15 +1611,12 @@
                      "operand" : {
                         "type" : "IsNull",
                         "operand" : {
-                           "type" : "SingletonFrom",
-                           "operand" : {
-                              "name" : "getCurrentResponseByQuestionId",
-                              "type" : "FunctionRef",
-                              "operand" : [ {
-                                 "name" : "question10LinkId",
-                                 "type" : "ExpressionRef"
-                              } ]
-                           }
+                           "name" : "getCurrentResponseByQuestionId",
+                           "type" : "FunctionRef",
+                           "operand" : [ {
+                              "name" : "question10LinkId",
+                              "type" : "ExpressionRef"
+                           } ]
                         }
                      }
                   } ]

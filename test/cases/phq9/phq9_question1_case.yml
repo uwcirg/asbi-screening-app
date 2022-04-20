@@ -1,0 +1,24 @@
+---
+name: Ph1-9 Question 1 Score
+externalData:
+- phq9_reusable_resources
+data:
+-
+  *patientResource
+-
+  <<: *questionnaireResource
+  item: 
+  -
+    *Phq9Question1
+-
+  <<: *questionnaireResponses
+  item:
+  -
+    linkId: *q1LinkId
+    answer:
+    -
+      valueCoding: *answerOption4ValueCode
+results:
+  Phq9ScoreQuestion1: 3
+
+ 
