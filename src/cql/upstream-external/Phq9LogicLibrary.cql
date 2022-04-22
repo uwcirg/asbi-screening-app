@@ -94,12 +94,19 @@ define IndexOfQuestion:
     ten: IndexOf(ItemLinkIds, question10LinkId)
   }
 
+define QuestionnaireResponses:
+  ([QuestionnaireResponse] QR
+    where QR.questionnaire.value = CurrentQuestionnaireURL
+    sort by authored desc
+  )
+
 // Load the QuestionnaireResponse currently being filled out
 define CurrentQuestionnaireResponse:
-  singleton from ([QuestionnaireResponse] QR
+  singleton from (QuestionnaireResponses QR
     where QR.questionnaire.value = CurrentQuestionnaireURL
-      and date from QR.authored.value same as Today()
-      and QR.status.value = 'in-progress')
+      and date from QR.authored.value >= Today()
+      and QR.status.value = 'in-progress'
+  )
 
 // Extract the items from the QuestionnaireResponse
 define CurrentResponseItems:
@@ -122,8 +129,8 @@ define function getCurrentResponseByQuestionId(qid String):
   (
     CurrentResponses R
     where R.id = qid
-    return R.answer
-  )
+  ) CR 
+  return if CR is not null then CR.answer else null
 
 /*
  retrieve concept code of the selected answer option
@@ -142,20 +149,23 @@ define function getAnswerOptionCodeValue(qIndex Integer):
  * @return the value as Integer
  */
 define function getAnswerOptionExtensionValue(extList List<FHIR.Extension>):
-  (singleton from (extList e where e.url ~ 'http://hl7.org/fhir/StructureDefinition/ordinalValue')).value.value as Integer
+  (extList e where e.url ~ 'http://hl7.org/fhir/StructureDefinition/ordinalValue')[0].value.value as Integer
 
 /* @param qIndex, question index,
  * @param qId, question id, e.g. linkId
  * @return score for the question
  */
 define function getQuestionScore(qIndex Integer, qId String):
-    (singleton from getCurrentResponseByQuestionId(qId)) qResponse
+    (getCurrentResponseByQuestionId(qId)[0]) qResponse
     let
       qAnswerOptionCode: getAnswerOptionCodeValue(qIndex),
-      qResponseIndex: if qResponse is not null then IndexOf(qAnswerOptionCode, qResponse.code.value as String) else -1
+      qResponseIndex: if qResponse is not null then IndexOf(qAnswerOptionCode, qResponse.code.value as String) else -1,
+      extensionItem: Phq9Questionnaire.item[qIndex].answerOption[qResponseIndex].extension
     return
       if qResponseIndex != -1 then
-        getAnswerOptionExtensionValue(Phq9Questionnaire.item[qIndex].answerOption[qResponseIndex].extension)
+        if extensionItem is not null then
+          getAnswerOptionExtensionValue(extensionItem)
+        else 0
       else
         0
       
@@ -202,16 +212,16 @@ define Phq9ScoreQuestion10:
 // Should the score for the Full PHQ9 be displayed?
 define DisplayScoreFullPhq9:
    (
-    (singleton from getCurrentResponseByQuestionId(question1LinkId)) is not null or 
-    (singleton from getCurrentResponseByQuestionId(question2LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question3LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question4LinkId)) is not null or 
-    (singleton from getCurrentResponseByQuestionId(question5LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question6LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question7LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question8LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question9LinkId)) is not null or
-    (singleton from getCurrentResponseByQuestionId(question10LinkId)) is not null
+    (getCurrentResponseByQuestionId(question1LinkId)) is not null or 
+    (getCurrentResponseByQuestionId(question2LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question3LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question4LinkId)) is not null or 
+    (getCurrentResponseByQuestionId(question5LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question6LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question7LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question8LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question9LinkId)) is not null or
+    (getCurrentResponseByQuestionId(question10LinkId)) is not null
    ) // at least one response for all the questions
     and DisplayScreeningScores // Input parameter which allows score display to be disabled
 
