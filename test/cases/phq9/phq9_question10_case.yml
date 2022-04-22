@@ -3,15 +3,11 @@ name: Ph1-9 Question 10 Score
 externalData:
 - phq9_reusable_resources
 data:
--
-  *patientResource
--
-  <<: *questionnaireResource
+- *patientResource
+- <<: *questionnaireResource
   item:
-  -
-    *Phq9Question10
--
-  <<: *questionnaireResponses
+  - *Phq9Question10
+- <<: *questionnaireResponses
   item:
   -
     linkId: *q10LinkId

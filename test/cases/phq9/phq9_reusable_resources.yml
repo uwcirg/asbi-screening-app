@@ -67,14 +67,10 @@ phq9_reusable_resources:
 
 # answer options, apply to question 1 ~ 9, question 10 has a different set of answer options
 - &questionnaireAnswerOptions
-  -
-    *answerOption1
-  -
-    *answerOption2
-  -
-    *answerOption3
-  -
-    *answerOption4
+  - *answerOption1
+  - *answerOption2
+  - *answerOption3
+  - *answerOption4
 
 # anchor for each question link Id
 - PhqQuestion1LinkId: &q1LinkId /44250-9

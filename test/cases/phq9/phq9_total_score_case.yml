@@ -3,10 +3,8 @@ name: PHQ9 Total Score
 externalData:
 - phq9_reusable_resources
 data:
--
-  *patientResource
--
-  <<: *questionnaireResource
+- *patientResource
+- <<: *questionnaireResource
   item:
   - *Phq9Question1
   - *Phq9Question2
@@ -18,8 +16,7 @@ data:
   - *Phq9Question8
   - *Phq9Question9
   - *Phq9Question10
--
-  <<: *questionnaireResponses  # answers are randomly assigned to test; can change to test; the goal is to test that the sum total from the scores is correct
+- <<: *questionnaireResponses  # answers are randomly assigned to test; can change to test; the goal is to test that the sum total from the scores is correct
   item:
   -  # question 10
     linkId: *q10LinkId

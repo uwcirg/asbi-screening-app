@@ -3,15 +3,11 @@ name: Ph1-9 Question 4 Score
 externalData:
 - phq9_reusable_resources
 data:
--
-  *patientResource
--
-  <<: *questionnaireResource
+- *patientResource
+- <<: *questionnaireResource
   item:
-  -
-    *Phq9Question4
--
-  <<: *questionnaireResponses
+  - *Phq9Question4
+- <<: *questionnaireResponses
   item:
   -
     linkId: *q4LinkId
@@ -22,4 +18,3 @@ results:
   Phq9Questionnaire: $should exist # make sure questionnaire is returned
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   Phq9ScoreQuestion3: 0
- 
