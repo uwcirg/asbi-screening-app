@@ -7,23 +7,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout commit with full git history
-        uses: actions/checkout@v1
-        with:
-          fetch-depth: 0
+      - name: Checkout git commit
+        uses: actions/checkout@master
 
-      - name: Set environment variable for version from git output
-        run: echo "VERSION_STRING=$(git describe --always --tags)" >> $GITHUB_ENV
-
-      - name: Publish to Dockerhub registry
-        # TODO pin to hash
+      - name: Publish to GitHub Container Registry
+        # TODO: pin to hash
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          # https://help.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
           name: ${{ github.repository }}
-          # configured at repo settings/secrets
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ghcr.io
+
+          # GitHub actor
+          username: ${{ github.actor }}
+          
+          # GitHub access token
+          password: ${{ secrets.GITHUB_TOKEN }}
+
           # create docker image tags to match git tags
           tag_names: true
-          buildargs: VERSION_STRING
