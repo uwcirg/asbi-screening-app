@@ -1,8 +1,9 @@
-# docker-compose override to run tests
+# docker-compose config to run tests
 ---
 version: "3.7"
 services:
   client:
     build:
+      context: .
       # Do not continue to production stage
       target: build-deps

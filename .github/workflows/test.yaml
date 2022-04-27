@@ -12,7 +12,7 @@ jobs:
       - name: Run tests
         env:
           # Use docker-compose testing override, to stop before production stage
-          COMPOSE_FILE: docker-compose.yaml:docker-compose.test.yaml
+          COMPOSE_FILE: docker-compose.test.yaml
         run: "
           docker-compose run --rm client
             yarn test
