@@ -5,14 +5,18 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      # Use docker-compose testing override, to stop before production stage
+      COMPOSE_FILE: docker-compose.test.yaml
     steps:
-      - name: Checkout git commit
+      - name: Checkout code
         uses: actions/checkout@v3
 
+      # run as separate step, for cleaner test output
+      - name: Build image
+        run: docker-compose build client
+
       - name: Run tests
-        env:
-          # Use docker-compose testing override, to stop before production stage
-          COMPOSE_FILE: docker-compose.test.yaml
         run: "
           docker-compose run --rm client
             yarn test
