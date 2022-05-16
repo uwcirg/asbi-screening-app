@@ -13,6 +13,7 @@
 
 <script>
 import converter from 'questionnaire-to-survey';
+import { getInstrumentCSS } from '../util/css-selector.js';
 import { getScreeningInstrument } from '../util/screening-selector.js';
 import Worker from "../../node_modules/cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from 'cql-worker';
@@ -56,6 +57,9 @@ export default {
       error: false
     };
   },
+  created() {
+    getInstrumentCSS();
+  },
   mounted() {
     this.setAuthClient().then((result) => {
       client = result;
@@ -87,8 +91,8 @@ export default {
       });
     }).catch(e => {
       console.log("Auth Error ", e);
-      this.error = e;
       this.ready = true;
+      this.error = e;
     });
   },
   methods: {
@@ -251,6 +255,7 @@ export default {
       this.survey.onValueChanging.add(function(sender, options) {
         // We don't want to modify anything if the survey has been submitted/completed.
         if (sender.isCompleted == true) return;
+        console.log("options.value? ", options.value)
         
         if (options.value != null) {
           // Find the index of this item (may not exist)
@@ -274,6 +279,7 @@ export default {
             };
           }
         }
+        console.log("questionnaire? ", this.questionnaireResponse)
         // Need to reload the patient bundle since the responses have been updated
         cqlWorker.postMessage({patientBundle: this.patientBundle});
       }.bind(this));

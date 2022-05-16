@@ -1,8 +1,8 @@
 library:
-  name: PHQ9LogicLibrary
+  name: MINICOGLogicLibrary
   paths: ../src/cql
 tests:
-  path: cases/phq9
+  path: cases/minicog
 options:
   dumpFiles:
     enabled: true

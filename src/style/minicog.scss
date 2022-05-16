@@ -1,0 +1,19 @@
+$border-color: #aca8a8;
+$question-bg-color: #d4d7d633;
+.sv-row:not(:last-child) {
+    padding-bottom: 1em;
+}
+.footnote {
+    font-size: 0.9em;
+    margin-top: 1em;
+    color: #585757;
+}
+input[type=text] {
+    width: 120px;
+    border-bottom-color: $border-color;
+}
+.sv-question__title {
+    background-color: $question-bg-color;
+}
+
+
