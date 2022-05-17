@@ -32,17 +32,19 @@ export default {
   },
   mounted() {
     let self = this;
-    FHIR.oauth2.authorize({
-      clientId: "dummy-client-id",
-      scope: "patient/Patient.read patient/Condition.read patient/Observation.read patient/Procedure.read patient/QuestionnaireResponse.read online_access openid fhirUser patient/QuestionnaireResponse.write",
-      iss: "http://localhost:3000/4_0_0",
-      launch: patientId
-    }).catch((e) => {
+    fetch(`${process.env.PUBLIC_URL}/launch-context.json`)
+    .then(result => result.json())
+    .then(json => {
+      json.launch = patientId;
+      console.log("launch JSON ", json);
+      FHIR.oauth2.authorize(json).catch((e) => {
+        self.error = e;
+      });
+    })
+    .catch(e => {
       self.error = e;
+      console.log("launch error ", e);
     });
   }
 }
 </script>
-
-<style>
-</style>
