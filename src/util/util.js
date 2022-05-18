@@ -63,7 +63,7 @@ export function getResponseValue(questionnaire, linkId, response) {
   }
   else if (item.type == 'decimal') {
     responseValue.type = 'valueDecimal';
-    responseValue.value = response;
+    responseValue.value = !isNaN(response) ? parseFloat(response) : response;
   } else {
     responseValue.type = 'valueCoding';    
     responseValue.value = { display: response };

@@ -350,38 +350,9 @@
                            }
                         },
                         "then" : {
-                           "type" : "As",
-                           "operand" : {
-                              "type" : "Null"
-                           },
-                           "asTypeSpecifier" : {
-                              "type" : "ChoiceTypeSpecifier",
-                              "choice" : [ {
-                                 "name" : "{urn:hl7-org:elm-types:r1}Boolean",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{urn:hl7-org:elm-types:r1}Time",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{http://hl7.org/fhir}decimal",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{urn:hl7-org:elm-types:r1}Date",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{urn:hl7-org:elm-types:r1}String",
-                                 "type" : "NamedTypeSpecifier"
-                              }, {
-                                 "name" : "{urn:hl7-org:elm-types:r1}Decimal",
-                                 "type" : "NamedTypeSpecifier"
-                              } ]
-                           }
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
                         }
                      }, {
                         "when" : {
@@ -396,48 +367,23 @@
                            }
                         },
                         "then" : {
-                           "path" : "value",
-                           "type" : "Property",
-                           "source" : {
-                              "path" : "answer",
-                              "scope" : "CR",
-                              "type" : "Property"
+                           "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "type" : "As",
+                           "operand" : {
+                              "path" : "value",
+                              "type" : "Property",
+                              "source" : {
+                                 "path" : "answer",
+                                 "scope" : "CR",
+                                 "type" : "Property"
+                              }
                            }
                         }
                      } ],
                      "else" : {
-                        "type" : "As",
-                        "operand" : {
-                           "type" : "Null"
-                        },
-                        "asTypeSpecifier" : {
-                           "type" : "ChoiceTypeSpecifier",
-                           "choice" : [ {
-                              "name" : "{urn:hl7-org:elm-types:r1}Boolean",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Time",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{http://hl7.org/fhir}decimal",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Date",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}String",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Decimal",
-                              "type" : "NamedTypeSpecifier"
-                           } ]
-                        }
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
                      }
                   }
                }
@@ -547,78 +493,7 @@
                } ]
             }
          }, {
-            "name" : "ScoreFullMiniCog",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Coalesce",
-               "operand" : [ {
-                  "type" : "Add",
-                  "operand" : [ {
-                     "type" : "ToInteger",
-                     "operand" : {
-                        "strict" : false,
-                        "type" : "As",
-                        "operand" : {
-                           "name" : "question1Score",
-                           "type" : "ExpressionRef"
-                        },
-                        "asTypeSpecifier" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }
-                  }, {
-                     "type" : "ToInteger",
-                     "operand" : {
-                        "strict" : false,
-                        "type" : "As",
-                        "operand" : {
-                           "name" : "question2Score",
-                           "type" : "ExpressionRef"
-                        },
-                        "asTypeSpecifier" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }
-                  } ]
-               }, {
-                  "type" : "ToInteger",
-                  "operand" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "name" : "question1Score",
-                        "type" : "ExpressionRef"
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
-                  }
-               }, {
-                  "type" : "ToInteger",
-                  "operand" : {
-                     "strict" : false,
-                     "type" : "As",
-                     "operand" : {
-                        "name" : "question2Score",
-                        "type" : "ExpressionRef"
-                     },
-                     "asTypeSpecifier" : {
-                        "name" : "{urn:hl7-org:elm-types:r1}String",
-                        "type" : "NamedTypeSpecifier"
-                     }
-                  }
-               }, {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               } ]
-            }
-         }, {
-            "name" : "TestMiniCogScoreQuestion1",
+            "name" : "miniCogScoreQuestion1",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -649,18 +524,14 @@
                         }
                      } ],
                      "else" : {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "type" : "As",
-                        "operand" : {
-                           "name" : "score",
-                           "type" : "AliasRef"
-                        }
+                        "name" : "score",
+                        "type" : "AliasRef"
                      }
                   }
                }
             }
          }, {
-            "name" : "TestMiniCogScoreQuestion2",
+            "name" : "miniCogScoreQuestion2",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -691,27 +562,23 @@
                         }
                      } ],
                      "else" : {
-                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "type" : "As",
-                        "operand" : {
-                           "name" : "score",
-                           "type" : "AliasRef"
-                        }
+                        "name" : "score",
+                        "type" : "AliasRef"
                      }
                   }
                }
             }
          }, {
-            "name" : "TestScoreFullMiniCog",
+            "name" : "ScoreFullMiniCog",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
                "type" : "Add",
                "operand" : [ {
-                  "name" : "TestMiniCogScoreQuestion1",
+                  "name" : "miniCogScoreQuestion1",
                   "type" : "ExpressionRef"
                }, {
-                  "name" : "TestMiniCogScoreQuestion2",
+                  "name" : "miniCogScoreQuestion2",
                   "type" : "ExpressionRef"
                } ]
             }

@@ -18,4 +18,4 @@ data:
 results:
   MiniCogQuestionnaire: $should exist # make sure questionnaire is returned
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
-  TestScoreFullMiniCog: 4
+  ScoreFullMiniCog: 4
