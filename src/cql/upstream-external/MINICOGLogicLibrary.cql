@@ -71,9 +71,9 @@ define function getCurrentResponseByQuestionId(qid String):
   ) CR
   return
     case
-      when CR is null then null
+      when CR is null then 0
       when CR.answer is not null then CR.answer.value
-      else null
+      else 0
     end
 
 /* 
@@ -102,24 +102,8 @@ define DisplayScoreFullMiniCog:
    ) // at least one response for all the questions
     and DisplayScreeningScores // Input parameter which allows score display to be disabled
 
-// Calculate the score for the Full MiniCog
-// sum up numeric values for all the answers
-// question 1 score + question 2 score if available
-// otherwise question 1 score or question 2 score if either is available
-// lastly return 0 if none available
-define ScoreFullMiniCog:
-  Coalesce(
-    ToInteger(question1Score as String)+ToInteger(question2Score as String),
-    ToInteger(question1Score as String),
-    ToInteger(question2Score as String),
-    0)
-
-// -----------------------------------------------------------------------------
-// FOR TESTING
-// -----------------------------------------------------------------------------
-
 // Question 1 score
-define TestMiniCogScoreQuestion1:
+define miniCogScoreQuestion1:
   question1Score score
   return
     case
@@ -128,7 +112,7 @@ define TestMiniCogScoreQuestion1:
     end
 
 // Question 2 score
-define TestMiniCogScoreQuestion2:
+define miniCogScoreQuestion2:
   question2Score score
   return
     case
@@ -136,5 +120,10 @@ define TestMiniCogScoreQuestion2:
       else score
     end
 
-define TestScoreFullMiniCog:
-    TestMiniCogScoreQuestion1+TestMiniCogScoreQuestion2
+// Calculate the score for the Full MiniCog
+// sum up numeric values for all the answers
+// question 1 score + question 2 score if available
+// otherwise question 1 score or question 2 score if either is available
+// lastly return 0 if none available
+define ScoreFullMiniCog:
+    miniCogScoreQuestion1+miniCogScoreQuestion2
