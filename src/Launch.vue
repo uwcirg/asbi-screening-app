@@ -35,8 +35,9 @@ export default {
     fetch(`launch-context.json`)
     .then(result => result.json())
     .then(json => {
-      json.launch = patientId;
-      console.log('launch json ', json)
+      if (!json.launch) {
+        json.launch = patientId;
+      }
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
       });
