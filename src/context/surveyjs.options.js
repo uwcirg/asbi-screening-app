@@ -5,8 +5,7 @@ export default {
         completeText: 'Submit',
         clearInvisibleValues: 'onHidden',
         requiredText: '',
-        completedHtml: '<h3>The screening is complete.</h3><h3>You may now close the window.</h3>',
-        focusFirstQuestionAutomatic: true
+        completedHtml: '<h3>The screening is complete.</h3><h3>You may now close the window.</h3>'
     },
     "WHOAUDIT": {
         title: "Alcohol Screening",
