@@ -19,5 +19,3 @@ results:
   MiniCogQuestionnaire: $should exist # make sure questionnaire is returned
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
   TestScoreFullMiniCog: 1
-
-

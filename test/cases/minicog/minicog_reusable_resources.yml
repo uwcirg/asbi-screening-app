@@ -31,4 +31,3 @@ phq9_reusable_resources:
   linkId: *q2LinkId
   type: decimal
   text: Clock Draw
-
