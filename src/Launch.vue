@@ -32,18 +32,18 @@ export default {
   },
   mounted() {
     let self = this;
-    fetch(`${process.env.PUBLIC_URL}/launch-context.json`)
+    fetch("launch-context.json")
     .then(result => result.json())
     .then(json => {
       json.launch = patientId;
-      console.log("launch JSON ", json);
+      console.log('launch json ', json)
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
       });
     })
     .catch(e => {
       self.error = e;
-      console.log("launch error ", e);
+      console.log('launch error ', e);
     });
   }
 }

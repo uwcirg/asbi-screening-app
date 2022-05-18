@@ -5,12 +5,17 @@ export default {
         completeText: 'Submit',
         clearInvisibleValues: 'onHidden',
         requiredText: '',
-        completedHtml: '<h3>The screening is complete.</h3><h3>You may now close the window.</h3>'
+        completedHtml: '<h3>The screening is complete.</h3><h3>You may now close the window.</h3>',
+        focusFirstQuestionAutomatic: true
     },
     "WHOAUDIT": {
         title: "Alcohol Screening",
         logo: "favicon.png",
         logoWidth: 70,
         logoHeight: 60
+    },
+    "MINICOG": {
+        title: "Mini-Cog",
+        focusFirstQuestionAutomatic: true
     }
 };

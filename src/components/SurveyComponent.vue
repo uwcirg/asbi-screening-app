@@ -37,6 +37,7 @@ export default {
   data() {
     return {
       survey: null,
+      surveyOptions: {},
       patientId: 0,
       patient: null,
       questionnaire: {},
@@ -76,8 +77,10 @@ export default {
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
+          this.initializeSurveyObjEvents();
           this.getFhirResources();
           this.setQuestionnaireAuthor();
+          this.setFirstInputFocus();
           // Send the patient bundle to the CQL web worker
           sendPatientBundle(this.patientBundle);
           this.ready = true; // We don't show this component until `ready=true`
@@ -99,9 +102,19 @@ export default {
     isDevelopment() {
       return String(process.env.VUE_APP_SYSTEM_TYPE).toLowerCase() === "development";
     },
+    getTheme() {
+      return themes.survey;
+    },
     setDocumentTitle() {
       if (!this.questionnaire || !this.questionnaire.title) return;
       document.title = this.questionnaire.title;
+    },
+    setFirstInputFocus() {
+      console.log(this.surveyOptions)
+      if (!this.surveyOptions.focusFirstQuestionAutomatic) return;
+      setTimeout(() => {
+            document.querySelector("input[type=text]").focus();
+      }, 350);
     },
     initializeInstrument() {
       var self = this;
@@ -166,8 +179,8 @@ export default {
         ...surveyOptions["default"],
         ...surveyOptions[this.questionnaire.id] ? surveyOptions[this.questionnaire.id]: {}};
       Object.entries(options).forEach(option => model[option[0]] = option[1]);
+      this.surveyOptions = options;
       this.survey = model;
-      this.initializeSurveyObjEvents();
     },
     async setAuthClient() {
       let authClient;
@@ -255,8 +268,7 @@ export default {
       this.survey.onValueChanging.add(function(sender, options) {
         // We don't want to modify anything if the survey has been submitted/completed.
         if (sender.isCompleted == true) return;
-        console.log("options.value? ", options.value)
-        
+  
         if (options.value != null) {
           // Find the index of this item (may not exist)
           // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
@@ -279,7 +291,6 @@ export default {
             };
           }
         }
-        console.log("questionnaire? ", this.questionnaireResponse)
         // Need to reload the patient bundle since the responses have been updated
         cqlWorker.postMessage({patientBundle: this.patientBundle});
       }.bind(this));
@@ -298,7 +309,7 @@ export default {
           });
         }
         if (this.isDevelopment()) {
-          console.log("questionnaire responses ", JSON.stringify(this.questionnaireResponse, null, 2));
+          console.log('questionnaire responses ', JSON.stringify(this.questionnaireResponse, null, 2));
         }
       }.bind(this));
     },

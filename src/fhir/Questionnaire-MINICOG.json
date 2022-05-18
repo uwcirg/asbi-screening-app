@@ -29,14 +29,9 @@
     },
     {
       "linkId": "minicog-question1-instruction",
-      "extension": [
-        {
-          "url": "http://hl7.org/fhir/StructureDefinition/designNote",
-          "valueMarkdown": "display instruction text"
-        }
-      ],
       "type": "display",
       "text": "",
+      "readOnly": true,
       "_text": {
         "extension": [
           {
@@ -54,14 +49,9 @@
     },
     {
       "linkId": "minicog-question2-instruction",
-      "extension": [
-        {
-          "url": "http://hl7.org/fhir/StructureDefinition/designNote",
-          "valueMarkdown": "display instruction text"
-        }
-      ],
       "type": "display",
       "text": "",
+      "readOnly": true,
       "_text": {
         "extension": [
           {
@@ -78,7 +68,7 @@
           "valueExpression": {
             "language": "text/cql",
             "expression": "DisplayScoreFullMiniCog",
-            "reference": "#MiniCogLogicLibrary|1.0"
+            "reference": "#MINICOGLogicLibrary|1.0"
           }
         },
         {
@@ -86,31 +76,50 @@
           "valueExpression": {
             "language": "text/cql",
             "expression": "ScoreFullMiniCog",
-            "reference": "#MiniCogLogicLibrary|1.0"
+            "reference": "#MINICOGLogicLibrary|1.0"
           }
         }
       ],
       "linkId": "minicog-total-score",
-      "text": "Total Score",
+      "text": "Total Score (0 - 5 points)",
       "type": "decimal",
       "required": false,
       "readOnly": true
     },
     {
-      "linkId": "minicog-questionnaire-footnote",
-      "extension": [
-        {
-          "url": "http://hl7.org/fhir/StructureDefinition/designNote",
-          "valueMarkdown": "display text"
-        }
-      ],
+      "linkId": "minicog-total-score-explanation",
       "type": "display",
       "text": "",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullMiniCog",
+            "reference": "#MINICOGLogicLibrary|1.0"
+          }
+        }
+      ],
+      "readOnly": true,
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<div class=\"footnote\">A cut point of <3 on the Mini-Cog™ has been validated for dementia screening, but many individuals with clinically meaningful cognitive impairment will score higher. When greater sensitivity is desired, a cut point of <4 is recommended as it may indicate a need for further evaluation of cognitive status.</div>"
+            "valueString": "<div class=\"instruction\">Word Recall score + Clock Draw score</div>"
+          }
+        ]
+      }
+    },
+    {
+      "linkId": "minicog-questionnaire-footnote",
+      "type": "display",
+      "text": "",
+      "readOnly":true,
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
+            "valueString": "<div class=\"summary\">A cut point of <3 on the Mini-Cog™ has been validated for dementia screening, but many individuals with clinically meaningful cognitive impairment will score higher. When greater sensitivity is desired, a cut point of <4 is recommended as it may indicate a need for further evaluation of cognitive status.</div>"
           }
         ]
       }
