@@ -32,19 +32,7 @@ define MiniCogQuestionnaire:
   singleton from ([Questionnaire] Q
     where Q.url.value = CurrentQuestionnaireURL)
 
-// Extract of the link IDs of each item in the Questionnaire
-define ItemLinkIds:
-  MiniCogQuestionnaire Q
-  let item: Q.item
-  return item.linkId.value
-
-// Determine the index of each question based upon the extracted link ID
-define IndexOfQuestion:
-  {
-    one: IndexOf(ItemLinkIds, question1LinkId),
-    two: IndexOf(ItemLinkIds, question2LinkId)
-  }
-
+// Load Questionnaire responses
 define QuestionnaireResponses:
   ([QuestionnaireResponse] QR
     where QR.questionnaire.value = CurrentQuestionnaireURL
