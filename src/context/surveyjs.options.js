@@ -15,7 +15,6 @@ export default {
         logoHeight: 60
     },
     "MINICOG": {
-        title: "Mini-Cog",
         focusFirstQuestionAutomatic: true
     }
 };
