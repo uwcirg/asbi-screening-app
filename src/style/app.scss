@@ -1,3 +1,4 @@
+$info-color: #2196f3;
 body {
     padding: 0;
     margin: 0;
@@ -30,4 +31,27 @@ body {
 }
 .sv-string-viewer {
     line-height: 1.45;
+}
+.sv-body__footer {
+    margin-top: 1em;
+}
+.sv-footer__complete-btn {
+    float: left;
+    margin-left: 8px;
+    padding: 8px 24px;
+    font-size: 0.95em;
+}
+.info {
+    position: relative;
+    padding: 8px 32px;
+    background: $info-color;
+    color: #FFF;
+    border-radius: 4px;
+    &:after {
+        content: '\24D8';
+        display: block;
+        position: absolute;
+        top: 8px;
+        left: 8px;
+    }
 }

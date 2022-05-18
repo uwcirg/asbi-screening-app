@@ -7,7 +7,7 @@ $border-color: #eaedec;
     padding-bottom: 1em;
 }
 .instruction {
-    font-size: 0.95em;
+    font-size: 0.925em;
     color: $secondary-color;
 }
 input[type=text] {
@@ -25,11 +25,12 @@ input[type=text] {
         font-weight: 600;
     }
 }
-.summary {
-    margin-top: 16px;
-    border: 2px solid $border-color;
-    padding: 8px;
-}
 .sv-container-modern__close {
     margin-top: 32px;
+}
+.sv-body__footer {
+    margin-top: 0;
+}
+.sv-footer {
+    padding: 1.5em 0 1.5em 0;
 }

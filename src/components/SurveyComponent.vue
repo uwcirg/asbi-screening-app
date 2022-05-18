@@ -1,9 +1,11 @@
 <template>
-  <div id="surveyElement" class="ma-4">
+  <div id="surveyElement">
     <survey v-if="ready" :survey="survey" :css="themes"></survey>
     <div v-if="ready" id="surveyResult"></div>
-    <v-progress-circular :value="100" v-if="!error && !ready" indeterminate
-      color="primary"></v-progress-circular>
+    <div v-if="!error && !ready" class="ma-4">
+      <v-progress-circular :value="100" indeterminate
+        color="primary"></v-progress-circular>
+    </div>
     <v-alert color="error" v-if="error" dark>
       Error loading the application. See console for detail.
       <div v-html="error"></div>
@@ -110,10 +112,9 @@ export default {
       document.title = this.questionnaire.title;
     },
     setFirstInputFocus() {
-      console.log(this.surveyOptions)
       if (!this.surveyOptions.focusFirstQuestionAutomatic) return;
       setTimeout(() => {
-            document.querySelector("input[type=text]").focus();
+        document.querySelector("input[type=text]").focus();
       }, 350);
     },
     initializeInstrument() {

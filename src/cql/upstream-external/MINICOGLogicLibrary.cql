@@ -104,6 +104,9 @@ define DisplayScoreFullMiniCog:
 
 // Calculate the score for the Full MiniCog
 // sum up numeric values for all the answers
+// question 1 score + question 2 score if available
+// otherwise question 1 score or question 2 score if either is available
+// lastly return 0 if none available
 define ScoreFullMiniCog:
   Coalesce(
     ToInteger(question1Score as String)+ToInteger(question2Score as String),
@@ -112,7 +115,7 @@ define ScoreFullMiniCog:
     0)
 
 // -----------------------------------------------------------------------------
-// TESTING STATEMENTS
+// FOR TESTING
 // -----------------------------------------------------------------------------
 
 // Question 1 score
