@@ -2,7 +2,7 @@
   <div id="surveyElement">
     <survey v-if="ready" :survey="survey" :css="themes"></survey>
     <div v-if="ready" id="surveyResult"></div>
-    <div v-if="!error && !ready" class="ma-4">
+    <div v-if="!error && !ready" class="ma-4 pa-4">
       <v-progress-circular :value="100" indeterminate
         color="primary"></v-progress-circular>
     </div>
