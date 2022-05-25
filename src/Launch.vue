@@ -33,7 +33,12 @@ export default {
   mounted() {
     let self = this;
     fetch(`launch-context.json`)
-    .then(result => result.json())
+    .then(result => {
+      if (!result.ok) {
+        throw Error(result.statusText);
+      }
+      return result.json();
+    })
     .then(json => {
       if (!json.launch) {
         json.launch = patientId;

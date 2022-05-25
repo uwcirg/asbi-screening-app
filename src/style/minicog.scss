@@ -1,7 +1,7 @@
 $border-color: #aca8a8;
 $question-bg-color: #b4e8d733;
 $secondary-color: #585757;
-$border-color: #eaedec;
+$input-border-color: #b5b8b7;
 
 .sv-row:not(:last-child) {
     padding-bottom: 1em;
@@ -12,7 +12,7 @@ $border-color: #eaedec;
 }
 input[type=text] {
     width: 120px;
-    border-bottom-color: $border-color;
+    border-bottom-color: $input-border-color;
 }
 .sv-container-modern__title {
     padding-bottom: 0;
