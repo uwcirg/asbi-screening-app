@@ -70,7 +70,7 @@ To get you UMLS API Key:
    4. Your new API key should now be listed.
 
 ### Configuration
-Parameters for the app are stored in [environmental variables](http://man7.org/linux/man-pages/man7/environ.7.html) that are stored in an `.env` file (`cp default.env .env`). The [dotenv package](https://www.npmjs.com/package/dotenv) is used to store the default variable values, which can be overwritten by defining a more specific env (e.g., `.env.local`) file or by setting the variables in the deployment system. For more information, see the [Vue documentation](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables).
+Parameters for the app are stored in [environment variables](http://man7.org/linux/man-pages/man7/environ.7.html) typically stored in an `.env` file (`cp default.env .env`). The [dotenv package](https://www.npmjs.com/package/dotenv) is used to store the default variable values, which can be overwritten by defining a more specific env (e.g., `.env.local`) file or by setting the variables in the deployment system. For more information, see the [Vue documentation](https://cli.vuejs.org/guide/mode-and-env.html#environment-variables).
 
 #### Parameters
 
