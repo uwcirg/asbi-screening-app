@@ -16,6 +16,7 @@ import FHIR from 'fhirclient';
 
 const urlParams = new URLSearchParams(window.location.search);
 let patientId = urlParams.get('patient');
+console.log("patient id from url param ", patientId)
 if (patientId == null) patientId = '123';
 FHIR.oauth2.authorize({
     clientId: "dummy-client-id",
