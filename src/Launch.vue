@@ -21,7 +21,7 @@
 import FHIR from 'fhirclient';
 const urlParams = new URLSearchParams(window.location.search);
 let patientId = urlParams.get('patient');
-if (patientId == null) patientId = '123';
+//if (patientId == null) patientId = '123';
 console.log("patient id from url ", patientId);
 export default {
   name: 'Launch',
