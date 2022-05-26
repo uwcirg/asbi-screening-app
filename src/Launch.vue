@@ -40,10 +40,10 @@ export default {
       return result.json();
     })
     .then(json => {
-      if (!json.launch) {
+      if (!json.launch || json.launch === "test") {
         json.launch = patientId;
       }
-      console.log("launch json ", json.launch)
+      console.log("launch json ", json)
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
       });
