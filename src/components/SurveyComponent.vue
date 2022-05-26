@@ -180,6 +180,7 @@ export default {
     },
     async setPatient() {
        // Get the Patient resource
+      console.log("client patient ", client.patient)
       return await client.patient.read().then((pt) => {
         return pt;
       });
