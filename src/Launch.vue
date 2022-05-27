@@ -23,6 +23,7 @@ const urlParams = new URLSearchParams(window.location.search);
 let patientId = urlParams.get('patient');
 //if (patientId == null) patientId = '123';
 console.log("patient id from url ", patientId);
+
 export default {
   name: 'Launch',
   data() {
@@ -32,10 +33,13 @@ export default {
   },
   mounted() {
     let self = this;
-    fetch(`launch-context.json`)
+    fetch('launch-context.json', {
+      // include cookies in request
+      credentials: 'include'
+    })
     .then(result => {
       if (!result.ok) {
-        throw Error(result.statusText);
+        throw Error(result.status);
       }
       return result.json();
     })
@@ -44,7 +48,7 @@ export default {
       if (patientId) {
         json.patientId = patientId;
       }
-      console.log("launch json ", json)
+      console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
       });
