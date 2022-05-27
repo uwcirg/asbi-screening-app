@@ -35,15 +35,15 @@ define MiniCogQuestionnaire:
 // Load Questionnaire responses
 define QuestionnaireResponses:
   ([QuestionnaireResponse] QR
-    where QR.questionnaire.value = CurrentQuestionnaireURL
+    where (QR.questionnaire.value = CurrentQuestionnaireURL or
+    QR.identifier.value ~ MiniCogQuestionnaire.name)
     sort by authored desc
   )
 
 // Load the QuestionnaireResponse currently being filled out
 define CurrentQuestionnaireResponse:
   singleton from (QuestionnaireResponses QR
-    where QR.questionnaire.value = CurrentQuestionnaireURL
-      and date from QR.authored.value >= Today()
+    where date from QR.authored.value >= Today()
       and QR.status.value = 'in-progress'
   )
 

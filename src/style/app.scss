@@ -35,11 +35,15 @@ body {
 .sv-body__footer {
     margin-top: 1em;
 }
+.sv-footer__next-btn,
+.sv-footer__prev-btn,
+.sv-footer__complete-btn {
+    padding: 8px 24px;
+    font-size: 0.95em;
+}
 .sv-footer__complete-btn {
     float: left;
     margin-left: 8px;
-    padding: 8px 24px;
-    font-size: 0.95em;
 }
 .info {
     position: relative;

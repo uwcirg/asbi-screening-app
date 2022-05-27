@@ -1,6 +1,5 @@
 {
   "resourceType": "Questionnaire",
-  "id": "MINICOG",
   "meta": {
     "profile": [
       "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-render"

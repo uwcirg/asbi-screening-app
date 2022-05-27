@@ -133,7 +133,11 @@ export default {
         setupExecution(elmJson, valueSetJson, cqlParameters);
 
         // Define the QuestionnaireResponse which will contain the user responses.
-        this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
+       // this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
+       this.questionnaireResponse.identifier = {
+         system: "http://hl7.org/fhir/uv/sdc/NamingSystem/questionnaire-ids",
+         value: this.questionnaire.name
+       };
 
         // set document title to questionnaire title
         this.setDocumentTitle();
