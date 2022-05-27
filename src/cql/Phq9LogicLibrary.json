@@ -5,7 +5,7 @@
          "type" : "CqlToElmInfo"
       } ],
       "identifier" : {
-         "id" : "PHQ9LogicLibrary",
+         "id" : "Phq9LogicLibrary",
          "version" : "1.0.0"
       },
       "schemaIdentifier" : {
