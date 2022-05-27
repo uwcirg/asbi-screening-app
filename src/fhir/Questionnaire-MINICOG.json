@@ -7,6 +7,10 @@
   },
   "url": "http://www.cdc.gov/ncbddd/fasd/minicog",
   "name": "MINICOG",
+  "identifier": {
+    "system": "http://hl7.org/fhir/uv/sdc/NamingSystem/questionnaire-ids",
+    "value": "MINICOG"
+  },
   "status": "draft",
   "title": "Mini Cognitive Assessment",
   "subjectType": [
