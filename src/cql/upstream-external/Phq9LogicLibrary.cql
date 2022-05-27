@@ -1,4 +1,4 @@
-library PHQ9LogicLibrary version '1.0.0'
+library Phq9LogicLibrary version '1.0.0'
 /* Change Log
 */
 
