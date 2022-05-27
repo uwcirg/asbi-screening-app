@@ -21,6 +21,7 @@
 import FHIR from 'fhirclient';
 const urlParams = new URLSearchParams(window.location.search);
 let patientId = urlParams.get('patient');
+let iss = urlParams.get('iss');
 //if (patientId == null) patientId = '123';
 console.log("patient id from url ", patientId);
 export default {
@@ -39,10 +40,16 @@ export default {
       }
       return result.json();
     })
+    .catch(e => self.error=e)
     .then(json => {
       if (!json.launch || json.launch === "test") {
         json.launch = patientId;
       }
+      if (iss) {
+        json.iss = iss;
+        json.fhirServiceUrl = iss;
+      }
+      json.completeInTarget = true;
       console.log("launch json ", json)
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
