@@ -1,4 +1,4 @@
 {
     "clientId": "screener_openid_client",
-    "scope": "patient/Patient.read patient/Condition.read patient/Observation.read patient/Procedure.read patient/QuestionnaireResponse.read online_access openid fhirUser patient/QuestionnaireResponse.write"
+    "scope": "patient/*.read launch/patient online_access openid profile patient/QuestionnaireResponse.write"
 }
