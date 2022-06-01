@@ -1,4 +1,4 @@
 {
     "clientId": "screener_openid_client",
-    "scope": "openid patient/*.read profile email patient/QuestionnaireResponse.write"
+    "scope": "profile roles email"
 }
