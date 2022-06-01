@@ -1,4 +1,3 @@
 {
-    "clientId": "screener_openid_client",
-    "scope": "patient/*.rs launch online_access openid fhirUser patient/QuestionnaireResponse.cud"
+    "clientId": "screener_openid_client"
 }
