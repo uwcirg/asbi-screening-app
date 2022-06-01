@@ -1,4 +1,4 @@
-phq9_reusable_resources:
+minicog_reusable_resources:
 # patient resource
 - &patientResource
   resourceType: Patient
