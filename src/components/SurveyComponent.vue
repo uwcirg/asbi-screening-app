@@ -1,6 +1,6 @@
 <template>
   <div id="surveyElement">
-    <survey v-if="ready" :survey="survey" :css="themes"></survey>
+  <survey v-if="ready" :survey="survey" :css="themes"></survey>
     <div v-if="ready" id="surveyResult"></div>
     <div v-if="!error && !ready" class="ma-4 pa-4">
       <v-progress-circular :value="100" indeterminate
@@ -152,6 +152,10 @@ export default {
         console.log(e);
       });
     },
+    getSurveyValidator() {
+      if (!this.surveyOptions || !this.surveyOptions.surveyValidateQuestion) return function() {};
+      return this.surveyOptions.surveyValidateQuestion;
+    },
     initializeSurveyObj() {
       const vueConverter = converter(FunctionFactory, Model, Serializer, StylesManager);
       const parentThis = this;
@@ -270,6 +274,12 @@ export default {
       }
     },
     initializeSurveyObjEvents() {
+
+     this.survey.onServerValidateQuestions.add(this.getSurveyValidator());
+      // this.survey.onServerValidateQuestions.add(function() {
+      //   console.log("get here!!!!")
+      // });
+
       // Add an event listener which updates questionnaireResponse based upon user responses
       this.survey.onValueChanging.add(function(sender, options) {
         // We don't want to modify anything if the survey has been submitted/completed.
