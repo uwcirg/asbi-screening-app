@@ -19,14 +19,11 @@
 
 <script>
 import FHIR from 'fhirclient';
-import {queryPatientIdKey, queryIssKey} from './util/util.js';
+import {queryPatientIdKey} from './util/util.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 let patientId = urlParams.get('patient');
-let iss = urlParams.get('iss');
-console.log("iss ", iss)
-//if (patientId == null) patientId = '123';
-console.log("patient id from url ", patientId);
+console.log("patient id from url query string: ", patientId);
 
 export default {
   name: 'Launch',
@@ -39,8 +36,7 @@ export default {
     let self = this;
     
     sessionStorage.removeItem(queryPatientIdKey); //remove any stored patient id before launching the app
-    sessionStorage.removeItem(queryIssKey);
-    
+
     fetch('launch-context.json', {
       // include cookies in request
       credentials: 'include'
@@ -57,9 +53,6 @@ export default {
         //only do this IF patient id comes from url queryString
         json.patientId = patientId;
         sessionStorage.setItem(queryPatientIdKey, patientId);
-      }
-      if (iss) {
-        sessionStorage.setItem(queryIssKey, iss);
       }
       console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
