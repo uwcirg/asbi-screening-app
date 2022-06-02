@@ -199,7 +199,7 @@ export default {
        
         return new Promise((resolve) => {
              setTimeout(() => {
-              resolve({id:queryPatientId, "resourceType": "Patient" });
+              resolve({id:queryPatientId});
              }, 250);
         });
       }
