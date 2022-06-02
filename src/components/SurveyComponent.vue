@@ -69,17 +69,16 @@ export default {
         if (this.error) return;
         this.patient = patient;
         this.patientId = patient.id;
-        console.log("patient id? ", this.patientId);
-        console.log("patient ", patient)
       //  this.patientBundle.entry.unshift({resource: patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
           this.getFhirResources().then(() => {
             // Send the patient bundle to the CQL web worker
-            sendPatientBundle(this.patientBundle);
+            sendPatientBundle(this.patientBundle); //with FHIR resources
           }).catch(e => {
             console.log("FHIR resources retrieval error ", e);
+            sendPatientBundle(this.patientBundle); //without FHIR resources
           });
           this.setQuestionnaireAuthor();
           
