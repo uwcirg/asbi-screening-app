@@ -259,7 +259,8 @@ export default {
       // Record who is entering and submitting the responses
       // How do we know the author here?
       let questionnaireAuthor = process.env.VUE_APP_QUESTIONNAIRE_AUTHOR && process.env.VUE_APP_QUESTIONNAIRE_AUTHOR.toLowerCase();
-      if (questionnaireAuthor == 'practitioner') {
+     console.log('client user ?', client.user);
+     if (questionnaireAuthor == 'practitioner') {
         // Only add the `author` element if we can get the user id from the client
         if (client.user && client.user.fhirUser) {
           this.questionnaireResponse.author = {
