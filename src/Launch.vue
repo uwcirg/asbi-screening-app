@@ -57,8 +57,6 @@ export default {
       }
       //allow launch context scope be updated via environment variable
       if (process.env.VUE_APP_LAUNCH_CONTEXT_SCOPES) json.scope = process.env.VUE_APP_LAUNCH_CONTEXT_SCOPES;
-      //TEST
-      json.profile = '/Practitioner/123';
       console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
