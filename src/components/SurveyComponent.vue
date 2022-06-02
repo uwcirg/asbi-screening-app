@@ -17,7 +17,7 @@ import { getScreeningInstrument } from '../util/screening-selector.js';
 import Worker from "../../node_modules/cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from 'cql-worker';
 import FHIR from 'fhirclient';
-import {getCurrentISODate, getObservationCategories, getResponseValue} from '../util/util.js';
+import {getCurrentISODate, getObservationCategories, getResponseValue, queryPatientIdKey, queryIssKey} from '../util/util.js';
 import surveyOptions from '../context/surveyjs.options.js';
 import themes from '../context/themes.js';
 import 'survey-vue/modern.css';
@@ -61,6 +61,7 @@ export default {
       client = result;
       if (this.error) return; // auth error, cannot continue
       this.setPatient().then((patient) => {
+        console.log("patient result ", typeof patient)
         if (!patient) {
           this.error = "No valid patient set";
           return;
@@ -68,6 +69,8 @@ export default {
         if (this.error) return;
         this.patient = patient;
         this.patientId = patient.id;
+        console.log("patient id? ", this.patientId);
+        console.log("patient ", patient)
         this.patientBundle.entry.unshift({resource: patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
@@ -181,11 +184,31 @@ export default {
     async setPatient() {
        // Get the Patient resource
       console.log("client patient ", client.patient)
+      let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
+      let queryIss = sessionStorage.getItem(queryIssKey) || "";
+      // queryPatientId = '5ee05359-57bf-4cee-8e89-91382c07e162';
+      // queryIss = 'http://launch.smarthealthit.org/v/r4/fhir';
+      if (queryPatientId && queryIss) {
+        console.log("Use stored patient id ", queryPatientId)
+        return fetch(queryIss+'/Patient/'+queryPatientId).then(result => {
+          if (!result.ok) {
+            throw Error(result.status);
+          }
+          return result.json();
+        })
+       
+        // return new Promise((resolve) => {
+        //     setTimeout(() => {
+        //       resolve({id:queryPatientId});
+        //     }, 250);
+        // });
+      }
       return await client.patient.read().then((pt) => {
         return pt;
       });
     },
     async getFhirResources() {
+      const queryIss = sessionStorage.getItem(queryIssKey) || '';
        // Get any Observation resources
       let observationQueryString = `/Observation?patient=${this.patientId}`;
       // Optionally request Observations using categories
@@ -197,10 +220,10 @@ export default {
         });
       }
       const requests = [
-        client.request('/Condition?patient=' +  this.patientId),
-        client.request(observationQueryString),
-        client.request('/Procedure?patient=' +  this.patientId),
-        client.request('/QuestionnaireResponse?patient=' +  this.patientId)
+        client.request(queryIss+'/Condition?patient=' +  this.patientId),
+        client.request(queryIss+observationQueryString),
+        client.request(queryIss+'/Procedure?patient=' +  this.patientId),
+        client.request(queryIss+'/QuestionnaireResponse?patient=' +  this.patientId)
       ];
       //get all resources
       return Promise.all(requests).then(results => {

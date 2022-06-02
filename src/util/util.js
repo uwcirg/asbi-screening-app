@@ -72,3 +72,6 @@ export function getResponseValue(questionnaire, linkId, response) {
   return responseValue;
 
 }
+export const queryPatientIdKey = 'launch_queryPatientId';
+export const queryIssKey = 'launch_iss';
+
