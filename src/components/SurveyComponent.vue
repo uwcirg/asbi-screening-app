@@ -208,7 +208,8 @@ export default {
       });
     },
     async getFhirResources() {
-      const queryIss = sessionStorage.getItem(queryIssKey) || '';
+     // const queryIss = sessionStorage.getItem(queryIssKey) || '';
+     const queryIss = '';
        // Get any Observation resources
       let observationQueryString = `/Observation?patient=${this.patientId}`;
       // Optionally request Observations using categories
