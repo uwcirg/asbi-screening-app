@@ -71,7 +71,7 @@ export default {
         this.patientId = patient.id;
         console.log("patient id? ", this.patientId);
         console.log("patient ", patient)
-        this.patientBundle.entry.unshift({resource: patient});
+      //  this.patientBundle.entry.unshift({resource: patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
@@ -185,23 +185,23 @@ export default {
        // Get the Patient resource
       console.log("client patient ", client.patient)
       let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
-      let queryIss = sessionStorage.getItem(queryIssKey) || "";
+    //  let queryIss = sessionStorage.getItem(queryIssKey) || "";
       // queryPatientId = '5ee05359-57bf-4cee-8e89-91382c07e162';
       // queryIss = 'http://launch.smarthealthit.org/v/r4/fhir';
-      if (queryPatientId && queryIss) {
+      if (queryPatientId) {
         console.log("Use stored patient id ", queryPatientId)
-        return fetch(queryIss+'/Patient/'+queryPatientId).then(result => {
-          if (!result.ok) {
-            throw Error(result.status);
-          }
-          return result.json();
-        })
+       // return fetch(queryIss+'/Patient/'+queryPatientId).then(result => {
+       //   if (!result.ok) {
+       //     throw Error(result.status);
+       //   }
+       //   return result.json();
+       // })
        
-        // return new Promise((resolve) => {
-        //     setTimeout(() => {
-        //       resolve({id:queryPatientId});
-        //     }, 250);
-        // });
+        return new Promise((resolve) => {
+             setTimeout(() => {
+              resolve({id:queryPatientId, "resourceType": "Patient" });
+             }, 250);
+        });
       }
       return await client.patient.read().then((pt) => {
         return pt;
@@ -220,6 +220,7 @@ export default {
         });
       }
       const requests = [
+        client.request(queryIss+'/Patient/'+this.patientId),
         client.request(queryIss+'/Condition?patient=' +  this.patientId),
         client.request(queryIss+observationQueryString),
         client.request(queryIss+'/Procedure?patient=' +  this.patientId),
