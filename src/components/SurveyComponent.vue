@@ -69,7 +69,6 @@ export default {
         if (this.error) return;
         this.patient = patient;
         this.patientId = patient.id;
-      //  this.patientBundle.entry.unshift({resource: patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
@@ -186,10 +185,7 @@ export default {
     },
     async setPatient() {
        // Get the Patient resource
-      console.log("client patient ", client.patient)
       let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
-      // queryPatientId = '5ee05359-57bf-4cee-8e89-91382c07e162';
-      // queryIss = 'http://launch.smarthealthit.org/v/r4/fhir';
       if (queryPatientId) {
         console.log("Using stored patient id ", queryPatientId);
         return new Promise((resolve) => {
