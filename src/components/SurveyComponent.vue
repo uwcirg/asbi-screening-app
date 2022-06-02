@@ -189,7 +189,7 @@ export default {
        // Get the Patient resource
       console.log("client patient ", client.patient)
       let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
-       queryPatientId = '5ee05359-57bf-4cee-8e89-91382c07e162';
+      // queryPatientId = '5ee05359-57bf-4cee-8e89-91382c07e162';
       // queryIss = 'http://launch.smarthealthit.org/v/r4/fhir';
       if (queryPatientId) {
         console.log("Using stored patient id ", queryPatientId);
