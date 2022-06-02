@@ -186,7 +186,7 @@ export default {
        // Get the Patient resource
       let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
       if (queryPatientId) {
-        console.log("Using stored patient id ", queryPatientId);
+        console.log("Patient id unavailable from client object. Using stored patient id ", queryPatientId);
         return new Promise((resolve) => {
              setTimeout(() => {
               resolve({id:queryPatientId});
@@ -247,8 +247,7 @@ export default {
       // Record who is entering and submitting the responses
       // How do we know the author here?
       let questionnaireAuthor = process.env.VUE_APP_QUESTIONNAIRE_AUTHOR && process.env.VUE_APP_QUESTIONNAIRE_AUTHOR.toLowerCase();
-     console.log('client user ?', client.user);
-     if (questionnaireAuthor == 'practitioner') {
+      if (questionnaireAuthor == 'practitioner') {
         // Only add the `author` element if we can get the user id from the client
         if (client.user && client.user.fhirUser) {
           this.questionnaireResponse.author = {
