@@ -81,7 +81,7 @@ Parameters for the app are stored in [environmental variables](http://man7.org/l
 | `VUE_APP_QUESTIONNAIRE_AUTHOR` | Used for indicating who is actually filling out and submitting the `QuestionnaireResponse` resource. This is used to determine how to fill out the `QuestionnaireResponse.author` element. | `['practitioner', 'patient']` |
 | `VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES` | Some FHIR<sup>&reg;</sup> APIs require `Observation` resource queries to specify an [observation category](https://www.hl7.org/fhir/codesystem-observation-category.html). Setting this parameter to `true` causes the query of a patient's `Observation` resources to be made specified using categories. | `['true', 'false']` |
 | `VUE_APP_ALCOHOL_SCREENING_INSTRUMENT` | For selecting which alcohol screening instrument is presented to the user. | `['usaudit', 'whoaudit', 'nidaqs2usaudit', 'phq9']` |
-
+| `VUE_APP_AUTH_SCOPES` | For allowing the app to specify the delegation of a specific set of access rights via launch context. see [App Launch: Scopes and Launch Context](https://build.fhir.org/ig/HL7/smart-app-launch/scopes-and-launch-context.html) | `profile roles email patient/*.read openid fhirUser patient/QuestionnaireResponse.write` |
 ### Using with ASBI Testing Server
 This option requires installing the [ASBI Testing Server](https://github.com/asbi-cds-tools/asbi-testing-server):
 1. `yarn start` in the root of the ASBI Testing Server (after installing its dependencies)
