@@ -23,7 +23,6 @@ import {queryPatientIdKey} from './util/util.js';
 
 const urlParams = new URLSearchParams(window.location.search);
 const patientId = urlParams.get('patient');
-//const provider = urlParams.get('provider');
 console.log("patient id from url query string: ", patientId);
 
 export default {
@@ -55,8 +54,10 @@ export default {
         json.patientId = patientId;
         sessionStorage.setItem(queryPatientIdKey, patientId);
       }
-      //allow launch context scope be updated via environment variable
-      if (process.env.VUE_APP_LAUNCH_CONTEXT_SCOPES) json.scope = process.env.VUE_APP_LAUNCH_CONTEXT_SCOPES;
+      //allow auth scopes to be updated via environment variable
+      //see https://build.fhir.org/ig/HL7/smart-app-launch/scopes-and-launch-context.html
+      if (process.env.VUE_APP_AUTH_SCOPES) json.scope = process.env.VUE_APP_AUTH_SCOPES;
+
       console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
