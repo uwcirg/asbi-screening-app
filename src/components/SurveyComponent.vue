@@ -17,7 +17,7 @@ import { getScreeningInstrument } from '../util/screening-selector.js';
 import Worker from "../../node_modules/cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from 'cql-worker';
 import FHIR from 'fhirclient';
-import {getCurrentISODate, getObservationCategories, getResponseValue, queryPatientIdKey, queryIssKey} from '../util/util.js';
+import {getCurrentISODate, getObservationCategories, getResponseValue, queryPatientIdKey} from '../util/util.js';
 import surveyOptions from '../context/surveyjs.options.js';
 import themes from '../context/themes.js';
 import 'survey-vue/modern.css';
