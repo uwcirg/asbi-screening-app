@@ -182,7 +182,7 @@ export default {
       //SurveyJS settings
       var options = {
         ...surveyOptions["default"],
-        ...surveyOptions[this.questionnaire.id] ? surveyOptions[this.questionnaire.id]: {}};
+        ...surveyOptions[this.questionnaire.name] ? surveyOptions[this.questionnaire.name]: {}};
       Object.entries(options).forEach(option => model[option[0]] = option[1]);
       if (this.questionnaire.title) model["title"] = this.questionnaire.title;
       this.surveyOptions = options;
