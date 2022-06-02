@@ -61,7 +61,6 @@ export default {
       client = result;
       if (this.error) return; // auth error, cannot continue
       this.setPatient().then((patient) => {
-        console.log("patient result ", typeof patient)
         if (!patient) {
           this.error = "No valid patient set";
           return;
