@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :title="questionnaire.title" :patient="patient"></Header>
+    <Header :title="questionnaire.title" :patient="patient" v-if="ready"></Header>
     <div id="surveyElement">
       <survey v-if="ready" :survey="survey" :css="themes"></survey>
       <div v-if="!error && !ready" class="ma-4 pa-4">
