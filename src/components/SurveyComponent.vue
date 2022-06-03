@@ -152,9 +152,9 @@ export default {
         console.log(e);
       });
     },
-    getSurveyValidator() {
-      if (!this.surveyOptions || !this.surveyOptions.surveyValidateQuestion) return function() {};
-      return this.surveyOptions.surveyValidateQuestion;
+    getSurveyServerValidator() {
+      if (!this.surveyOptions || !this.surveyOptions.serverValidateQuestion) return function() {};
+      return this.surveyOptions.serverValidateQuestion;
     },
     initializeSurveyObj() {
       const vueConverter = converter(FunctionFactory, Model, Serializer, StylesManager);
@@ -275,11 +275,7 @@ export default {
     },
     initializeSurveyObjEvents() {
 
-     this.survey.onServerValidateQuestions.add(this.getSurveyValidator());
-      // this.survey.onServerValidateQuestions.add(function() {
-      //   console.log("get here!!!!")
-      // });
-
+     this.survey.onServerValidateQuestions.add(this.getSurveyServerValidator());
       // Add an event listener which updates questionnaireResponse based upon user responses
       this.survey.onValueChanging.add(function(sender, options) {
         // We don't want to modify anything if the survey has been submitted/completed.

@@ -15,7 +15,8 @@ export default {
     },
     "MINICOG": {
         focusFirstQuestionAutomatic: true,
-        surveyValidateQuestion: function(survey, options) {
+        //validation when survey is submitted
+        serverValidateQuestion: function(survey, options) {
             const QUESTION1_ID = 'minicog-question1';
             const QUESTION2_ID = 'minicog-question2';
             const wordRecallVal = parseInt(options.data[QUESTION1_ID]);
