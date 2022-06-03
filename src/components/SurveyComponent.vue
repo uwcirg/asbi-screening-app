@@ -61,13 +61,14 @@ export default {
       client = result;
       if (this.error) return; // auth error, cannot continue
       this.setPatient().then((patient) => {
-        if (!patient) {
+        if (this.error) return;
+        if (!patient || !patient.id) {
           this.error = "No valid patient set";
           return;
         }
-        if (this.error) return;
         this.patient = patient;
         this.patientId = patient.id;
+        this.patientBundle.entry.unshift({resource: this.patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
@@ -187,11 +188,7 @@ export default {
       let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
       if (queryPatientId) {
         console.log("Patient id unavailable from client object. Using stored patient id ", queryPatientId);
-        return new Promise((resolve) => {
-             setTimeout(() => {
-              resolve({id:queryPatientId});
-             }, 250);
-        });
+        return client.request('/Patient/'+queryPatientId);
       }
       return await client.patient.read().then((pt) => {
         return pt;
@@ -209,7 +206,6 @@ export default {
         });
       }
       const requests = [
-        client.request('/Patient/'+this.patientId),
         client.request('/Condition?patient=' +  this.patientId),
         client.request(observationQueryString),
         client.request('/Procedure?patient=' +  this.patientId),
