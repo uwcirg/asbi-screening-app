@@ -72,3 +72,23 @@ export function getResponseValue(questionnaire, linkId, response) {
   return responseValue;
 
 }
+
+export function getFHIRResourcePaths(patientId) {
+  if (!patientId) return [];
+  let resources = process.env.VUE_APP_FHIR_RESOURCES ? process.env.VUE_APP_FHIR_RESOURCES.split(',') : [];
+  resources = resources.map(resource => {
+    let path = `/${resource}?patient=${patientId}`;
+    if (resource.toLowerCase() === "observation" &&
+      process.env.VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES &&
+      process.env.VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES.toLowerCase() === 'true'){
+      path  = path + '&' + encodeURIComponent((getObservationCategories().map(cat => 'category=' + cat)).join('&'));
+    }
+    return path;
+  });
+  console.log("resources? ", resources)
+  return [
+    '/Patient/' + patientId,
+    '/QuestionnaireResponse?patient=' +  patientId,
+    ...resources
+  ];
+}

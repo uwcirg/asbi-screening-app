@@ -1,15 +1,17 @@
 <template>
-  <div id="surveyElement">
-  <survey v-if="ready" :survey="survey" :css="themes"></survey>
-    <div v-if="ready" id="surveyResult"></div>
-    <div v-if="!error && !ready" class="ma-4 pa-4">
-      <v-progress-circular :value="100" indeterminate
-        color="primary"></v-progress-circular>
+  <div>
+    <Header :title="questionnaire.title" :patient="patient" dense></Header>
+    <div id="surveyElement">
+      <survey v-if="ready" :survey="survey" :css="themes"></survey>
+      <div v-if="!error && !ready" class="ma-4 pa-4">
+        <v-progress-circular :value="100" indeterminate
+          color="primary"></v-progress-circular>
+      </div>
+      <v-alert color="error" v-if="error" dark>
+        Error loading the application. See console for detail.
+        <div v-html="error"></div>
+      </v-alert>
     </div>
-    <v-alert color="error" v-if="error" dark>
-      Error loading the application. See console for detail.
-      <div v-html="error"></div>
-    </v-alert>
   </div>
 </template>
 
@@ -20,7 +22,8 @@ import { getScreeningInstrument } from '../util/screening-selector.js';
 import Worker from "../../node_modules/cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from 'cql-worker';
 import FHIR from 'fhirclient';
-import {getCurrentISODate, getObservationCategories, getResponseValue} from '../util/util.js';
+import Header from './Header';
+import {getCurrentISODate, getFHIRResourcePaths, getResponseValue} from '../util/util.js';
 import surveyOptions from '../context/surveyjs.options.js';
 import themes from '../context/themes.js';
 import 'survey-vue/modern.css';
@@ -36,6 +39,9 @@ let [setupExecution, sendPatientBundle, evaluateExpression] = initialzieCqlWorke
 
 // Define the survey component for Vue
 export default {
+  components: {
+    Header
+  },
   data() {
     return {
       survey: null,
@@ -68,23 +74,28 @@ export default {
       client = result;
       if (this.error) return; // auth error, cannot continue
       this.setPatient().then((patient) => {
-        if (!patient) {
+        if (!patient || !patient.id) {
           this.error = "No valid patient set";
           return;
         }
         if (this.error) return;
         this.patient = patient;
         this.patientId = patient.id;
-        this.patientBundle.entry.unshift({resource: patient});
+        //this.patientBundle.entry.unshift({resource: patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
           this.initializeSurveyObjEvents();
-          this.getFhirResources();
           this.setQuestionnaireAuthor();
           this.setFirstInputFocus();
-          // Send the patient bundle to the CQL web worker
-          sendPatientBundle(this.patientBundle);
+          this.getFhirResources().then(() => {
+            // Send the patient bundle to the CQL web worker WITH FHIR resources
+            sendPatientBundle(this.patientBundle);
+          }).catch(e => {
+            console.log('Error retrieving FHIR resources ', e);
+            // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
+            sendPatientBundle(this.patientBundle);
+          })
           this.ready = true; // We don't show this component until `ready=true`
         }).catch(e => {
           this.error = e;
@@ -152,10 +163,6 @@ export default {
         console.log(e);
       });
     },
-    getSurveyServerValidator() {
-      if (!this.surveyOptions || !this.surveyOptions.serverValidateQuestion) return function() {};
-      return this.surveyOptions.serverValidateQuestion;
-    },
     initializeSurveyObj() {
       const vueConverter = converter(FunctionFactory, Model, Serializer, StylesManager);
       const parentThis = this;
@@ -188,7 +195,7 @@ export default {
         ...surveyOptions["default"],
         ...surveyOptions[this.questionnaire.name] ? surveyOptions[this.questionnaire.name]: {}};
       Object.entries(options).forEach(option => model[option[0]] = option[1]);
-      if (this.questionnaire.title) model["title"] = this.questionnaire.title;
+      //if (this.questionnaire.title) model["title"] = this.questionnaire.title;
       this.surveyOptions = options;
       this.survey = model;
     },
@@ -212,22 +219,7 @@ export default {
       });
     },
     async getFhirResources() {
-       // Get any Observation resources
-      let observationQueryString = `/Observation?patient=${this.patientId}`;
-      // Optionally request Observations using categories
-      if (
-        process.env.VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES &&
-        process.env.VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES.toLowerCase() == 'true') {
-        getObservationCategories().forEach(cat => {
-          observationQueryString = observationQueryString + '&category=' + cat;
-        });
-      }
-      const requests = [
-        client.request('/Condition?patient=' +  this.patientId),
-        client.request(observationQueryString),
-        client.request('/Procedure?patient=' +  this.patientId),
-        client.request('/QuestionnaireResponse?patient=' +  this.patientId)
-      ];
+      const requests = getFHIRResourcePaths(this.patientId).map(resource => client.request(resource));
       //get all resources
       return Promise.all(requests).then(results => {
         results.forEach(result => {
@@ -242,6 +234,7 @@ export default {
             });
           } else {
             this.patientBundle.entry.push({resource: result});
+            if (result.resourceType.toLowerCase() === "patient") this.patient = result;
           }
         });
       });
@@ -273,9 +266,13 @@ export default {
         }
       }
     },
+    getSurveyQuestionValidator() {
+      if (!this.surveyOptions || !this.surveyOptions.questionValidator) return function() {};
+      return this.surveyOptions.questionValidator;
+    },
     initializeSurveyObjEvents() {
-
-     this.survey.onServerValidateQuestions.add(this.getSurveyServerValidator());
+      //add validation to question
+      this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
       // Add an event listener which updates questionnaireResponse based upon user responses
       this.survey.onValueChanging.add(function(sender, options) {
         // We don't want to modify anything if the survey has been submitted/completed.
