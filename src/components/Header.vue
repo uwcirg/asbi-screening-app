@@ -18,7 +18,10 @@
   export default {
     props: {
       patient: Object,
-      title: String
+      title: {
+        type: String,
+        default: 'Assessment'
+      }
     },
     methods: {
       hasPatientName () {

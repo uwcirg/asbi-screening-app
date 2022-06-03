@@ -5,6 +5,7 @@ import valueSetJsonUsAudit from '../cql/valueset-db.json';
 export async function getScreeningInstrument() {
   let screeningInstrument = process.env.VUE_APP_ALCOHOL_SCREENING_INSTRUMENT ? 
   process.env.VUE_APP_ALCOHOL_SCREENING_INSTRUMENT.toLowerCase() : "";
+  console.log("screening instrument to be loaded", screeningInstrument)
   if (screeningInstrument == 'usaudit') {
     let questionnaireUsAudit = await import("../fhir/Questionnaire-USAUDIT.json").then(module=>module.default);
     let elmJsonUsAudit = await import("../cql/UsAuditLogicLibrary.json").then(module=>module.default);
@@ -24,7 +25,8 @@ export async function getScreeningInstrument() {
       let elmJson = await import(`../cql/${screeningInstrument.toUpperCase()}LogicLibrary.json`).then(module=>module.default);
       return [questionnaireJson, elmJson, valueSetJsonUsAudit];
     } catch(e) {
-      throw new Error('Unsupported instrument and/or ELM library has been specified');
+      console.log('error ', e)
+      throw new Error('Unsupported instrument and/or ELM library has been specified ' + e);
     }
   }
 }
