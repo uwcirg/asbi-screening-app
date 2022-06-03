@@ -1,5 +1,5 @@
 library:
-  name: Phq9LogicLibrary
+  name: PHQ9LogicLibrary
   paths: ../src/cql
 tests:
   path: cases/phq9

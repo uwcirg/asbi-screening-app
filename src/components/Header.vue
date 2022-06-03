@@ -6,10 +6,9 @@
         elevation=2
         app>
         <v-toolbar-title v-text="title"></v-toolbar-title>
-        <v-spacer></v-spacer>
-        <div class="mr-6">
-            <div class="text-subtitle-2 white--text" v-if="hasPatientName()" v-text="getPatientName()"></div>
-            <div class="text-subtitle-2 white--text" v-text="getPatientDob()"></div>
+        <div class="ml-6">
+            <div class="text-subtitle-2 grey--text text--lighten-5" v-if="hasPatientName()" v-text="getPatientName()"></div>
+            <div class="text-subtitle-2 grey--text text--lighten-5" v-text="getPatientDob()"></div>
         </div>
     </v-app-bar>
 </template>
