@@ -1,16 +1,15 @@
 <template>
   <div>
     <Header :title="questionnaire.title" :patient="patient" v-if="ready"></Header>
+    <v-alert color="error" v-if="error" class="ma-4 pa-4" dark>
+      Error loading the application. See console for detail.
+    </v-alert>
     <div id="surveyElement">
       <survey v-if="ready" :survey="survey" :css="themes"></survey>
       <div v-if="!error && !ready" class="ma-4 pa-4">
         <v-progress-circular :value="100" indeterminate
           color="primary"></v-progress-circular>
       </div>
-      <v-alert color="error" v-if="error" dark>
-        Error loading the application. See console for detail.
-        <div v-html="error"></div>
-      </v-alert>
     </div>
   </div>
 </template>

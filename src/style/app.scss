@@ -10,6 +10,9 @@ body {
 #surveyElement {
     margin-top: 92px;
 }
+#surveyElement:empty {
+    margin-top: 0;
+}
 .sv-container-modern__title {
     padding-top: 1em;
 }
