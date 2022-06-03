@@ -86,9 +86,5 @@ export function getFHIRResourcePaths(patientId) {
     return path;
   });
   console.log("resources? ", resources)
-  return [
-    '/Patient/' + patientId,
-    '/QuestionnaireResponse?patient=' +  patientId,
-    ...resources
-  ];
+  return resources;
 }

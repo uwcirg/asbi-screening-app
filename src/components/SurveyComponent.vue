@@ -81,7 +81,7 @@ export default {
         if (this.error) return;
         this.patient = patient;
         this.patientId = patient.id;
-        //this.patientBundle.entry.unshift({resource: patient});
+        this.patientBundle.entry.unshift({resource: patient});
         this.initializeInstrument().then(() => {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
@@ -234,7 +234,6 @@ export default {
             });
           } else {
             this.patientBundle.entry.push({resource: result});
-            if (result.resourceType.toLowerCase() === "patient") this.patient = result;
           }
         });
       });
