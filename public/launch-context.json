@@ -1,6 +1,6 @@
 {
     "clientId": "dummy-client-id",
-    "scope": "patient/Patient.read patient/Condition.read patient/Observation.read patient/Procedure.read patient/QuestionnaireResponse.read online_access openid fhirUser patient/QuestionnaireResponse.write",
+    "scope": "patient/Patient.read patient/Condition.read patient/Observation.read patient/Procedure.read patient/QuestionnaireResponse.read online_access openid fhirUser patient/QuestionnaireResponse.write roles",
     "iss": "http://localhost:3000/4_0_0",
     "launch": "123"
 }
