@@ -85,6 +85,7 @@ export default {
           if (this.error) return; // error getting instrument, abort
           this.initializeSurveyObj();
           this.initializeSurveyObjEvents();
+          this.setQuestionnaireSubject();
           this.setQuestionnaireAuthor();
           this.setFirstInputFocus();
           this.getFhirResources().then(() => {
@@ -242,12 +243,13 @@ export default {
       //used to pair questionaire with responses
       return this.questionnaire.url;
     },
-    setQuestionnaireAuthor() {
+    setQuestionnaireSubject() {
       // Add the `subject` element to the QuestionnaireResponse
       this.questionnaireResponse.subject = {
         reference: `Patient/${this.patientId}`
       };
-
+    },
+    setQuestionnaireAuthor() {
       // Record who is entering and submitting the responses
       // How do we know the author here?
       let questionnaireAuthor = process.env.VUE_APP_QUESTIONNAIRE_AUTHOR && process.env.VUE_APP_QUESTIONNAIRE_AUTHOR.toLowerCase();

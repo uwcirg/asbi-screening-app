@@ -1,16 +1,16 @@
 <template>
   <v-app id="app">
-    <SurveyComponent/>
+    <Survey/>
   </v-app>
 </template>
 
 <script>
-import SurveyComponent from './components/SurveyComponent.vue'
+import Survey from './components/Survey.vue'
 
 export default {
   name: 'App',
   components: {
-    SurveyComponent
+    Survey
   }
 }
 </script>
