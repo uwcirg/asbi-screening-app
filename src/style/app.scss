@@ -13,6 +13,14 @@ body {
 #surveyElement:empty {
     margin-top: 0;
 }
+.v-toolbar__title {
+    max-width: 60%;
+}
+@media (min-width: 501px) {
+    .v-toolbar__title {
+        max-width: 100%;
+    }
+}
 .sv-container-modern__title {
     padding-top: 1em;
 }

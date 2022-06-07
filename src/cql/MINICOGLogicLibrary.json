@@ -5,7 +5,7 @@
          "type" : "CqlToElmInfo"
       } ],
       "identifier" : {
-         "id" : "MINICOGLogicLibrary",
+         "id" : "MinicogLogicLibrary",
          "version" : "1.0.0"
       },
       "schemaIdentifier" : {

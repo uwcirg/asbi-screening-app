@@ -1,10 +1,11 @@
 
 import valueSetJsonUsAudit from '../cql/valueset-db.json';
+import {capitalizeFirstLetter} from './util.js';
 
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument() {
-  let screeningInstrument = process.env.VUE_APP_ALCOHOL_SCREENING_INSTRUMENT ? 
-  process.env.VUE_APP_ALCOHOL_SCREENING_INSTRUMENT.toLowerCase() : "";
+  let screeningInstrument = process.env.VUE_APP_SCREENING_INSTRUMENT ? 
+  process.env.VUE_APP_SCREENING_INSTRUMENT.toLowerCase() : "";
   console.log("screening instrument to be loaded", screeningInstrument)
   if (screeningInstrument == 'usaudit') {
     let questionnaireUsAudit = await import("../fhir/Questionnaire-USAUDIT.json").then(module=>module.default);
@@ -21,8 +22,9 @@ export async function getScreeningInstrument() {
   }
   else {
     try {
+      let libId = capitalizeFirstLetter(screeningInstrument);
       let questionnaireJson = await import(`../fhir/Questionnaire-${screeningInstrument.toUpperCase()}.json`).then(module=>module.default);
-      let elmJson = await import(`../cql/${screeningInstrument.toUpperCase()}LogicLibrary.json`).then(module=>module.default);
+      let elmJson = await import(`../cql/${libId}LogicLibrary.json`).then(module=>module.default);
       return [questionnaireJson, elmJson, valueSetJsonUsAudit];
     } catch(e) {
       console.log('error ', e)

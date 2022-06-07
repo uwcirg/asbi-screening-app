@@ -4,7 +4,7 @@
         color="primary"
         elevation=2
         app>
-        <v-toolbar-title><h1 v-text="title" class="text-h5"></h1></v-toolbar-title>
+        <v-toolbar-title class="text-h5" v-text="title"></v-toolbar-title>
         <div class="ml-6">
             <div class="text-subtitle-2 grey--text text--lighten-5" v-if="hasPatientName()" v-text="getPatientName()"></div>
             <div class="text-subtitle-2 grey--text text--lighten-5" v-text="getPatientDob()"></div>

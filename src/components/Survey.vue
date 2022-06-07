@@ -54,7 +54,6 @@ export default {
     return {
       survey: null,
       surveyOptions: {},
-      patientReady: false,
       patientId: 0,
       questionnaire: {},
       patientBundle: {

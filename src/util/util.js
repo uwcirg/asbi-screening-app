@@ -26,6 +26,11 @@ export function getCurrentISODate() {
   return correctedDate.toISOString().split('T')[0]; // just the date portion
 }
 
+export function capitalizeFirstLetter(text) {
+  if (!text) return '';
+  return text[0].toUpperCase() + text.substring(1);
+}
+
 export function getObservationCategories() {
   return [
     'social-history',
@@ -86,4 +91,3 @@ export function getFHIRResourcePaths(patientId) {
     return path;
   });
 }
-

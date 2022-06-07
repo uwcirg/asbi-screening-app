@@ -19,6 +19,8 @@ import './style/app.scss';
 import Header from './components/Header';
 import Survey from './components/Survey';
 
+const DEFAULT_TITLE = 'Screening Instrument';
+
 export default {
   name: 'App',
   components: {
@@ -27,7 +29,7 @@ export default {
   },
   data() {
     return {
-      title: 'Screener',
+      title: process.env.VUE_APP_TITLE?process.env.VUE_APP_TITLE:DEFAULT_TITLE,
       client: null,
       patient: null,
       error: '',
@@ -81,8 +83,7 @@ export default {
     },
     finished(data) {
       if (!data) return;
-      if (data.title) this.title = data.title;
-      //others set from survey data if needed
+      if ((!this.title || this.title === DEFAULT_TITLE) && data.title) this.title = data.title;
     }
   }
 }

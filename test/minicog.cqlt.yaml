@@ -1,5 +1,5 @@
 library:
-  name: MINICOGLogicLibrary
+  name: MinicogLogicLibrary
   paths: ../src/cql
 tests:
   path: cases/minicog
