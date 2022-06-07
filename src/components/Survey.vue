@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <Header :title="questionnaire.title" :patient="patient" v-if="ready"></Header>
+  <div id="surveyElement">
     <v-alert color="error" v-if="error" class="ma-4 pa-4" dark>
-      Error loading the application. See console for detail.
+      Error loading the screener application.  See console for detail.
+      <div v-html="error"></div>
     </v-alert>
-    <div id="surveyElement">
-      <survey v-if="ready" :survey="survey" :css="themes"></survey>
-      <div v-if="!error && !ready" class="ma-4 pa-4">
-        <v-progress-circular :value="100" indeterminate
-          color="primary"></v-progress-circular>
-      </div>
+    <survey v-if="!error && ready" :survey="survey" :css="themes"></survey>
+    <div v-if="!error && !ready" class="ma-4 pa-4">
+      <v-progress-circular :value="100" indeterminate
+        color="primary"></v-progress-circular>
     </div>
   </div>
 </template>
@@ -20,17 +18,11 @@ import { getInstrumentCSS } from '../util/css-selector.js';
 import { getScreeningInstrument } from '../util/screening-selector.js';
 import Worker from "../../node_modules/cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from 'cql-worker';
-import FHIR from 'fhirclient';
-import Header from './Header';
 import {getCurrentISODate, getFHIRResourcePaths, getResponseValue} from '../util/util.js';
 import surveyOptions from '../context/surveyjs.options.js';
 import themes from '../context/themes.js';
-import 'survey-vue/modern.css';
-import "../style/app.scss";
 import { FunctionFactory, Model, Serializer, StylesManager } from 'survey-vue';
 
-// Top level definition of our FHIR client
-var client;
 // Define a web worker for evaluating CQL expressions
 const cqlWorker = new Worker();
 // Initialize the cql-worker
@@ -38,15 +30,32 @@ let [setupExecution, sendPatientBundle, evaluateExpression] = initialzieCqlWorke
 
 // Define the survey component for Vue
 export default {
-  components: {
-    Header
+  props: {
+    client: Object,
+    patient: Object,
+    authError: [String, Object, Error]
+  },
+  watch: {
+    patient(newVal, oldVal) {
+      if (this.error) return;
+      if (newVal || newVal !== oldVal) {
+        this.patient = newVal;
+        this.init();
+      }
+    },
+    authError(newVal, oldVal) {
+      if (newVal || newVal !== oldVal) {
+        this.error = newVal;
+        this.ready = true;
+      }
+    }
   },
   data() {
     return {
       survey: null,
       surveyOptions: {},
+      patientReady: false,
       patientId: 0,
-      patient: null,
       questionnaire: {},
       patientBundle: {
         resourceType: 'Bundle',
@@ -68,50 +77,33 @@ export default {
   created() {
     getInstrumentCSS();
   },
-  mounted() {
-    this.setAuthClient().then((result) => {
-      client = result;
-      if (this.error) return; // auth error, cannot continue
-      this.setPatient().then((patient) => {
-        if (!patient || !patient.id) {
-          this.error = "No valid patient set";
-          return;
-        }
-        if (this.error) return;
-        this.patient = patient;
-        this.patientId = patient.id;
-        this.patientBundle.entry.unshift({resource: patient});
-        this.initializeInstrument().then(() => {
-          if (this.error) return; // error getting instrument, abort
-          this.initializeSurveyObj();
-          this.initializeSurveyObjEvents();
-          this.setQuestionnaireSubject();
-          this.setQuestionnaireAuthor();
-          this.setFirstInputFocus();
-          this.getFhirResources().then(() => {
-            // Send the patient bundle to the CQL web worker WITH FHIR resources
-            sendPatientBundle(this.patientBundle);
-          }).catch(e => {
-            console.log('Error retrieving FHIR resources ', e);
-            // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
-            sendPatientBundle(this.patientBundle);
-          })
-          this.ready = true; // We don't show this component until `ready=true`
+  methods: {
+    init() {
+      if (this.error || !this.patient) false;
+      this.patientId = this.patient.id;
+      this.patientBundle.entry.unshift({resource: this.patient});
+      this.initializeInstrument().then(() => {
+        if (this.error) return; // error getting instrument, abort
+        this.initializeSurveyObj();
+        this.initializeSurveyObjEvents();
+        this.setQuestionnaireSubject();
+        this.setQuestionnaireAuthor();
+        this.setFirstInputFocus();
+        this.getFhirResources().then(() => {
+          // Send the patient bundle to the CQL web worker WITH FHIR resources
+          sendPatientBundle(this.patientBundle);
         }).catch(e => {
-          this.error = e;
-          console.log("Questionnaire error ", e);
-        })
+          console.log('Error retrieving FHIR resources ', e);
+          // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
+          sendPatientBundle(this.patientBundle);
+        });
+        this.done();
+        this.ready = true; // We don't show this component until `ready=true`
       }).catch(e => {
         this.error = e;
-        console.log("Patient resource error ", e);
+        console.log("Questionnaire error ", e);
       });
-    }).catch(e => {
-      console.log("Auth Error ", e);
-      this.ready = true;
-      this.error = e;
-    });
-  },
-  methods: {
+    },
     isDevelopment() {
       return String(process.env.VUE_APP_SYSTEM_TYPE).toLowerCase() === "development";
     },
@@ -199,27 +191,8 @@ export default {
       this.surveyOptions = options;
       this.survey = model;
     },
-    async setAuthClient() {
-      let authClient;
-       // Wait for authorization
-      try {
-        authClient = await FHIR.oauth2.ready();
-      } catch(e) {
-        this.error = e;
-        console.log("Auth error: ", e);
-        return null;
-      }
-      if (!authClient) throw Error("No authorized FHIR client set");
-      return authClient;
-    },
-    async setPatient() {
-       // Get the Patient resource
-      return await client.patient.read().then((pt) => {
-        return pt;
-      });
-    },
     async getFhirResources() {
-      const requests = getFHIRResourcePaths(this.patientId).map(resource => client.request(resource));
+      const requests = getFHIRResourcePaths(this.patientId).map(resource => this.client.request(resource));
       //get all resources
       return Promise.all(requests).then(results => {
         results.forEach(result => {
@@ -255,9 +228,9 @@ export default {
       let questionnaireAuthor = process.env.VUE_APP_QUESTIONNAIRE_AUTHOR && process.env.VUE_APP_QUESTIONNAIRE_AUTHOR.toLowerCase();
       if (questionnaireAuthor == 'practitioner') {
         // Only add the `author` element if we can get the user id from the client
-        if (client.user && client.user.fhirUser) {
+        if (this.client.user && this.client.user.fhirUser) {
           this.questionnaireResponse.author = {
-            reference: client.user.fhirUser
+            reference: this.client.user.fhirUser
           };
         } else console.log("client fhirUser not set");
       } else if (questionnaireAuthor == 'patient') {
@@ -311,7 +284,7 @@ export default {
         // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
         if (process.env.VUE_APP_WRITE_BACK_MODE &&
             process.env.VUE_APP_WRITE_BACK_MODE.toLowerCase() == 'smart') {
-          client.create(this.questionnaireResponse, {
+          this.client.create(this.questionnaireResponse, {
             headers: {
               'Content-Type': 'application/fhir+json'
             }
@@ -322,6 +295,11 @@ export default {
         }
       }.bind(this));
     },
+    done() {
+      this.$emit('finished', {
+        title :this.questionnaire.title
+      });
+    }
   }
 };
 </script>
