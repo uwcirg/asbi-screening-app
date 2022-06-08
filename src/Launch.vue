@@ -19,9 +19,11 @@
 
 <script>
 import FHIR from 'fhirclient';
+import {queryPatientIdKey} from './util/util.js';
+
 const urlParams = new URLSearchParams(window.location.search);
-let patientId = urlParams.get('patient');
-if (patientId == null) patientId = '123';
+const patientId = urlParams.get('patient');
+console.log("patient id from url query string: ", patientId);
 
 export default {
   name: 'Launch',
@@ -32,17 +34,31 @@ export default {
   },
   mounted() {
     let self = this;
-    fetch(`launch-context.json`)
+    
+    sessionStorage.removeItem(queryPatientIdKey); //remove any stored patient id before launching the app
+
+    fetch('launch-context.json', {
+      // include cookies in request
+      credentials: 'include'
+    })
     .then(result => {
       if (!result.ok) {
-        throw Error(result.statusText);
+        throw Error(result.status);
       }
       return result.json();
     })
+    .catch(e => self.error=e)
     .then(json => {
-      if (!json.launch) {
-        json.launch = patientId;
+      if (patientId) {
+        //only do this IF patient id comes from url queryString
+        json.patientId = patientId;
+        sessionStorage.setItem(queryPatientIdKey, patientId);
       }
+      //allow auth scopes to be updated via environment variable
+      //see https://build.fhir.org/ig/HL7/smart-app-launch/scopes-and-launch-context.html
+      if (process.env.VUE_APP_AUTH_SCOPES) json.scope = process.env.VUE_APP_AUTH_SCOPES;
+
+      console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
         self.error = e;
       });

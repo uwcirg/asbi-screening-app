@@ -18,6 +18,7 @@ import 'survey-vue/modern.css';
 import './style/app.scss';
 import Header from './components/Header';
 import Survey from './components/Survey';
+import {queryPatientIdKey} from './util/util';
 
 const DEFAULT_TITLE = 'Screening Instrument';
 
@@ -70,6 +71,12 @@ export default {
       return authClient;
     },
     async setPatient() {
+      //patient id was coming from url query string parameter and stored as sessionStorage item
+      let queryPatientId = sessionStorage.getItem(queryPatientIdKey);
+      if (queryPatientId) {
+        console.log("Patient id unavailable from client object. Using stored patient id ", queryPatientId);
+        return this.client.request('/Patient/'+queryPatientId);
+      }
       let pt;
        //set patient
       try {

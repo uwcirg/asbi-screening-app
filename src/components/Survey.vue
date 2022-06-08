@@ -100,7 +100,7 @@ export default {
         this.ready = true; // We don't show this component until `ready=true`
       }).catch(e => {
         this.error = e;
-        console.log("Questionnaire error ", e);
+        console.log("Error loading Questionnaire ", e);
       });
     },
     isDevelopment() {

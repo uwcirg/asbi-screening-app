@@ -91,3 +91,5 @@ export function getFHIRResourcePaths(patientId) {
     return path;
   });
 }
+
+export const queryPatientIdKey = 'launch_queryPatientId';
