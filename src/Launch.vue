@@ -59,7 +59,7 @@ export default {
       if (process.env.VUE_APP_AUTH_SCOPES) json.scope = process.env.VUE_APP_AUTH_SCOPES;
       
       //TEST
-      json.scope = 'profile roles email patient/*.read openid';
+      //json.scope = 'profile roles email patient/*.read openid';
 
       console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
