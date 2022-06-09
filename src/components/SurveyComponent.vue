@@ -206,6 +206,7 @@ export default {
         });
       }
       const requests = [
+        client.request('/Questionnaire'),
         client.request('/Condition?patient=' +  this.patientId),
         client.request(observationQueryString),
         client.request('/Procedure?patient=' +  this.patientId),
