@@ -293,12 +293,6 @@ export default {
               'Content-Type': 'application/fhir+json'
             }
           });
-          // console.log("")
-          // this.client.create(this.questionnaire, {
-          //   headers: {
-          //     'Content-Type': 'application/fhir+json'
-          //   }
-          // });
         }
         if (this.isDevelopment()) {
           console.log('questionnaire responses ', JSON.stringify(this.questionnaireResponse, null, 2));
