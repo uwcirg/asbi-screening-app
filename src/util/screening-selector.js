@@ -1,6 +1,5 @@
 
 import valueSetJsonUsAudit from '../cql/valueset-db.json';
-import {capitalizeFirstLetter} from './util.js';
 
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument() {
@@ -22,9 +21,9 @@ export async function getScreeningInstrument() {
   }
   else {
     try {
-      let libId = capitalizeFirstLetter(screeningInstrument);
+      let libId = screeningInstrument.toUpperCase();
       let questionnaireJson = await import(`../fhir/Questionnaire-${screeningInstrument.toUpperCase()}.json`).then(module=>module.default);
-      let elmJson = await import(`../cql/${libId}LogicLibrary.json`).then(module=>module.default);
+      let elmJson = await import(`../cql/${libId}_LogicLibrary.json`).then(module=>module.default);
       return [questionnaireJson, elmJson, valueSetJsonUsAudit];
     } catch(e) {
       console.log('error ', e)

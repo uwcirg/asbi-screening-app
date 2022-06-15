@@ -71,7 +71,7 @@
           "valueExpression": {
             "language": "text/cql",
             "expression": "DisplayScoreFullMiniCog",
-            "reference": "#MINICOGLogicLibrary|1.0"
+            "reference": "#MinicogLogicLibrary|1.0"
           }
         },
         {
@@ -79,7 +79,7 @@
           "valueExpression": {
             "language": "text/cql",
             "expression": "ScoreFullMiniCog",
-            "reference": "#MINICOGLogicLibrary|1.0"
+            "reference": "#MinicogLogicLibrary|1.0"
           }
         }
       ],
@@ -99,7 +99,7 @@
           "valueExpression": {
             "language": "text/cql",
             "expression": "DisplayScoreFullMiniCog",
-            "reference": "#MINICOGLogicLibrary|1.0"
+            "reference": "#MinicogLogicLibrary|1.0"
           }
         }
       ],
