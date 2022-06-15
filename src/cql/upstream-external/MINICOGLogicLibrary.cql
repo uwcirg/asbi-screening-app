@@ -1,4 +1,4 @@
-library MINICOGLogicLibrary version '1.0.0'
+library MinicogLogicLibrary version '1.0.0'
 
 using FHIR version '4.0.1'
 
@@ -10,6 +10,8 @@ include "FHIRHelpers" version '4.0.1' called FHIRHelpers
 parameter DisplayScreeningScores default true
 parameter QuestionnaireURL default 'http://www.cdc.gov/ncbddd/fasd/minicog'
 
+
+//question link ids
 define question1LinkId: 'minicog-question1'
 define question2LinkId: 'minicog-question2'
 
