@@ -79,6 +79,8 @@ export default {
   methods: {
     init() {
       if (this.error || !this.patient) false;
+      console.log("state ", this.client.getState('tokenResponse.id_token'));
+      console.log('environment variables ', process.env)
       this.patientId = this.patient.id;
       this.patientBundle.entry.unshift({resource: this.patient});
       this.initializeInstrument().then(() => {
@@ -89,6 +91,7 @@ export default {
         this.setQuestionnaireAuthor();
         this.setFirstInputFocus();
         this.getFhirResources().then(() => {
+          console.log("patient bundle ", this.patientBundle)
           // Send the patient bundle to the CQL web worker WITH FHIR resources
           sendPatientBundle(this.patientBundle);
         }).catch(e => {
@@ -126,6 +129,7 @@ export default {
         const [questionnaire, elmJson, valueSetJson] = data;
         if (!questionnaire) throw Error("No questionnaire set");
         self.questionnaire = questionnaire;
+        console.log("questionnaire ", self.questionnaire);
         // Assemble the parameters needed by the CQL
         let cqlParameters = {
           DisplayScreeningScores: process.env.VUE_APP_DISPLAY_SCREENING_SCORES && process.env.VUE_APP_DISPLAY_SCREENING_SCORES.toLowerCase() == "true" ? true : false,
@@ -212,7 +216,7 @@ export default {
     }, //
     getQuestionnaireURL() {
       if (!this.questionnaire) return null;
-      //used to pair questionaire with responses
+      //used to pair questionnaire with responses
       return this.questionnaire.url;
     },
     setQuestionnaireSubject() {
@@ -272,6 +276,7 @@ export default {
             };
           }
         }
+  
         // Need to reload the patient bundle since the responses have been updated
         cqlWorker.postMessage({patientBundle: this.patientBundle});
       }.bind(this));
@@ -288,6 +293,12 @@ export default {
               'Content-Type': 'application/fhir+json'
             }
           });
+          // console.log("")
+          // this.client.create(this.questionnaire, {
+          //   headers: {
+          //     'Content-Type': 'application/fhir+json'
+          //   }
+          // });
         }
         if (this.isDevelopment()) {
           console.log('questionnaire responses ', JSON.stringify(this.questionnaireResponse, null, 2));
