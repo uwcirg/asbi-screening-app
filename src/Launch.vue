@@ -10,7 +10,7 @@
     </div>
     <div class="pa-8" v-if="error">
       <v-alert color="error" v-if="error" dark>
-        Error launch the application.
+        Error launching the application.
         <div v-html="error"></div>
       </v-alert>
     </div>
