@@ -5,7 +5,10 @@ import valueSetJsonUsAudit from '../cql/valueset-db.json';
 export async function getScreeningInstrument() {
   let screeningInstrument = process.env.VUE_APP_SCREENING_INSTRUMENT ? 
   process.env.VUE_APP_SCREENING_INSTRUMENT.toLowerCase() : "";
-  console.log("screening instrument to be loaded", screeningInstrument)
+  console.log("screening instrument to be loaded", screeningInstrument);
+  if (!screeningInstrument) {
+    throw new Error('No screening instrument specified');
+  }
   if (screeningInstrument == 'usaudit') {
     let questionnaireUsAudit = await import("../fhir/Questionnaire-USAUDIT.json").then(module=>module.default);
     let elmJsonUsAudit = await import("../cql/UsAuditLogicLibrary.json").then(module=>module.default);
