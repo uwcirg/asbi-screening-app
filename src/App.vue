@@ -37,27 +37,23 @@ export default {
       ready: false
     }
   },
-  mounted() {
-    this.setAuthClient().then((result) => {
-      this.client = result;
-      this.setPatient().then((patient) => {
-        if (!patient || !patient.id) {
-          this.ready = true;
-          this.error = "No valid patient is set.";
-          return;
-        }
-        this.patient = patient;
-        this.ready = true;
-      }).catch(e => {
-        this.ready = true;
-        this.error = e;
-        console.log("Set patient error ", e);
-      });
-    }).catch(e => {
-      this.ready = true;
+  async mounted() {
+    try {
+      this.client = await this.setAuthClient();
+    } catch(e) {
       this.error = e;
-      console.log("Auth Error ", e);
-    });
+    }
+    if (!this.error) {
+      try {
+        this.patient = await this.setPatient().catch(e => this.error = e);
+      } catch(e) {
+        this.error = e;
+      }
+      if (!this.error && (!this.patient || !this.patient.id)) {
+        this.error = "No valid patient is set.";
+      }
+    }
+    this.ready = true;
   },
   methods: {
     async setAuthClient() {

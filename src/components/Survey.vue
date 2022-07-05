@@ -90,7 +90,7 @@ export default {
   methods: {
     init() {
       if (this.error || !this.patient) false;
-      console.log("state ", this.client.getState("tokenResponse.id_token"));
+      //console.log("state ", this.client.getState("tokenResponse.id_token"));
       console.log("environment variables ", process.env);
       this.patientId = this.patient.id;
       this.patientBundle.entry.unshift({ resource: this.patient });
@@ -237,9 +237,15 @@ export default {
         this.client.request(resource)
       );
       //get all resources
-      return Promise.all(requests).then((results) => {
-        results.forEach((result) => {
+      return Promise.allSettled(requests).then((results) => {
+        results.forEach((o) => {
+          let result = o.value;
+          if (o.status === 'rejected') {
+            console.log('Error retrieving FHIR resource ', o.reason);
+            return true;
+          }
           if (!result) return true;
+
           if (result.resourceType == "Bundle" && result.entry) {
             result.entry.forEach((o) => {
               if (o && o.resource)
@@ -254,7 +260,7 @@ export default {
             this.patientBundle.entry.push({ resource: result });
           }
         });
-      });
+      }).catch(e => console.log(`Error retrieving FHIR resources ${e}`));
     }, //
     getQuestionnaireURL() {
       if (!this.questionnaire) return null;
