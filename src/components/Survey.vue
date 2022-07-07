@@ -317,10 +317,15 @@ export default {
               options.name,
               options.value
             );
+
+            let question = this.questionnaire.item.filter(item => item.linkId === options.name)[0];
+            let questionText = question && question.text ?  question.text : '';
+  
             // If the index is undefined, add a new entry to questionnaireResponse.item
             if (answerItemIndex == -1) {
               this.questionnaireResponse.item.push({
                 linkId: options.name,
+                text: questionText,
                 answer: [
                   {
                     [responseValue.type]: responseValue.value,
@@ -331,6 +336,7 @@ export default {
               // Otherwise update the existing index with the new response
               this.questionnaireResponse.item[answerItemIndex] = {
                 linkId: options.name,
+                text: questionText,
                 answer: [
                   {
                     [responseValue.type]: responseValue.value,
