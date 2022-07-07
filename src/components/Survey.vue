@@ -147,7 +147,6 @@ export default {
           const [questionnaire, elmJson, valueSetJson] = data;
           if (!questionnaire) throw Error("No questionnaire set");
           self.questionnaire = questionnaire;
-          console.log("questionnaire ", self.questionnaire);
           // Assemble the parameters needed by the CQL
           let cqlParameters = {
             DisplayScreeningScores:
