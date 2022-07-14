@@ -1,10 +1,12 @@
 
 import valueSetJsonUsAudit from '../cql/valueset-db.json';
+import {getEnv} from "./util.js";
 
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument() {
-  let screeningInstrument = process.env.VUE_APP_SCREENING_INSTRUMENT ? 
-  process.env.VUE_APP_SCREENING_INSTRUMENT.toLowerCase() : "";
+  const envScreeningInstrument = getEnv("VUE_APP_SCREENING_INSTRUMENT");
+  let screeningInstrument = envScreeningInstrument ? 
+  envScreeningInstrument.toLowerCase() : "";
   console.log("screening instrument to be loaded", screeningInstrument);
   if (!screeningInstrument) {
     throw new Error('No screening instrument specified');

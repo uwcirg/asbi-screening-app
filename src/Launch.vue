@@ -18,28 +18,34 @@
 </template>
 
 <script>
-import FHIR from 'fhirclient';
-import {queryPatientIdKey} from './util/util.js';
+import FHIR from "fhirclient";
+import {fetchEnvData, getEnv, queryPatientIdKey} from "./util/util.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const patientId = urlParams.get('patient');
+const patientId = urlParams.get("patient");
 console.log("patient id from url query string: ", patientId);
 
 export default {
-  name: 'Launch',
+  name: "Launch",
   data() {
     return {
       error: ""
     }
   },
+  created() {
+    fetchEnvData();
+  },
   mounted() {
     let self = this;
     
     sessionStorage.removeItem(queryPatientIdKey); //remove any stored patient id before launching the app
+    let launchContextURL = "launch-context.json";
+    let envLaunchContextURL = getEnv("VUE_APP_CONF_API_URL");
+    if (envLaunchContextURL) launchContextURL = envLaunchContextURL;
 
-    fetch('launch-context.json', {
+    fetch(launchContextURL, {
       // include cookies in request
-      credentials: 'include'
+      credentials: "include"
     })
     .then(result => {
       if (!result.ok) {
@@ -56,7 +62,8 @@ export default {
       }
       //allow auth scopes to be updated via environment variable
       //see https://build.fhir.org/ig/HL7/smart-app-launch/scopes-and-launch-context.html
-      if (process.env.VUE_APP_AUTH_SCOPES) json.scope = process.env.VUE_APP_AUTH_SCOPES;
+      const envAuthScopes = getEnv("VUE_APP_AUTH_SCOPES");
+      if (envAuthScopes) json.scope = envAuthScopes;
 
       console.log("launch context json ", json);
       FHIR.oauth2.authorize(json).catch((e) => {
@@ -65,7 +72,7 @@ export default {
     })
     .catch(e => {
       self.error = e;
-      console.log('launch error ', e);
+      console.log("launch error ", e);
     });
   }
 }

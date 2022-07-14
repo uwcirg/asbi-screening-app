@@ -19,10 +19,12 @@
 import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
 import { getScreeningInstrument } from "../util/screening-selector.js";
-import Worker from "../../node_modules/cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
+import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
 import {
   getCurrentISODate,
+  getEnv,
+  getEnvs,
   getFHIRResourcePaths,
   getResponseValue,
 } from "../util/util.js";
@@ -91,7 +93,7 @@ export default {
     init() {
       if (this.error || !this.patient) false;
       //console.log("state ", this.client.getState("tokenResponse.id_token"));
-      console.log("environment variables ", process.env);
+      console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
       this.patientBundle.entry.unshift({ resource: this.patient });
       this.initializeInstrument()
@@ -123,7 +125,8 @@ export default {
     },
     isDevelopment() {
       return (
-        String(process.env.VUE_APP_SYSTEM_TYPE).toLowerCase() === "development"
+        String(getEnv("NODE_ENV")).toLowerCase() === "development" ||
+        String(getEnv("VUE_APP_SYSTEM_TYPE")).toLowerCase() === "development"
       );
     },
     getTheme() {
@@ -150,8 +153,7 @@ export default {
           // Assemble the parameters needed by the CQL
           let cqlParameters = {
             DisplayScreeningScores:
-              process.env.VUE_APP_DISPLAY_SCREENING_SCORES &&
-              process.env.VUE_APP_DISPLAY_SCREENING_SCORES.toLowerCase() ==
+              getEnv("VUE_APP_DISPLAY_SCREENING_SCORES").toLowerCase() ==
                 "true"
                 ? true
                 : false,
@@ -275,9 +277,7 @@ export default {
     setQuestionnaireAuthor() {
       // Record who is entering and submitting the responses
       // How do we know the author here?
-      let questionnaireAuthor =
-        process.env.VUE_APP_QUESTIONNAIRE_AUTHOR &&
-        process.env.VUE_APP_QUESTIONNAIRE_AUTHOR.toLowerCase();
+      let questionnaireAuthor = getEnv("VUE_APP_QUESTIONNAIRE_AUTHOR").toLowerCase();
       if (questionnaireAuthor == "practitioner") {
         // Only add the `author` element if we can get the user id from the client
         if (this.client.user && this.client.user.fhirUser) {
@@ -357,8 +357,7 @@ export default {
 
           // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
           if (
-            process.env.VUE_APP_WRITE_BACK_MODE &&
-            process.env.VUE_APP_WRITE_BACK_MODE.toLowerCase() == "smart"
+            getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart"
           ) {
             this.client.create(this.questionnaireResponse, {
               headers: {

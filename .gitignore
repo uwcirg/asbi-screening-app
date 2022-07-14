@@ -24,3 +24,5 @@ yarn-error.log*
 # test directory dump_files directory is just for debugging
 test/dump_files
 
+# environment variables in json
+public/env.json
