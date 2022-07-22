@@ -43,6 +43,7 @@ export default {
     let launchContextURL = "launch-context.json";
     let envLaunchContextURL = getEnv("VUE_APP_CONF_API_URL");
     if (envLaunchContextURL) launchContextURL = envLaunchContextURL;
+    console.log("launch context url: ", launchContextURL);
 
     fetch(launchContextURL, {
       // include cookies in request
