@@ -153,8 +153,7 @@ export default {
           // Assemble the parameters needed by the CQL
           let cqlParameters = {
             DisplayScreeningScores:
-              getEnv("VUE_APP_DISPLAY_SCREENING_SCORES").toLowerCase() ==
-                "true"
+              getEnv("VUE_APP_DISPLAY_SCREENING_SCORES").toLowerCase() == "true"
                 ? true
                 : false,
             QuestionnaireURL: this.getQuestionnaireURL(),
@@ -238,30 +237,32 @@ export default {
         this.client.request(resource)
       );
       //get all resources
-      return Promise.allSettled(requests).then((results) => {
-        results.forEach((o) => {
-          let result = o.value;
-          if (o.status === 'rejected') {
-            console.log('Error retrieving FHIR resource ', o.reason);
-            return true;
-          }
-          if (!result) return true;
+      return Promise.allSettled(requests)
+        .then((results) => {
+          results.forEach((o) => {
+            let result = o.value;
+            if (o.status === "rejected") {
+              console.log("Error retrieving FHIR resource ", o.reason);
+              return true;
+            }
+            if (!result) return true;
 
-          if (result.resourceType == "Bundle" && result.entry) {
-            result.entry.forEach((o) => {
-              if (o && o.resource)
-                this.patientBundle.entry.push({ resource: o.resource });
-            });
-          } else if (Array.isArray(result)) {
-            result.forEach((o) => {
-              if (o.resourceType)
-                this.patientBundle.entry.push({ resource: o });
-            });
-          } else {
-            this.patientBundle.entry.push({ resource: result });
-          }
-        });
-      }).catch(e => console.log(`Error retrieving FHIR resources ${e}`));
+            if (result.resourceType == "Bundle" && result.entry) {
+              result.entry.forEach((o) => {
+                if (o && o.resource)
+                  this.patientBundle.entry.push({ resource: o.resource });
+              });
+            } else if (Array.isArray(result)) {
+              result.forEach((o) => {
+                if (o.resourceType)
+                  this.patientBundle.entry.push({ resource: o });
+              });
+            } else {
+              this.patientBundle.entry.push({ resource: result });
+            }
+          });
+        })
+        .catch((e) => console.log(`Error retrieving FHIR resources ${e}`));
     }, //
     getQuestionnaireURL() {
       if (!this.questionnaire) return null;
@@ -277,7 +278,9 @@ export default {
     setQuestionnaireAuthor() {
       // Record who is entering and submitting the responses
       // How do we know the author here?
-      let questionnaireAuthor = getEnv("VUE_APP_QUESTIONNAIRE_AUTHOR").toLowerCase();
+      let questionnaireAuthor = getEnv(
+        "VUE_APP_QUESTIONNAIRE_AUTHOR"
+      ).toLowerCase();
       if (questionnaireAuthor == "practitioner") {
         // Only add the `author` element if we can get the user id from the client
         if (this.client.user && this.client.user.fhirUser) {
@@ -317,9 +320,11 @@ export default {
               options.value
             );
 
-            let question = this.questionnaire.item.filter(item => item.linkId === options.name)[0];
-            let questionText = question && question.text ?  question.text : '';
-  
+            let question = this.questionnaire.item.filter(
+              (item) => item.linkId === options.name
+            )[0];
+            let questionText = question && question.text ? question.text : "";
+
             // If the index is undefined, add a new entry to questionnaireResponse.item
             if (answerItemIndex == -1) {
               this.questionnaireResponse.item.push({
@@ -356,9 +361,7 @@ export default {
           this.questionnaireResponse.status = "completed";
 
           // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
-          if (
-            getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart"
-          ) {
+          if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
             this.client.create(this.questionnaireResponse, {
               headers: {
                 "Content-Type": "application/fhir+json",
