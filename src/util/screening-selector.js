@@ -1,4 +1,4 @@
-import valueSetJsonUsAudit from "../cql/valueset-db.json";
+import valueSetJson from "../cql/valueset-db.json";
 import { getEnv } from "./util.js";
 
 //dynamically load questionnaire and cql JSON
@@ -18,7 +18,7 @@ export async function getScreeningInstrument() {
     let elmJsonUsAudit = await import("../cql/UsAuditLogicLibrary.json").then(
       (module) => module.default
     );
-    return [questionnaireUsAudit, elmJsonUsAudit, valueSetJsonUsAudit];
+    return [questionnaireUsAudit, elmJsonUsAudit, valueSetJson];
   } else if (screeningInstrument == "whoaudit") {
     let questionnaireWhoAudit = await import(
       "../fhir/Questionnaire-WHOAUDIT.json"
@@ -26,7 +26,7 @@ export async function getScreeningInstrument() {
     let elmJsonWhoAudit = await import("../cql/WhoAuditLogicLibrary.json").then(
       (module) => module.default
     );
-    return [questionnaireWhoAudit, elmJsonWhoAudit, valueSetJsonUsAudit];
+    return [questionnaireWhoAudit, elmJsonWhoAudit, valueSetJson];
   } else if (screeningInstrument == "nidaqs2usaudit") {
     let questionnaireNidaQs = await import(
       "../fhir/Questionnaire-NIDAQS2USAUDIT.json"
@@ -34,7 +34,7 @@ export async function getScreeningInstrument() {
     let elmJsonNidaQs = await import(
       "../cql/NidaQsToUsAuditLogicLibrary.json"
     ).then((module) => module.default);
-    return [questionnaireNidaQs, elmJsonNidaQs, valueSetJsonUsAudit];
+    return [questionnaireNidaQs, elmJsonNidaQs, valueSetJson];
   } else {
     try {
       let libId = screeningInstrument.toUpperCase();
@@ -44,7 +44,7 @@ export async function getScreeningInstrument() {
       let elmJson = await import(`../cql/${libId}_LogicLibrary.json`).then(
         (module) => module.default
       );
-      return [questionnaireJson, elmJson, valueSetJsonUsAudit];
+      return [questionnaireJson, elmJson, valueSetJson];
     } catch (e) {
       console.log("error ", e);
       throw new Error(
