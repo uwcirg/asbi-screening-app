@@ -162,11 +162,7 @@ export default {
           setupExecution(elmJson, valueSetJson, cqlParameters);
 
           // Define the QuestionnaireResponse which will contain the user responses.
-          if (this.questionnaire.identifier) {
-            this.questionnaireResponse.identifier = this.questionnaire.identifier;
-          } else {
-            this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
-          }
+          this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
 
           // set document title to questionnaire title
           this.setDocumentTitle();
