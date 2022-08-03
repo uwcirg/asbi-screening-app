@@ -87,7 +87,7 @@ export default {
     };
   },
   created() {
-    getInstrumentCSS();
+    getInstrumentCSS().catch(e => console.log(`loading instrument css error: ${e}`));
   },
   methods: {
     init() {
@@ -99,14 +99,25 @@ export default {
       this.initializeInstrument()
         .then(() => {
           if (this.error) return; // error getting instrument, abort
+          // set response identifier
+          this.setUniqueQuestionnaireResponseIdentifier();
+          // set document title to questionnaire title
+          this.setDocumentTitle();
           this.initializeSurveyObj();
           this.initializeSurveyObjEvents();
           this.setQuestionnaireSubject();
           this.setQuestionnaireAuthor();
           this.setFirstInputFocus();
+
+          // Add both the Questionnaire and QuestionnaireResponses to the patient bundle.
+          // Note: Objects are pushed onto the array by reference (no copy), so we don't
+          //       need to do anything fancy when we update questionnaireResponse later on.
+          this.patientBundle.entry.push({ resource: this.questionnaire });
+          this.patientBundle.entry.push({
+            resource: this.questionnaireResponse,
+          });
           this.getFhirResources()
             .then(() => {
-              console.log("patient bundle ", this.patientBundle);
               // Send the patient bundle to the CQL web worker WITH FHIR resources
               sendPatientBundle(this.patientBundle);
             })
@@ -143,13 +154,12 @@ export default {
       }, 350);
     },
     initializeInstrument() {
-      var self = this;
-      return getScreeningInstrument()
+      return getScreeningInstrument(this.client)
         .then((data) => {
           // Load the Questionniare, CQL ELM JSON, and value set cache which represents the alcohol screening instrument
           const [questionnaire, elmJson, valueSetJson] = data;
           if (!questionnaire) throw Error("No questionnaire set");
-          self.questionnaire = questionnaire;
+          this.questionnaire = questionnaire;
           // Assemble the parameters needed by the CQL
           let cqlParameters = {
             DisplayScreeningScores:
@@ -161,28 +171,24 @@ export default {
           // Send the cqlWorker an initial message containing the ELM JSON representation of the CQL expressions
           setupExecution(elmJson, valueSetJson, cqlParameters);
 
-          // Define the QuestionnaireResponse which will contain the user responses.
-          if (this.questionnaire.identifier) {
-            this.questionnaireResponse.identifier = this.questionnaire.identifier;
-          } else {
-            this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
-          }
-
-          // set document title to questionnaire title
-          this.setDocumentTitle();
-
-          // Add both the Questionnaire and QuestionnaireResponses to the patient bundle.
-          // Note: Objects are pushed onto the array by reference (no copy), so we don't
-          //       need to do anything fancy when we update questionnaireResponse later on.
-          this.patientBundle.entry.push({ resource: this.questionnaire });
-          this.patientBundle.entry.push({
-            resource: this.questionnaireResponse,
-          });
         })
         .catch((e) => {
           this.error = e;
           console.log(e);
         });
+    },
+    // pair questionnaire with questionnaire response with unique identifier
+    setUniqueQuestionnaireResponseIdentifier() {
+      let identifier = this.questionnaire.identifier;
+      if (Array.isArray(identifier)) {
+        // see FHIR QuestionnaireResponse identifier: https://build.fhir.org/questionnaireresponse-definitions.html#QuestionnaireResponse.identifier
+        // note it is an object, not an array
+        if (identifier.length > 0) {
+          identifier = {...this.questionnaire.identifier[0]};
+        } else identifier = null;
+      }
+      if (identifier) identifier = this.questionnaireResponse.identifier = identifier;
+      else this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
     },
     initializeSurveyObj() {
       const vueConverter = converter(
@@ -200,7 +206,7 @@ export default {
       let wrappedExpression = function(expression) {
         let self = this;
         // For some reason SurveyJS wraps `expression` in an array
-        evaluateExpression(expression[0]).then((result) => {
+        evaluateExpression( expression[0]).then((result) => {
           if (parentThis.isDevelopment()) {
             console.log("CQL expression ", expression[0], " result ", result);
           }
@@ -302,12 +308,12 @@ export default {
     initializeSurveyObjEvents() {
       //add validation to question
       this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
+
       // Add an event listener which updates questionnaireResponse based upon user responses
       this.survey.onValueChanging.add(
         function(sender, options) {
           // We don't want to modify anything if the survey has been submitted/completed.
           if (sender.isCompleted == true) return;
-
           if (options.value != null) {
             // Find the index of this item (may not exist)
             // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
@@ -348,7 +354,7 @@ export default {
                 ],
               };
             }
-          }
+          }  
 
           // Need to reload the patient bundle since the responses have been updated
           cqlWorker.postMessage({ patientBundle: this.patientBundle });

@@ -81,9 +81,14 @@ export function getFHIRResourcePaths(patientId) {
   if (!patientId) return [];
   const envFHIRResources = getEnv("VUE_APP_FHIR_RESOURCES");
   const envObCategories = getEnv("VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES");
-  let resources = envFHIRResources
-    ? envFHIRResources.split(",")
-    : ["QuestionnaireResponse"];
+  let resources = envFHIRResources ? envFHIRResources.split(",") : [];
+  const hasQuestionnaireResponses = resources.filter(
+    (item) => item.toLowerCase() === "questionnaireresponse"
+  ).length > 0;
+  if (!hasQuestionnaireResponses) {
+    // load questionnaire response(s) by default
+    resources.push("QuestionnaireResponse");
+  }
   return resources.map((resource) => {
     let path = `/${resource}?patient=${patientId}`;
     if (
