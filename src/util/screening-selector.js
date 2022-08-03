@@ -38,6 +38,7 @@ export async function getScreeningInstrument(client) {
   } else {
     if (!client) throw new Error("invalid FHIR client provided");
     let libId = screeningInstrument.toUpperCase();
+    // load questionnaire from FHIR server
     const questionnaires = await client.request("/Questionnaire").catch((e) => {
       throw new Error(`Error retrieving questionnaire: ${e}`);
     });
@@ -64,7 +65,7 @@ export async function getScreeningInstrument(client) {
     } catch (e) {
       console.log("error ", e);
       throw new Error(
-        "Unsupported instrument and/or ELM library has been specified " + e
+        "Error loading ELM library. Unsupported ELM library may have been specified " + e
       );
     }
     return [questionnaireJson, elmJson, valueSetJson];
