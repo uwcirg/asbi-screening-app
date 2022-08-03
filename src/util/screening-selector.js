@@ -39,21 +39,15 @@ export async function getScreeningInstrument(client) {
     if (!client) throw new Error("invalid FHIR client provided");
     let libId = screeningInstrument.toUpperCase();
     // load questionnaire from FHIR server
-    const questionnaires = await client.request("/Questionnaire").catch((e) => {
-      throw new Error(`Error retrieving questionnaire: ${e}`);
-    });
+    const qSearch = await client
+      .request("/Questionnaire?name="+screeningInstrument)
+      .catch((e) => {
+        throw new Error(`Error retrieving questionnaire: ${e}`);
+      });
     let questionnaireJson;
-    if (questionnaires && questionnaires.entry) {
-      questionnaireJson = questionnaires.entry
-        .filter(
-          (q) =>
-            q.resource &&
-            String(q.resource.name).toLowerCase() ===
-              screeningInstrument.toLowerCase()
-        )
-        .map((q) => q.resource)[0];
-    } else questionnaireJson = null;
-
+    if (qSearch && qSearch.entry && qSearch.entry.length > 0) {
+      questionnaireJson = qSearch.entry[0].resource;
+    }
     if (!questionnaireJson) {
       throw new Error("No matching questionnaire returned from the server.");
     }

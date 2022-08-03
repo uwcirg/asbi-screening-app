@@ -179,16 +179,10 @@ export default {
     },
     // pair questionnaire with questionnaire response with unique identifier
     setUniqueQuestionnaireResponseIdentifier() {
-      let identifier = this.questionnaire.identifier;
-      if (Array.isArray(identifier)) {
-        // see FHIR QuestionnaireResponse identifier: https://build.fhir.org/questionnaireresponse-definitions.html#QuestionnaireResponse.identifier
-        // note it is an object, not an array
-        if (identifier.length > 0) {
-          identifier = {...this.questionnaire.identifier[0]};
-        } else identifier = null;
-      }
-      if (identifier) identifier = this.questionnaireResponse.identifier = identifier;
-      else this.questionnaireResponse.questionnaire = this.getQuestionnaireURL();
+      if (!this.questionnaire) return;
+      this.questionnaireResponse.questionnaire = {
+        reference: `Questionnaire/${this.questionnaire.id}`
+      };
     },
     initializeSurveyObj() {
       const vueConverter = converter(
