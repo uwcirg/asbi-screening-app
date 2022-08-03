@@ -206,7 +206,7 @@ export default {
       let wrappedExpression = function(expression) {
         let self = this;
         // For some reason SurveyJS wraps `expression` in an array
-        evaluateExpression( expression[0]).then((result) => {
+        evaluateExpression(expression[0]).then((result) => {
           if (parentThis.isDevelopment()) {
             console.log("CQL expression ", expression[0], " result ", result);
           }

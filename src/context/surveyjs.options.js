@@ -4,7 +4,6 @@ export default {
     showQuestionNumbers: "off",
     completeText: "Submit",
     clearInvisibleValues: "onHidden",
-    sendResultOnPageNext: true,
     requiredText: "",
     completedHtml:
       "<h3>The screening is complete.</h3><h3>You may now close the window.</h3>",
