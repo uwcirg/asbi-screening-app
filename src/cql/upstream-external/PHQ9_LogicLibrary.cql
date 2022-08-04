@@ -98,8 +98,6 @@ define QuestionnaireResponses:
   ([QuestionnaireResponse] QR
     where (
       QR.questionnaire.value = CurrentQuestionnaireURL or
-      QR.identifier.value ~ Phq9Questionnaire.name or
-      QR.identifier.value ~ Phq9Questionnaire.id or 
       PositionOf(Phq9Questionnaire.id, QR.questionnaire.value)  != -1)
     sort by authored desc
   )
