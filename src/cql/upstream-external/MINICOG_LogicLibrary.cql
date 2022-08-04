@@ -38,7 +38,8 @@ define MiniCogQuestionnaire:
 define QuestionnaireResponses:
   ([QuestionnaireResponse] QR
     where (QR.questionnaire.value = CurrentQuestionnaireURL or
-    QR.identifier.value ~ MiniCogQuestionnaire.name)
+    QR.identifier.value ~ MiniCogQuestionnaire.name or 
+    PositionOf(MiniCogQuestionnaire.id, QR.questionnaire.value)  != -1)
     sort by authored desc
   )
 

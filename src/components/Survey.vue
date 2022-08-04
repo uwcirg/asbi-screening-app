@@ -180,9 +180,7 @@ export default {
     // pair questionnaire with questionnaire response with unique identifier
     setUniqueQuestionnaireResponseIdentifier() {
       if (!this.questionnaire) return;
-      this.questionnaireResponse.questionnaire = {
-        reference: `Questionnaire/${this.questionnaire.id}`
-      };
+      this.questionnaireResponse.questionnaire = `Questionnaire/${this.questionnaire.id}`;
     },
     initializeSurveyObj() {
       const vueConverter = converter(
