@@ -26,7 +26,7 @@ write_env_to_json() {
     # write project-specific environment variables to app config file
     local json_file="$1"
 
-    # only write environment variables containing "REACT_" or "VUE_"
+    # only write environment variables frontend will read (beginning with "REACT_" or "VUE_")
     local json_contents="{$(printenv | grep -e REACT_ -e VUE_ | sed 's/^\|$/"/g' | sed 's|=|":"|' | paste -sd, -)}"
     echo "$json_contents" > "$json_file"
 }
