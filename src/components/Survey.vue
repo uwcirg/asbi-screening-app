@@ -216,12 +216,12 @@ export default {
       // Create our SurveyJS object from the FHIR Questionnaire
       var model = vueConverter(this.questionnaire, wrappedExpression, "modern");
 
+      var optionsKeys = this.questionnaire.name ? this.questionnaire.name.toUpperCase(): "default";
+
       //SurveyJS settings
       var options = {
         ...surveyOptions["default"],
-        ...(surveyOptions[this.questionnaire.name]
-          ? surveyOptions[this.questionnaire.name]
-          : {}),
+        ...(surveyOptions[optionsKeys] || {}),
       };
       Object.entries(options).forEach(
         (option) => (model[option[0]] = option[1])
