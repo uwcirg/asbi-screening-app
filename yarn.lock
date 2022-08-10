@@ -7613,10 +7613,10 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-questionnaire-to-survey@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/questionnaire-to-survey/-/questionnaire-to-survey-2.2.1.tgz#7cd54f8becd9415bc28aa2e5bd544d1892f3bade"
-  integrity sha512-DH0xXtKkLMty9SlAGJVMIlQQXdcUzKV5nynMul/FdudXPbSJ21SOAXxDSHJvC/j9BU2Ur7KzdCG9/uPlRHA19Q==
+questionnaire-to-survey@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/questionnaire-to-survey/-/questionnaire-to-survey-2.3.1.tgz#a37e4353a0fd0cff5d2b309ea9517a2c41265f18"
+  integrity sha512-trRpDHb79oI7nDymPb4dN3BcwbRea+8PGIYx+YeyQ7yS5Xa11v5EpF3CiOKfxk93d0ZbaHTJI5nqIfY0yvMJWg==
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5, randombytes@^2.1.0:
   version "2.1.0"
