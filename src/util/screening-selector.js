@@ -47,6 +47,18 @@ export async function getScreeningInstrument(client) {
     let questionnaireJson;
     if (qSearch && qSearch.entry && qSearch.entry.length > 0) {
       questionnaireJson = qSearch.entry[0].resource;
+    } else {
+      // load from file and post it
+      const fileJson = await import(
+        `../fhir/Questionnaire-${screeningInstrument.toUpperCase()}.json`
+      ).then((module) => module.default);
+      if (fileJson) {
+        questionnaireJson = await client.create(fileJson, {
+          headers: {
+            "Content-Type": "application/fhir+json",
+          },
+        }).catch(e => console.log("Error posting questionnaire ", e));
+      }
     }
     if (!questionnaireJson) {
       throw new Error("No matching questionnaire returned from the server.");

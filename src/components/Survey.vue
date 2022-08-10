@@ -18,7 +18,7 @@
 <script>
 import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
-import { getScreeningInstrument } from "../util/screening-selector.js";
+import { getScreeningInstrument} from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
 import {
@@ -93,6 +93,7 @@ export default {
     init() {
       if (this.error || !this.patient) false;
       //console.log("state ", this.client.getState("tokenResponse.id_token"));
+      console.log("client state ", this.client.getState());
       console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
       this.patientBundle.entry.unshift({ resource: this.patient });
