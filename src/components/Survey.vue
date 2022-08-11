@@ -163,10 +163,7 @@ export default {
           this.questionnaire = questionnaire;
           // Assemble the parameters needed by the CQL
           let cqlParameters = {
-            DisplayScreeningScores:
-              getEnv("VUE_APP_DISPLAY_SCREENING_SCORES").toLowerCase() == "true"
-                ? true
-                : false,
+            //DisplayScreeningScores: getEnv("VUE_APP_DISPLAY_SCREENING_SCORES").toLowerCase() === "true",
             QuestionnaireURL: this.getQuestionnaireURL(),
           };
           // Send the cqlWorker an initial message containing the ELM JSON representation of the CQL expressions

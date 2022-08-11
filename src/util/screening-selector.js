@@ -51,13 +51,13 @@ export async function getScreeningInstrument(client) {
       // load from file and post it
       const fileJson = await import(
         `../fhir/Questionnaire-${screeningInstrument.toUpperCase()}.json`
-      ).then((module) => module.default);
+      ).then((module) => module.default).catch(e => console.log("Error retrieving matching questionnaire JSON from filesystem ", e));
       if (fileJson) {
         questionnaireJson = await client.create(fileJson, {
           headers: {
             "Content-Type": "application/fhir+json",
           },
-        }).catch(e => console.log("Error posting questionnaire ", e));
+        }).catch(e => console.log("Error storing questionnaire ", e));
       }
     }
     if (!questionnaireJson) {
