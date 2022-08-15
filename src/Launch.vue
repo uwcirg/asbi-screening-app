@@ -51,11 +51,10 @@ export default {
     })
       .then((result) => {
         if (!result.ok) {
-          throw Error(result.status);
+          throw new Error(result.status.toString());
         }
         return result.json();
       })
-      .catch((e) => (self.error = e))
       .then((json) => {
         if (patientId) {
           //only do this IF patient id comes from url queryString
@@ -73,7 +72,7 @@ export default {
         });
       })
       .catch((e) => {
-        self.error = e;
+        self.error = e.message ? e.message: e;
         console.log("launch error ", e);
       });
   },
