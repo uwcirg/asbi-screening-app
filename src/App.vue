@@ -4,7 +4,7 @@
     <Survey
       :client="client"
       :patient="patient"
-      :authError="error"
+      :authError="getError()"
       @finished="finished"
     />
   </v-app>
@@ -28,9 +28,7 @@ export default {
   },
   data() {
     return {
-      title: ENV_TITLE
-        ? ENV_TITLE
-        : DEFAULT_TITLE,
+      title: ENV_TITLE ? ENV_TITLE : DEFAULT_TITLE,
       client: null,
       patient: null,
       error: "",
@@ -65,7 +63,7 @@ export default {
       try {
         authClient = await FHIR.oauth2.ready();
       } catch (e) {
-        throw new Error("Auth error: " + e);
+        throw new Error(e);
       }
       return authClient;
     },
@@ -86,9 +84,16 @@ export default {
           return pt;
         });
       } catch (e) {
-        throw new Error("Unable to read patient info: " + e);
+        throw new Error(e);
       }
       return pt;
+    },
+    getError() {
+      if (typeof this.error === "object") {
+        if (this.error.message) return this.error.message;
+        return this.error.toString();
+      }
+      return this.error;
     },
     finished(data) {
       if (!data) return;

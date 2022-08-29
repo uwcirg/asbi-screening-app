@@ -61,7 +61,7 @@ export async function getScreeningInstrument(client) {
       }
     }
     if (!questionnaireJson) {
-      throw new Error("No matching questionnaire returned from the server.");
+      throw new Error("No matching questionnaire found.");
     }
     let elmJson;
     try {

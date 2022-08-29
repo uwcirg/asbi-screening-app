@@ -2,7 +2,7 @@
   <div id="surveyElement">
     <v-alert color="error" v-if="error" class="ma-4 pa-4" dark>
       Error loading the screener application. See console for detail.
-      <div v-html="error"></div>
+      <div v-html="getError()"></div>
     </v-alert>
     <survey v-if="!error && ready" :survey="survey" :css="themes"></survey>
     <div v-if="!error && !ready" class="ma-4 pa-4">
@@ -18,7 +18,7 @@
 <script>
 import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
-import { getScreeningInstrument} from "../util/screening-selector.js";
+import { getScreeningInstrument } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
 import {
@@ -87,7 +87,9 @@ export default {
     };
   },
   created() {
-    getInstrumentCSS().catch(e => console.log(`loading instrument css error: ${e}`));
+    getInstrumentCSS().catch((e) =>
+      console.log(`loading instrument css error: ${e}`)
+    );
   },
   methods: {
     init() {
@@ -168,7 +170,6 @@ export default {
           };
           // Send the cqlWorker an initial message containing the ELM JSON representation of the CQL expressions
           setupExecution(elmJson, valueSetJson, cqlParameters);
-
         })
         .catch((e) => {
           this.error = e;
@@ -214,7 +215,9 @@ export default {
       // Create our SurveyJS object from the FHIR Questionnaire
       var model = vueConverter(this.questionnaire, wrappedExpression, "modern");
 
-      var optionsKeys = this.questionnaire.name ? this.questionnaire.name.toUpperCase(): "default";
+      var optionsKeys = this.questionnaire.name
+        ? this.questionnaire.name.toUpperCase()
+        : "default";
 
       //SurveyJS settings
       var options = {
@@ -344,7 +347,7 @@ export default {
                 ],
               };
             }
-          }  
+          }
 
           // Need to reload the patient bundle since the responses have been updated
           cqlWorker.postMessage({ patientBundle: this.patientBundle });
@@ -372,6 +375,13 @@ export default {
           }
         }.bind(this)
       );
+    },
+    getError() {
+      if (typeof this.error === "object") {
+        if (this.error.message) return this.error.message;
+        return this.error.toString();
+      }
+      return this.error;
     },
     done() {
       this.$emit("finished", {
