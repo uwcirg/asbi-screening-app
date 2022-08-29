@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <Header :title="title" :patient="patient" v-if="ready"> </Header>
+    <Header :title="title" :patient="patient" v-if="ready"></Header>
     <Survey
       :client="client"
       :patient="patient"
@@ -15,9 +15,14 @@ import "survey-vue/modern.css";
 import "./style/app.scss";
 import Header from "./components/Header";
 import Survey from "./components/Survey";
-import { fetchEnvData, getEnv, queryPatientIdKey } from "./util/util";
+import {
+  fetchEnvData,
+  getEnv,
+  getErrorText,
+  queryPatientIdKey,
+} from "./util/util";
 
-const DEFAULT_TITLE = "Screening Instrument";
+const DEFAULT_TITLE = "Specify Screening Instrument";
 const ENV_TITLE = getEnv("VUE_APP_TITLE");
 
 export default {
@@ -89,11 +94,7 @@ export default {
       return pt;
     },
     getError() {
-      if (typeof this.error === "object") {
-        if (this.error.message) return this.error.message;
-        return this.error.toString();
-      }
-      return this.error;
+      return getErrorText(this.error);
     },
     finished(data) {
       if (!data) return;

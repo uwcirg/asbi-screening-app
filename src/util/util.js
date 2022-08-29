@@ -174,4 +174,13 @@ export function getEnvs() {
   };
 }
 
+export function getErrorText(error) {
+  if (!error) return "";
+  if (typeof error === "object") {
+    if (error.message) return error.message;
+    return error.toString();
+  }
+  return error;
+}
+
 export const queryPatientIdKey = "launch_queryPatientId";

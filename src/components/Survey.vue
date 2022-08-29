@@ -25,6 +25,7 @@ import {
   getCurrentISODate,
   getEnv,
   getEnvs,
+  getErrorText,
   getFHIRResourcePaths,
   getResponseValue,
 } from "../util/util.js";
@@ -377,11 +378,7 @@ export default {
       );
     },
     getError() {
-      if (typeof this.error === "object") {
-        if (this.error.message) return this.error.message;
-        return this.error.toString();
-      }
-      return this.error;
+      return getErrorText(this.error);
     },
     done() {
       this.$emit("finished", {
