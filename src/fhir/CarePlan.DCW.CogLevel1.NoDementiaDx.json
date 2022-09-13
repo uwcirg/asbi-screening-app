@@ -36,7 +36,7 @@
                     ],
                     "text": "Everyday Cognition (ECOG) 12 (short form) questionnaire"
                 },
-                "status": "active",
+                "status": "scheduled",
                 "scheduledTiming": {
                     "repeat": {
                         "frequency": 1,
@@ -61,7 +61,7 @@
                     ],
                     "text": "Mini-Cog"
                 },
-                "status": "active",
+                "status": "scheduled",
                 "scheduledTiming": {
                     "repeat": {
                         "frequency": 1,
