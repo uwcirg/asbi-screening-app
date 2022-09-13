@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar dark color="tertiary" elevation="1" app>
+  <v-app-bar header color="background" elevation="1" app>
     <div class="logo-container mr-1">
       <img
         :src="getLogoSrc()"
@@ -8,17 +8,17 @@
       />
     </div>
     <v-toolbar-title
-      class="text-h5 grey--text text--darken-4 font-weight-bold"
+      class="text-h5 secondary--text font-weight-bold"
       v-text="title"
     ></v-toolbar-title>
     <div class="ml-6">
       <div
-        class="text-subtitle-2 grey--text text--darken-4 text-overflow"
+        class="text-subtitle-2 secondary--text text-overflow"
         v-if="hasPatientName()"
         v-text="getPatientName()"
       ></div>
       <div
-        class="text-subtitle-2 grey--text text--darken-4 text-overflow"
+        class="text-subtitle-2 secondary--text text-overflow"
         v-text="getPatientDob()"
       ></div>
     </div>
