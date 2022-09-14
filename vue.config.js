@@ -1,14 +1,31 @@
 const path = require('path');
 const systemType = String(process.env.VUE_APP_SYSTEM_TYPE).toLowerCase();
 module.exports = {
-  chainWebpack: (config) => {
+  // chainWebpack: (config) => {
+  //   config.module
+  //     .rule("vue")
+  //     .use("vue-loader")
+  //     .tap((options) => {
+  //       options.compiler = require("vue-template-babel-compiler");
+  //       return options;
+  //     });
+  // },
+  chainWebpack: config => {
     config.module
-      .rule("vue")
-      .use("vue-loader")
-      .tap((options) => {
-        options.compiler = require("vue-template-babel-compiler");
-        return options;
-      });
+      .rule("supportChaining")
+      .test(/\.js$/)
+      .include.add(path.resolve("node_modules/questionnaire-to-survey"))
+      .end()
+      .use("babel-loader")
+      .loader("babel-loader")
+      .tap((options) => ({
+        ...options,
+        plugins: [
+          "@babel/plugin-proposal-optional-chaining",
+          "@babel/plugin-proposal-nullish-coalescing-operator"
+        ],
+      }))
+      .end();
   },
   configureWebpack: {
     devtool: systemType === "development" ? "source-map" : "",
@@ -47,5 +64,5 @@ module.exports = {
     index: "./src/main.js",
     launch: "./src/launch.js",
   },
-  transpileDependencies: ["vuetify", "questionnaire-to-survey"],
+  transpileDependencies: ["vuetify"],
 };
