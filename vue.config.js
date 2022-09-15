@@ -1,15 +1,6 @@
 const path = require('path');
 const systemType = String(process.env.VUE_APP_SYSTEM_TYPE).toLowerCase();
 module.exports = {
-  // chainWebpack: (config) => {
-  //   config.module
-  //     .rule("vue")
-  //     .use("vue-loader")
-  //     .tap((options) => {
-  //       options.compiler = require("vue-template-babel-compiler");
-  //       return options;
-  //     });
-  // },
   chainWebpack: config => {
     config.module
       .rule("supportChaining")

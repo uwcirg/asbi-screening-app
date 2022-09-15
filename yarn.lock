@@ -7885,7 +7885,7 @@ querystringify@^2.1.1:
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
 
-questionnaire-to-survey@2.3.3:
+questionnaire-to-survey@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/questionnaire-to-survey/-/questionnaire-to-survey-2.3.3.tgz#16f36651f413faf1d2377dccf484d129967402f9"
   integrity sha512-jCHIEQBuiEDDxUyBUynQAxMZ4QgcLup5pW+Lei0NQ7fYFSq8wH5rIwtltsNTCA7tPQkJAtJ9vVpkGjz6Z5LoOw==

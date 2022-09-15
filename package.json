@@ -14,7 +14,7 @@
     "cql-exec-vsac": "^1.2.2",
     "cql-worker": "^1.1.4",
     "fhirclient": "^2.3.11",
-    "questionnaire-to-survey": "2.3.3",
+    "questionnaire-to-survey": "^2.3.3",
     "survey-vue": "~1.8.79",
     "survey-vue-ui": "^1.9.49",
     "temp": "^0.9.1",
