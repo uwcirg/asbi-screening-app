@@ -37,11 +37,8 @@ import { FunctionFactory, Model, Serializer, StylesManager } from "survey-vue";
 // Define a web worker for evaluating CQL expressions
 const cqlWorker = new Worker();
 // Initialize the cql-worker
-let [
-  setupExecution,
-  sendPatientBundle,
-  evaluateExpression,
-] = initialzieCqlWorker(cqlWorker);
+let [setupExecution, sendPatientBundle, evaluateExpression] =
+  initialzieCqlWorker(cqlWorker);
 
 // Define the survey component for Vue
 export default {
@@ -204,7 +201,7 @@ export default {
       // call `this.returnResult(result)` when it completes. Here we create a wrapper
       // calls `returnResult()` when the promise resolves.
       // See: https://surveyjs.io/Examples/Library/?id=questiontype-expression-async#content-js
-      let wrappedExpression = function(expression) {
+      let wrappedExpression = function (expression) {
         let self = this;
         // For some reason SurveyJS wraps `expression` in an array
         evaluateExpression(expression[0]).then((result) => {
@@ -305,7 +302,7 @@ export default {
     },
     getSurveyQuestionValidator() {
       if (!this.surveyOptions || !this.surveyOptions.questionValidator)
-        return function() {};
+        return function () {};
       return this.surveyOptions.questionValidator;
     },
     initializeSurveyObjEvents() {
@@ -314,7 +311,7 @@ export default {
 
       // Add an event listener which updates questionnaireResponse based upon user responses
       this.survey.onValueChanging.add(
-        function(sender, options) {
+        function (sender, options) {
           // We don't want to modify anything if the survey has been submitted/completed.
           if (sender.isCompleted == true) return;
           if (options.value != null) {
@@ -358,14 +355,13 @@ export default {
               };
             }
           }
-
           // Need to reload the patient bundle since the responses have been updated
           cqlWorker.postMessage({ patientBundle: this.patientBundle });
         }.bind(this)
       );
       // Add a handler which will fire when the Questionnaire is submittedc
       this.survey.onComplete.add(
-        function() {
+        function () {
           // Mark the QuestionnaireResponse as completed
           this.questionnaireResponse.status = "completed";
 
