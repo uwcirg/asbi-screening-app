@@ -5,6 +5,9 @@ module.exports = {
     config.module
       .rule("supportChaining")
       .test(/\.js$/)
+      // questionnaire-to-survey as of version 2.3.1 introduces ES2020 syntax, optional-chaining and nullish-coalescing-operator
+      // not supported by Vue 2, looks like supported in Vue 3, TODO upgrade Vue version
+      // for now, add babel plugins to correctly transpile those
       .include.add(path.resolve("node_modules/questionnaire-to-survey"))
       .end()
       .use("babel-loader")
@@ -13,7 +16,7 @@ module.exports = {
         ...options,
         plugins: [
           "@babel/plugin-proposal-optional-chaining",
-          "@babel/plugin-proposal-nullish-coalescing-operator"
+          "@babel/plugin-proposal-nullish-coalescing-operator",
         ],
       }))
       .end();
