@@ -1,42 +1,89 @@
+#!/usr/bin/env python3
+
 import json
 import os
 import requests
-from flask import abort, current_app
-
-from carl.modules.factories import deserialize_resource
+import argparse
 
 
-def load_files():
-    """Feed FHIR_SERVER_URL all `.json` files found in `serialized` directory"""
-    fhir_url = current_app.config["FHIR_SERVER_URL"]
-    if not fhir_url:
-        current_app.logger.warn(
-            "No config set for FHIR_SERVER_URL, can't load serialized data"
-        )
-        return
+def setup_args():
+    # Usage message is the module's docstring.
 
-    base_dir = os.path.join(current_app.root_path, "serialized")
+    parser = argparse.ArgumentParser(epilog=__doc__)
+    parser.add_argument("--verbose", action="store_true", help="increase verbosity")
+    parser.add_argument(
+        "fhir_server_url", action="store", nargs=1, help="FHIR server base URL"
+    )
+    parser.add_argument(
+        "fhir_files",
+        action="store",
+        nargs="*",
+        default=None,
+        help="fhir JSON files to upload",
+    )
+    args = parser.parse_args()
+    return args
+
+
+def find_files(path):
+    """Find all possible FHIR files in the script path"""
     for fname in (
-        fname for fname in os.scandir(base_dir) if fname.name.lower().endswith(".json")
+        fname for fname in os.scandir(path) if fname.name.lower().endswith(".json")
     ):
-        with open(fname.path) as fhir:
+        yield fname
+
+
+def bundle_files(fhir_resources):
+    """Combine individual FHIR resources into a single transaction Bundle"""
+    tx_bundle = {
+        "resourceType": "Bundle",
+        # "id": "TBD",
+        "type": "transaction",
+        "entry": [],
+    }
+
+    for fhir_resource in fhir_resources:
+        resource_skel = {"request": {"method": "PUT", "url": ""}, "resource": {}}
+
+        resource_skel.update(
+            {
+                "request": {"url": fhir_resource["resourceType"],"method": "PUT"},
+                "resource": fhir_resource,
+            }
+        )
+
+        tx_bundle["entry"].append(resource_skel)
+    return tx_bundle
+
+
+def load_files(fhir_url, fhir_files):
+    fhir_resources = []
+    for fhir_file in fhir_files:
+        with open(fhir_file, "r") as fhir:
             try:
-                data = json.loads(fhir.read())
+                resource = json.loads(fhir.read())
             except json.decoder.JSONDecodeError as je:
-                current_app.logger.error(f"{fname.path} contains invalid JSON")
-                current_app.logger.exception(je)
-                abort(400, f"Error in bootstrap, can't process {fname.path}")
+                print(f"{fhir_file.path} contains invalid JSON")
+                exit(1)
+        fhir_resources.append(resource)
+    tx_bundle = bundle_files(fhir_resources)
+    response = requests.post(fhir_url, json=tx_bundle, timeout=30)
+    print(response.content)
+    response.raise_for_status()
 
-            endpoint = fhir_url
-            if data["resourceType"] != "Bundle":
-                # For non bundles, PUT with search parameters to avoid
-                # duplicate resource creation
-                resource = deserialize_resource(data)
-                endpoint += resource.search_url()
 
-            current_app.logger.info(f"PUT {fname.name} to {endpoint}")
-            response = requests.put(endpoint, json=data, timeout=30)
-            current_app.logger.info(
-                f"status {response.status_code}, text {response.text}"
-            )
-            response.raise_for_status()
+
+def main():
+    print("started")
+    args = setup_args()
+
+    script_path = os.path.dirname(os.path.realpath(__file__))
+
+    print(args)
+    fhir_files = args.fhir_files or set(find_files(script_path))
+    load_files(args.fhir_server_url[0], fhir_files)
+
+
+# run script if invoked directly
+if __name__ == "__main__":
+    main()
