@@ -43,11 +43,20 @@ def bundle_files(fhir_resources):
     }
 
     for fhir_resource in fhir_resources:
+        if "id" not in fhir_resource:
+            print("skipping: ", fhir_resource)
+            continue
+
         resource_skel = {"request": {"method": "PUT", "url": ""}, "resource": {}}
 
         resource_skel.update(
             {
-                "request": {"url": fhir_resource["resourceType"],"method": "PUT"},
+                "request": {
+                    "url": "{}/{}".format(
+                        fhir_resource["resourceType"], fhir_resource["id"]
+                    ),
+                    "method": "PUT",
+                },
                 "resource": fhir_resource,
             }
         )
@@ -70,7 +79,6 @@ def load_files(fhir_url, fhir_files):
     response = requests.post(fhir_url, json=tx_bundle, timeout=30)
     print(response.content)
     response.raise_for_status()
-
 
 
 def main():
