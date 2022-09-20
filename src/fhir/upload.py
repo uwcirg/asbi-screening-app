@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+"""Util to upload all given, or available FHIR resources to the given FHIR server"""
 import json
 import os
 import requests
