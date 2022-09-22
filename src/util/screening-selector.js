@@ -10,7 +10,7 @@ export async function getScreeningInstrument(client, patientId) {
     if (carePlan && carePlan.entry && carePlan.entry.length) {
       const resources = carePlan.entry;
       // TODO: need to figure out which one is the next questionnaire to do
-      // For now, assumming the first one is the next questionnaire to do?
+      // For now, assumming the first one in the activity array is the next questionnaire to do?
       if (resources.length) {
         const activities = resources[0].resource? resources[0].resource.activity: null;
         if (activities) {
