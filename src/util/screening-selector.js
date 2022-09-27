@@ -56,17 +56,20 @@ export async function getScreeningInstrument(client, patientId) {
     return [questionnaireNidaQs, elmJsonNidaQs, valueSetJson];
   } else {
     let libId = screeningInstrument.toUpperCase();
-    // load questionnaire from FHIR server
-    const qSearch = await client
+    const searchData = await Promise.all([
       // look up the questionnaire based on whether the id or the name attribute matches the specified instrument id?
-      .request("/Questionnaire?name:contains="+screeningInstrument)
-      .catch((e) => {
-        throw new Error(`Error retrieving questionnaire: ${e}`);
-      });
+      client.request("/Questionnaire/?_id=" + screeningInstrument),
+      client.request("/Questionnaire?name:contains=" + screeningInstrument),
+    ])
+    .catch((e) => {
+      throw new Error(`Error retrieving questionnaire from SoF host server: ${e}`);
+    });
     let questionnaireJson;
-    if (qSearch && qSearch.entry && qSearch.entry.length > 0) {
-      questionnaireJson = qSearch.entry[0].resource;
-    } else {
+    const qResults = searchData.filter((q) => q.entry && q.entry.length > 0);
+    if (qResults.length) {
+      questionnaireJson = qResults[0].entry[0].resource;
+    }
+    if (!questionnaireJson) {
       // load from file and post it
       const fileJson = await import(
         `../fhir/Questionnaire-${screeningInstrument.toUpperCase()}.json`
