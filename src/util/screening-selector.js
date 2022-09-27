@@ -59,7 +59,7 @@ export async function getScreeningInstrument(client, patientId) {
     // load questionnaire from FHIR server
     const qSearch = await client
       // look up the questionnaire based on whether the id or the name attribute matches the specified instrument id?
-      .request("/Questionnaire?_id|name:contains="+screeningInstrument)
+      .request("/Questionnaire?_id="+screeningInstrument+"|name:contains="+screeningInstrument)
       .catch((e) => {
         throw new Error(`Error retrieving questionnaire: ${e}`);
       });
