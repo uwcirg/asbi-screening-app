@@ -44,7 +44,7 @@ def bundle_files(fhir_resources):
 
     for fhir_resource in fhir_resources:
         if "id" not in fhir_resource:
-            print("skipping: ", fhir_resource)
+            print("resource ID missing; skipping: ", fhir_resource)
             continue
 
         resource_skel = {"request": {"method": "PUT", "url": ""}, "resource": {}}
