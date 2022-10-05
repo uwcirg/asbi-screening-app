@@ -92,9 +92,9 @@ export async function getScreeningInstrument(client, patientId) {
       );
     } catch (e) {
       console.log("error ", e);
-      throw new Error(
-        "Error loading ELM library. Unsupported ELM library may have been specified " + e
-      );
+      // throw new Error(
+      //   "Error loading ELM library. Unsupported ELM library may have been specified " + e
+      // );
     }
     return [questionnaireJson, elmJson, valueSetJson];
   }
