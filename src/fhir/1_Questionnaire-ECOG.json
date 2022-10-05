@@ -1,4 +1,7 @@
 {
+  "resourceType": "Questionnaire",
+  "id": "CIRG-ECOG-SELF-REPORT",
+  "name": "ECOG-SELF-REPORT",
   "code": [
     {
       "code": "89133-3",
@@ -6,7 +9,6 @@
     }
   ],
   "title": "Everyday Cognition - Participant Self Report Form [ECog]",
-  "resourceType": "Questionnaire",
   "status": "active",
   "meta": {
     "profile": [
@@ -25,21 +27,6 @@
         {
           "code": "89174-7",
           "display": "Before we get started...Are you concerned that you have a memory or other thinking problem?"
-        }
-      ],
-      "extension": [
-        {
-          "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "system": "http://hl7.org/fhir/questionnaire-item-control",
-                "code": "drop-down",
-                "display": "Drop down"
-              }
-            ],
-            "text": "Drop down"
-          }
         }
       ],
       "required": false,
@@ -78,21 +65,6 @@
             {
               "code": "89152-3",
               "display": "Compared to 10 years ago, has there been any change in remembering a few shopping items without a list."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -185,21 +157,6 @@
               "display": "Compared to 10 years ago, has there been any change in remembering things that happened recently (such as recent outings, events in the news)."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89286-9/89147-3",
           "text": "Compared to 10 years ago, has there been any change in remembering things that happened recently (such as recent outings, events in the news).",
@@ -288,21 +245,6 @@
             {
               "code": "89153-1",
               "display": "Compared to 10 years ago, has there been any change in recalling conversations a few days later."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -395,21 +337,6 @@
               "display": "Compared to 10 years ago, has there been any change in remembering where I have placed objects."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89286-9/89146-5",
           "text": "Compared to 10 years ago, has there been any change in remembering where I have placed objects.",
@@ -498,21 +425,6 @@
             {
               "code": "89145-7",
               "display": "Compared to 10 years ago, has there been any change in repeating stories and/or questions."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -605,21 +517,6 @@
               "display": "Compared to 10 years ago, has there been any change in remembering the current date or day of the week."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89286-9/89149-9",
           "text": "Compared to 10 years ago, has there been any change in remembering the current date or day of the week.",
@@ -710,21 +607,6 @@
               "display": "Compared to 10 years ago, has there been any change in remembering I have already told someone something."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89286-9/89150-7",
           "text": "Compared to 10 years ago, has there been any change in remembering I have already told someone something.",
@@ -813,21 +695,6 @@
             {
               "code": "89151-5",
               "display": "Compared to 10 years ago, has there been any change in remembering appointments, meetings, or engagements."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -934,21 +801,6 @@
               "display": "Compared to 10 years ago, has there been any change in forgetting the names of objects."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89287-7/89160-6",
           "text": "Compared to 10 years ago, has there been any change in forgetting the names of objects.",
@@ -1037,21 +889,6 @@
             {
               "code": "89135-8",
               "display": "Compared to 10 years ago, has there been any change in verbally giving instructions to others."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -1144,21 +981,6 @@
               "display": "Compared to 10 years ago, has there been any change in finding the right words to use in a conversation."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89287-7/89163-0",
           "text": "Compared to 10 years ago, has there been any change in finding the right words to use in a conversation.",
@@ -1247,21 +1069,6 @@
             {
               "code": "89172-1",
               "display": "Compared to 10 years ago, has there been any change in communicating thoughts in a conversation."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -1354,21 +1161,6 @@
               "display": "Compared to 10 years ago, has there been any change in following a story in a book or on TV."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89287-7/89161-4",
           "text": "Compared to 10 years ago, has there been any change in following a story in a book or on TV.",
@@ -1457,21 +1249,6 @@
             {
               "code": "89137-4",
               "display": "Compared to 10 years ago, has there been any change in understanding the point of what other people are trying to say."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -1564,21 +1341,6 @@
               "display": "Compared to 10 years ago, has there been any change in remembering the meaning of common words."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89287-7/89148-1",
           "text": "Compared to 10 years ago, has there been any change in remembering the meaning of common words.",
@@ -1669,21 +1431,6 @@
               "display": "Compared to 10 years ago, has there been any change in describing a program I have watched on TV."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89287-7/89170-5",
           "text": "Compared to 10 years ago, has there been any change in describing a program I have watched on TV.",
@@ -1772,21 +1519,6 @@
             {
               "code": "89138-2",
               "display": "Compared to 10 years ago, has there been any change in understanding spoken directions or instructions."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -1893,21 +1625,6 @@
               "display": "Compared to 10 years ago, has there been any change in following a map to find a new location."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89288-5/89162-2",
           "text": "Compared to 10 years ago, has there been any change in following a map to find a new location.",
@@ -1996,21 +1713,6 @@
             {
               "code": "89154-9",
               "display": "Compared to 10 years ago, has there been any change in reading a map and helping with directions when someone else is driving."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -2103,21 +1805,6 @@
               "display": "Compared to 10 years ago, has there been any change in finding my car in a parking lot."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89288-5/89168-9",
           "text": "Compared to 10 years ago, has there been any change in finding my car in a parking lot.",
@@ -2206,21 +1893,6 @@
             {
               "code": "89164-8",
               "display": "Compared to 10 years ago, has there been any change in finding my way back to a meeting spot in the mall or other location."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -2313,21 +1985,6 @@
               "display": "Compared to 10 years ago, has there been any change in finding my way around a familiar neighborhood."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89288-5/89167-1",
           "text": "Compared to 10 years ago, has there been any change in finding my way around a familiar neighborhood.",
@@ -2418,21 +2075,6 @@
               "display": "Compared to 10 years ago, has there been any change in finding my way around a familiar store."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89288-5/89166-3",
           "text": "Compared to 10 years ago, has there been any change in finding my way around a familiar store.",
@@ -2521,21 +2163,6 @@
             {
               "code": "89165-5",
               "display": "Compared to 10 years ago, has there been any change in finding my way around a house visited many times."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -2642,21 +2269,6 @@
               "display": "Compared to 10 years ago, has there been any change in planning a sequence of stops on a shopping trip."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89289-3/89156-4",
           "text": "Compared to 10 years ago, has there been any change in planning a sequence of stops on a shopping trip.",
@@ -2745,21 +2357,6 @@
             {
               "code": "89143-2",
               "display": "Compared to 10 years ago, has there been any change in the ability to anticipate weather changes and plan accordingly (i.e. bring a coat or umbrella)."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -2852,21 +2449,6 @@
               "display": "Compared to 10 years ago, has there been any change in developing a schedule in advance of anticipated events."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89289-3/89169-7",
           "text": "Compared to 10 years ago, has there been any change in developing a schedule in advance of anticipated events.",
@@ -2957,21 +2539,6 @@
               "display": "Compared to 10 years ago, has there been any change in thinking things through before acting."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89289-3/89139-0",
           "text": "Compared to 10 years ago, has there been any change in thinking things through before acting.",
@@ -3060,21 +2627,6 @@
             {
               "code": "89140-8",
               "display": "Compared to 10 years ago, has there been any change in thinking ahead."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -3181,21 +2733,6 @@
               "display": "Compared to 10 years ago, has there been any change in keeping living and work space organized."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89290-1/89158-0",
           "text": "Compared to 10 years ago, has there been any change in keeping living and work space organized.",
@@ -3284,21 +2821,6 @@
             {
               "code": "89173-9",
               "display": "Compared to 10 years ago, has there been any change in balancing the checkbook without error."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -3391,21 +2913,6 @@
               "display": "Compared to 10 years ago, has there been any change in keeping financial records organized."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89290-1/89159-8",
           "text": "Compared to 10 years ago, has there been any change in keeping financial records organized.",
@@ -3494,21 +3001,6 @@
             {
               "code": "89155-6",
               "display": "Compared to 10 years ago, has there been any change in prioritizing tasks by importance."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -3601,21 +3093,6 @@
               "display": "Compared to 10 years ago, has there been any change in keeping mail and papers organized."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89290-1/89157-2",
           "text": "Compared to 10 years ago, has there been any change in keeping mail and papers organized.",
@@ -3704,21 +3181,6 @@
             {
               "code": "89136-6",
               "display": "Compared to 10 years ago, has there been any change in using an organized strategy to manage a medication schedule involving multiple medications."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -3825,21 +3287,6 @@
               "display": "Compared to 10 years ago, has there been any change in the ability to do two things at once."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89285-1/89141-6",
           "text": "Compared to 10 years ago, has there been any change in the ability to do two things at once.",
@@ -3928,21 +3375,6 @@
             {
               "code": "89144-0",
               "display": "Compared to 10 years ago, has there been any change in returning to a task after being interrupted."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
@@ -4035,21 +3467,6 @@
               "display": "Compared to 10 years ago, has there been any change in the ability to concentrate on a task without being distracted by external things in the environment."
             }
           ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
-            }
-          ],
           "required": false,
           "linkId": "/89285-1/89142-4",
           "text": "Compared to 10 years ago, has there been any change in the ability to concentrate on a task without being distracted by external things in the environment.",
@@ -4138,21 +3555,6 @@
             {
               "code": "89171-3",
               "display": "Compared to 10 years ago, has there been any change in cooking or working and talking at the same time."
-            }
-          ],
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "coding": [
-                  {
-                    "system": "http://hl7.org/fhir/questionnaire-item-control",
-                    "code": "drop-down",
-                    "display": "Drop down"
-                  }
-                ],
-                "text": "Drop down"
-              }
             }
           ],
           "required": false,
