@@ -37,11 +37,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
+              "valueString": "1"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 0
+              "valueDecimal": 1
             }
           ],
           "valueCoding": {
@@ -53,11 +53,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
+              "valueString": "0"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 1
+              "valueDecimal": 0
             }
           ],
           "valueCoding": {
@@ -221,11 +221,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
+              "valueString": "1"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 0
+              "valueDecimal": 1
             }
           ],
           "valueCoding": {
@@ -237,11 +237,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
+              "valueString": "0"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 1
+              "valueDecimal": 0
             }
           ],
           "valueCoding": {
@@ -313,11 +313,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
+              "valueString": "1"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 0
+              "valueDecimal": 1
             }
           ],
           "valueCoding": {
@@ -329,11 +329,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
+              "valueString": "0"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 1
+              "valueDecimal": 0
             }
           ],
           "valueCoding": {
@@ -497,11 +497,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
+              "valueString": "1"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 0
+              "valueDecimal": 1
             }
           ],
           "valueCoding": {
@@ -513,11 +513,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
+              "valueString": "0"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 1
+              "valueDecimal": 0
             }
           ],
           "valueCoding": {
@@ -589,11 +589,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "0"
+              "valueString": "1"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 0
+              "valueDecimal": 1
             }
           ],
           "valueCoding": {
@@ -605,11 +605,11 @@
           "extension": [
             {
               "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-optionPrefix",
-              "valueString": "1"
+              "valueString": "0"
             },
             {
               "url": "http://hl7.org/fhir/StructureDefinition/ordinalValue",
-              "valueDecimal": 1
+              "valueDecimal": 0
             }
           ],
           "valueCoding": {
@@ -722,26 +722,22 @@
       "required": false,
       "linkId": "/48545-8",
       "text": "Geriatric depression scale.short version total",
-      "item": [
+      "extension": [
         {
-          "text": "Cummulative score of answers to 15 questions is rated on a scoring grid. The grid sets a range of 0-4 as \"normal, depending on age, education, complaints\", 5-8 as \"mildly depressed\", 8-11 as \"moderately depressed\" and 12-15 as \"severely depressed\"",
-          "type": "display",
-          "linkId": "/48545-8-help",
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "text": "Help-Button",
-                "coding": [
-                  {
-                    "code": "help",
-                    "display": "Help-Button",
-                    "system": "http://hl7.org/fhir/questionnaire-item-control"
-                  }
-                ]
-              }
-            }
-          ]
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullGds",
+            "reference": "#GDSLogicLibrary|1.0"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullGds",
+            "reference": "#GDSLogicLibrary|1.0"
+          }
         }
       ]
     }
