@@ -22,8 +22,8 @@ code "Gds Total Score code": '48545-8' from "LOCAL" display 'Gds Total Score'
 // PARAMETERS
 // -----------------------------------------------------------------------------
 parameter DisplayScreeningScores default true
-parameter QuestionnaireName default 'Gds'
-parameter QuestionnaireURL default 'http://www.cdc.gov/ncbddd/fasd/gad7'
+parameter QuestionnaireName default 'gds'
+parameter QuestionnaireURL default 'http://www.cdc.gov/ncbddd/fasd/gds'
 
 define question1LinkId: '/48512-8'
 define question2LinkId: '/48513-6'
@@ -78,8 +78,8 @@ define GDSQuestionnaire:
   singleton from ([Questionnaire] Q
     where (
       Q.url.value = CurrentQuestionnaireURL or
-      PositionOf(QuestionnaireName, Q.id) != -1 or
-      Q.name = QuestionnaireName
+      PositionOf(Lower(QuestionnaireName), Lower(Q.id)) != -1 or
+      Lower(Q.name) = Lower(QuestionnaireName)
     ))
 
 // Extract of the link IDs of each item in the Questionnaire

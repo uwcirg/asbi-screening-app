@@ -43,7 +43,7 @@
             "accessLevel" : "Public",
             "default" : {
                "valueType" : "{urn:hl7-org:elm-types:r1}String",
-               "value" : "Gds",
+               "value" : "gds",
                "type" : "Literal"
             }
          }, {
@@ -51,7 +51,7 @@
             "accessLevel" : "Public",
             "default" : {
                "valueType" : "{urn:hl7-org:elm-types:r1}String",
-               "value" : "http://www.cdc.gov/ncbddd/fasd/gad7",
+               "value" : "http://www.cdc.gov/ncbddd/fasd/gds",
                "type" : "Literal"
             }
          } ]
@@ -386,18 +386,24 @@
                               "operand" : [ {
                                  "type" : "PositionOf",
                                  "pattern" : {
-                                    "name" : "QuestionnaireName",
-                                    "type" : "ParameterRef"
+                                    "type" : "Lower",
+                                    "operand" : {
+                                       "name" : "QuestionnaireName",
+                                       "type" : "ParameterRef"
+                                    }
                                  },
                                  "string" : {
-                                    "name" : "ToString",
-                                    "libraryName" : "FHIRHelpers",
-                                    "type" : "FunctionRef",
-                                    "operand" : [ {
-                                       "path" : "id",
-                                       "scope" : "Q",
-                                       "type" : "Property"
-                                    } ]
+                                    "type" : "Lower",
+                                    "operand" : {
+                                       "name" : "ToString",
+                                       "libraryName" : "FHIRHelpers",
+                                       "type" : "FunctionRef",
+                                       "operand" : [ {
+                                          "path" : "id",
+                                          "scope" : "Q",
+                                          "type" : "Property"
+                                       } ]
+                                    }
                                  }
                               }, {
                                  "type" : "Negate",
@@ -412,17 +418,23 @@
                      }, {
                         "type" : "Equal",
                         "operand" : [ {
-                           "name" : "ToString",
-                           "libraryName" : "FHIRHelpers",
-                           "type" : "FunctionRef",
-                           "operand" : [ {
-                              "path" : "name",
-                              "scope" : "Q",
-                              "type" : "Property"
-                           } ]
+                           "type" : "Lower",
+                           "operand" : {
+                              "name" : "ToString",
+                              "libraryName" : "FHIRHelpers",
+                              "type" : "FunctionRef",
+                              "operand" : [ {
+                                 "path" : "name",
+                                 "scope" : "Q",
+                                 "type" : "Property"
+                              } ]
+                           }
                         }, {
-                           "name" : "QuestionnaireName",
-                           "type" : "ParameterRef"
+                           "type" : "Lower",
+                           "operand" : {
+                              "name" : "QuestionnaireName",
+                              "type" : "ParameterRef"
+                           }
                         } ]
                      } ]
                   }

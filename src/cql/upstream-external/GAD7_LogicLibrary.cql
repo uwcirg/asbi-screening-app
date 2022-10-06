@@ -71,8 +71,8 @@ define Gad7Questionnaire:
   singleton from ([Questionnaire] Q
     where (
       Q.url.value = CurrentQuestionnaireURL or
-      PositionOf(QuestionnaireName, Q.id) != -1 or
-      Q.name = QuestionnaireName
+      PositionOf(Lower(QuestionnaireName), Lower(Q.id)) != -1 or
+      Lower(Q.name) = Lower(QuestionnaireName)
     ))
 
 // Extract of the link IDs of each item in the Questionnaire
