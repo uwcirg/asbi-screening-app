@@ -27,7 +27,8 @@ import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
 import {
   getScreeningInstrument,
-  setSessionInstrumentList
+  removeSessionInstrumentList,
+  setSessionInstrumentList,
 } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
@@ -405,9 +406,9 @@ export default {
                 },
               })
               .then(() => {
-                setSessionInstrumentList(this.sessionKey, removeArrayItem(this.currentQuestionnaireList, this.currentQuestionnaireId));
                 options.showDataSavingSuccess();
                 options.showDataSavingClear();
+                this.handleAdvanceQuestionnaireList();
                 this.savingDialog = this.currentQuestionnaireList.length > 0;
                 if(this.currentQuestionnaireList.length) {
                   this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
@@ -418,7 +419,7 @@ export default {
                 this.savingDialog = false;
                 console.log(e);
               });
-          } else setSessionInstrumentList(this.sessionKey, removeArrayItem( this.currentQuestionnaireList, this.currentQuestionnaireId))
+          } else this.handleAdvanceQuestionnaireList();
           if (this.isDevelopment()) {
             console.log(
               "questionnaire responses ",
@@ -427,6 +428,12 @@ export default {
           }
         }.bind(this)
       );
+    },
+    handleAdvanceQuestionnaireList() {
+      setSessionInstrumentList(this.sessionKey, removeArrayItem(this.currentQuestionnaireList, this.currentQuestionnaireId));
+      if (this.currentQuestionnaireList.length === 0) {
+        removeSessionInstrumentList(this.sessionKey);
+      }
     },
     getError() {
       return getErrorText(this.error);

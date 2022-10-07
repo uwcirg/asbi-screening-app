@@ -69,6 +69,9 @@ export function getSessionInstrumentList(key) {
   if (!storedItem) return false;
   return JSON.parse(storedItem);
 }
+export function removeSessionInstrumentList(key) {
+  sessionStorage.removeItem(`${key}_qList`);
+}
 
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument(client, patientId) {
