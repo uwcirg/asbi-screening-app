@@ -42,11 +42,13 @@ export function getInstrumentListFromCarePlan(carePlan) {
 }
 
 export async function getInstrumentList(client, patientId) {
+  // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
   const key = client.getState().key;
+  // if questionnaire list is already stored within a session variable, returns it
   const sessionList = getSessionInstrumentList(key);
-  console.log("key ", key, " sessionList ", typeof sessionList)
   if (sessionList) return sessionList;
+  // get questionnaire(s) from care plan
   const carePlan = await client.request(
     `CarePlan?subject=Patient/${patientId}&_sort=-_lastUpdated`
   );
@@ -54,7 +56,6 @@ export async function getInstrumentList(client, patientId) {
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the environment variable
   if (!instrumentList || !instrumentList.length) {
-    console.log("should get here ");
     instrumentList = getEnvInstrumentList();
   }
   return instrumentList;
@@ -75,8 +76,8 @@ export async function getScreeningInstrument(client, patientId) {
   const instrumentList = await getInstrumentList(client, patientId).catch((e) =>
     console.log("Error getting instrument list ", e)
   );
-  console.log("Instrument list ? ", instrumentList)
   if (!instrumentList || !instrumentList.length) {
+    // TODO need to figure out if no questionnaire to administer is due to whether the user has completed all the survey(s)
     return [];
   }
   setSessionInstrumentList(client.getState().key, instrumentList);
