@@ -4,7 +4,7 @@ import { getEnv } from "./util.js";
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
   console.log("instruments from environment ", envList);
-  return envList.split(",");
+  return envList.split(",").map(item => item.trim());
 }
 
 export function getInstrumentListFromCarePlan(carePlan) {
