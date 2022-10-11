@@ -31,6 +31,7 @@ export function getInstrumentListFromCarePlan(carePlan) {
     ) {
       // instantiatesCanonical is in the form of Questionnaire/[questionnaire id]
       const qId = a.detail.instantiatesCanonical[0].split("/")[1];
+      // 
       if (qId && instrumentList.indexOf(qId) === -1) instrumentList.push(qId);
     }
   });
@@ -49,6 +50,7 @@ export async function getInstrumentList(client, patientId) {
   const sessionList = getSessionInstrumentList(key);
   if (sessionList) return sessionList;
   // get questionnaire(s) from care plan
+  // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
   const carePlan = await client.request(
     `CarePlan?subject=Patient/${patientId}&_sort=-_lastUpdated`
   );
@@ -111,10 +113,11 @@ export async function getScreeningInstrument(client, patientId) {
     return [questionnaireNidaQs, elmJsonNidaQs, valueSetJson];
   } else {
     let libId = screeningInstrument.toUpperCase();
+    const nameSearchString = screeningInstrument.split("-").join(",");
     const searchData = await Promise.all([
       // look up the questionnaire based on whether the id or the name attribute matches the specified instrument id?
       client.request("/Questionnaire/?_id=" + screeningInstrument),
-      client.request("/Questionnaire?name:contains=" + screeningInstrument),
+      client.request("/Questionnaire?name:contains=" + nameSearchString),
     ]).catch((e) => {
       throw new Error(
         `Error retrieving questionnaire from SoF host server: ${e}`
