@@ -200,11 +200,7 @@ export default {
               getEnv("VUE_APP_DISPLAY_SCREENING_SCORES").toLowerCase() ===
               "true",
             QuestionnaireURL: this.getQuestionnaireURL(),
-<<<<<<< HEAD
             QuestionnaireName: questionnaire.name
-=======
-            QuestionnaireName: questionnaire.name,
->>>>>>> 946b69648f7aaeb6133252a540d345cb7c217734
           };
           // Send the cqlWorker an initial message containing the ELM JSON representation of the CQL expressions
           setupExecution(elmJson, valueSetJson, cqlParameters);
