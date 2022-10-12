@@ -1,5 +1,5 @@
 #!/bin/sh
-set -eu
+set -e
 
 repo_path="$(cd "$(dirname "$0")" && pwd)"
 cmdname="$(basename "$0")"
