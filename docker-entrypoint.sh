@@ -35,6 +35,17 @@ write_env_to_json() {
 write_env_to_json /usr/share/nginx/html/env.json
 
 
+# TODO remove when FHIR resources are PUT after SoF launch
+if [ -n "$FHIR_SERVER" ]; then
+    echo Uploading files:
+    find /var/opt
+    # run python upload script
+    /var/opt/upload.py "$FHIR_SERVER"
+else
+    echo FHIR_SERVER not set, skipping file upload
+fi
+
+
 echo $cmdname complete
 echo executing given command $@
 exec "$@"
