@@ -1,4 +1,4 @@
-# test all answers with option 1 to make sure all have a correct value of 1 for each
+# test all answers question 1, 5, 7, 11, 13 should be 0, coz 1 point for answering NO for those questions
 ---
 name: GDS Total Score
 externalData:
@@ -102,4 +102,4 @@ data:
 results:
   GDSQuestionnaire: $should exist
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
-  ScoreFullGds: 15 # total score
+  ScoreFullGds: 10 # total score
