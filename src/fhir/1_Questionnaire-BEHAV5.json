@@ -266,6 +266,30 @@
       "type": "text",
       "linkId": "behav-7",
       "text": "Other behaviors"
+    },
+    {
+      "type": "decimal",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullBehav5",
+            "reference": "#BEHAV5LogicLibrary|1.0"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullBehav5",
+            "reference": "#BEHAV5LogicLibrary|1.0"
+          }
+        }
+      ],
+      "required": false,
+      "linkId": "behav-8",
+      "text": "BEHAV5 total score"
     }
   ]
 }
