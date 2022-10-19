@@ -1451,15 +1451,19 @@
                            } ]
                         },
                         "else" : {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "0",
-                           "type" : "Literal"
+                           "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "type" : "As",
+                           "operand" : {
+                              "type" : "Null"
+                           }
                         }
                      },
                      "else" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "0",
-                        "type" : "Literal"
+                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        }
                      }
                   }
                }
@@ -1482,285 +1486,805 @@
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "one",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "one",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question1LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question1LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "score",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "1",
+                              "type" : "Literal"
+                           } ]
+                        },
+                        "then" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        },
+                        "else" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        }
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion2",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "two",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "two",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question2LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question2LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion3",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "three",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "three",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question3LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question3LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion4",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "four",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "four",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question4LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question4LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion5",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "five",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "five",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question5LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question5LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "score",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "1",
+                              "type" : "Literal"
+                           } ]
+                        },
+                        "then" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        },
+                        "else" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        }
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion6",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "six",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "six",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question6LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question6LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion7",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "seven",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "seven",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question7LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question7LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "score",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "1",
+                              "type" : "Literal"
+                           } ]
+                        },
+                        "then" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        },
+                        "else" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        }
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion8",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "eight",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "eight",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question8LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question8LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion9",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "nine",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "nine",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question9LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question9LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion10",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "ten",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "ten",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question10LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question10LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion11",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "eleven",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "eleven",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question11LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question11LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "score",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "1",
+                              "type" : "Literal"
+                           } ]
+                        },
+                        "then" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        },
+                        "else" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        }
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion12",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "twelve",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "twelve",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question12LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question12LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion13",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "thirteen",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "thirteen",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question13LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question13LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "score",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "1",
+                              "type" : "Literal"
+                           } ]
+                        },
+                        "then" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        },
+                        "else" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        }
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion14",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "fourteen",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "fourteen",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question14LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question14LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "GdsScoreQuestion15",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "name" : "getQuestionScore",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "path" : "fifteen",
-                  "type" : "Property",
-                  "source" : {
-                     "name" : "IndexOfQuestion",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "score",
+                  "expression" : {
+                     "name" : "getQuestionScore",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "path" : "fifteen",
+                        "type" : "Property",
+                        "source" : {
+                           "name" : "IndexOfQuestion",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "question15LinkId",
+                        "type" : "ExpressionRef"
+                     } ]
                   }
-               }, {
-                  "name" : "question15LinkId",
-                  "type" : "ExpressionRef"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "IsNull",
+                        "operand" : {
+                           "name" : "score",
+                           "type" : "AliasRef"
+                        }
+                     },
+                     "then" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     },
+                     "else" : {
+                        "name" : "score",
+                        "type" : "AliasRef"
+                     }
+                  }
+               }
             }
          }, {
             "name" : "DisplayScoreFullGds",
@@ -2046,60 +2570,158 @@
                                                          "name" : "GdsScoreQuestion1",
                                                          "type" : "ExpressionRef"
                                                       }, {
-                                                         "name" : "GdsScoreQuestion2",
-                                                         "type" : "ExpressionRef"
+                                                         "type" : "Coalesce",
+                                                         "operand" : [ {
+                                                            "name" : "GdsScoreQuestion2",
+                                                            "type" : "ExpressionRef"
+                                                         }, {
+                                                            "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                            "value" : "0",
+                                                            "type" : "Literal"
+                                                         } ]
                                                       } ]
                                                    }, {
-                                                      "name" : "GdsScoreQuestion3",
-                                                      "type" : "ExpressionRef"
+                                                      "type" : "Coalesce",
+                                                      "operand" : [ {
+                                                         "name" : "GdsScoreQuestion3",
+                                                         "type" : "ExpressionRef"
+                                                      }, {
+                                                         "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                         "value" : "0",
+                                                         "type" : "Literal"
+                                                      } ]
                                                    } ]
                                                 }, {
-                                                   "name" : "GdsScoreQuestion4",
-                                                   "type" : "ExpressionRef"
+                                                   "type" : "Coalesce",
+                                                   "operand" : [ {
+                                                      "name" : "GdsScoreQuestion4",
+                                                      "type" : "ExpressionRef"
+                                                   }, {
+                                                      "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                      "value" : "0",
+                                                      "type" : "Literal"
+                                                   } ]
                                                 } ]
                                              }, {
-                                                "name" : "GdsScoreQuestion5",
-                                                "type" : "ExpressionRef"
+                                                "type" : "Coalesce",
+                                                "operand" : [ {
+                                                   "name" : "GdsScoreQuestion5",
+                                                   "type" : "ExpressionRef"
+                                                }, {
+                                                   "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                   "value" : "0",
+                                                   "type" : "Literal"
+                                                } ]
                                              } ]
                                           }, {
-                                             "name" : "GdsScoreQuestion6",
-                                             "type" : "ExpressionRef"
+                                             "type" : "Coalesce",
+                                             "operand" : [ {
+                                                "name" : "GdsScoreQuestion6",
+                                                "type" : "ExpressionRef"
+                                             }, {
+                                                "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                "value" : "0",
+                                                "type" : "Literal"
+                                             } ]
                                           } ]
                                        }, {
-                                          "name" : "GdsScoreQuestion7",
-                                          "type" : "ExpressionRef"
+                                          "type" : "Coalesce",
+                                          "operand" : [ {
+                                             "name" : "GdsScoreQuestion7",
+                                             "type" : "ExpressionRef"
+                                          }, {
+                                             "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                             "value" : "0",
+                                             "type" : "Literal"
+                                          } ]
                                        } ]
                                     }, {
-                                       "name" : "GdsScoreQuestion8",
-                                       "type" : "ExpressionRef"
+                                       "type" : "Coalesce",
+                                       "operand" : [ {
+                                          "name" : "GdsScoreQuestion8",
+                                          "type" : "ExpressionRef"
+                                       }, {
+                                          "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "value" : "0",
+                                          "type" : "Literal"
+                                       } ]
                                     } ]
                                  }, {
-                                    "name" : "GdsScoreQuestion9",
-                                    "type" : "ExpressionRef"
+                                    "type" : "Coalesce",
+                                    "operand" : [ {
+                                       "name" : "GdsScoreQuestion9",
+                                       "type" : "ExpressionRef"
+                                    }, {
+                                       "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "value" : "0",
+                                       "type" : "Literal"
+                                    } ]
                                  } ]
                               }, {
-                                 "name" : "GdsScoreQuestion10",
-                                 "type" : "ExpressionRef"
+                                 "type" : "Coalesce",
+                                 "operand" : [ {
+                                    "name" : "GdsScoreQuestion10",
+                                    "type" : "ExpressionRef"
+                                 }, {
+                                    "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                    "value" : "0",
+                                    "type" : "Literal"
+                                 } ]
                               } ]
                            }, {
-                              "name" : "GdsScoreQuestion11",
-                              "type" : "ExpressionRef"
+                              "type" : "Coalesce",
+                              "operand" : [ {
+                                 "name" : "GdsScoreQuestion11",
+                                 "type" : "ExpressionRef"
+                              }, {
+                                 "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "value" : "0",
+                                 "type" : "Literal"
+                              } ]
                            } ]
                         }, {
-                           "name" : "GdsScoreQuestion12",
-                           "type" : "ExpressionRef"
+                           "type" : "Coalesce",
+                           "operand" : [ {
+                              "name" : "GdsScoreQuestion12",
+                              "type" : "ExpressionRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "0",
+                              "type" : "Literal"
+                           } ]
                         } ]
                      }, {
-                        "name" : "GdsScoreQuestion13",
-                        "type" : "ExpressionRef"
+                        "type" : "Coalesce",
+                        "operand" : [ {
+                           "name" : "GdsScoreQuestion13",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "0",
+                           "type" : "Literal"
+                        } ]
                      } ]
                   }, {
-                     "name" : "GdsScoreQuestion14",
-                     "type" : "ExpressionRef"
+                     "type" : "Coalesce",
+                     "operand" : [ {
+                        "name" : "GdsScoreQuestion14",
+                        "type" : "ExpressionRef"
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "0",
+                        "type" : "Literal"
+                     } ]
                   } ]
                }, {
-                  "name" : "GdsScoreQuestion15",
-                  "type" : "ExpressionRef"
+                  "type" : "Coalesce",
+                  "operand" : [ {
+                     "name" : "GdsScoreQuestion15",
+                     "type" : "ExpressionRef"
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "0",
+                     "type" : "Literal"
+                  } ]
                } ]
             }
          } ]

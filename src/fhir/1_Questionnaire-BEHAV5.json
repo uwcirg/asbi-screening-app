@@ -22,7 +22,7 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<div style='font-size:1.3em'>In the questions that follow, please check yes for the behaviors that <b>you observed</b> in your <b>care recipient</b> in the past month.</div>"
+            "valueString": "<div style='font-size:1.3em'>For the questions that follow, please check yes for the behaviors that <b>you observed</b> in your <b>care recipient</b> in the past month.</div>"
           }
         ]
       }

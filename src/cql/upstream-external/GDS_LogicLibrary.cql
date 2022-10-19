@@ -180,69 +180,119 @@ define function getQuestionScore(qIndex Integer, qId String):
       if qResponseIndex != -1 then
         if extensionItem is not null then
           getAnswerOptionExtensionValue(extensionItem)
-        else 0
+        else null
       else
-        0
+        null
       
-// Question 1
+// Question 1, one point for answering no
 define GdsScoreQuestion1:
-  getQuestionScore(IndexOfQuestion.one, question1LinkId)
+  (getQuestionScore(IndexOfQuestion.one, question1LinkId)) score
+  return
+    if score is null then 0
+    else if score = 1 then 0
+    else 1
 
-// Question 2
+// Question 2, one point for answering yes
 define GdsScoreQuestion2:
-  getQuestionScore(IndexOfQuestion.two, question2LinkId)
+  (getQuestionScore(IndexOfQuestion.two, question2LinkId)) score
+  return 
+    if score is null then 0
+    else score
 
-// Question 3
+// Question 3, one point for answering yes
 define GdsScoreQuestion3:
-  getQuestionScore(IndexOfQuestion.three, question3LinkId)
+  (getQuestionScore(IndexOfQuestion.three, question3LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 4
+// Question 4, one point for answering yes
 define GdsScoreQuestion4:
-  getQuestionScore(IndexOfQuestion.four, question4LinkId)
+  (getQuestionScore(IndexOfQuestion.four, question4LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 5
+// Question 5, one point for answering no
 define GdsScoreQuestion5:
-  getQuestionScore(IndexOfQuestion.five, question5LinkId)
+  (getQuestionScore(IndexOfQuestion.five, question5LinkId)) score
+  return
+    if score is null then 0
+    else if score = 1 then 0
+    else 1
 
-// Question 6
+// Question 6, one point for answering yes
 define GdsScoreQuestion6:
-  getQuestionScore(IndexOfQuestion.six, question6LinkId)
+  (getQuestionScore(IndexOfQuestion.six, question6LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 7
+// Question 7, one point for answering no
 define GdsScoreQuestion7:
-  getQuestionScore(IndexOfQuestion.seven, question7LinkId)
+  (getQuestionScore(IndexOfQuestion.seven, question7LinkId)) score
+  return
+    if score is null then 0
+    else if score = 1 then 0
+    else 1
 
-// Question 8
+// Question 8, one point for answering yes
 define GdsScoreQuestion8:
-  getQuestionScore(IndexOfQuestion.eight, question8LinkId)
+  (getQuestionScore(IndexOfQuestion.eight, question8LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 9
+// Question 9, one point for answering yes
 define GdsScoreQuestion9:
-  getQuestionScore(IndexOfQuestion.nine, question9LinkId)
+  (getQuestionScore(IndexOfQuestion.nine, question9LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 10
+// Question 10, one point for answering yes
 define GdsScoreQuestion10:
-  getQuestionScore(IndexOfQuestion.ten, question10LinkId)
+  (getQuestionScore(IndexOfQuestion.ten, question10LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 11
+// Question 11, one point for answering no
 define GdsScoreQuestion11:
-  getQuestionScore(IndexOfQuestion.eleven, question11LinkId)
+  (getQuestionScore(IndexOfQuestion.eleven, question11LinkId)) score
+  return
+    if score is null then 0
+    else if score = 1 then 0
+    else 1
 
-// Question 12
+// Question 12, one point for answering yes
 define GdsScoreQuestion12:
-  getQuestionScore(IndexOfQuestion.twelve, question12LinkId)
+  (getQuestionScore(IndexOfQuestion.twelve, question12LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 13
+// Question 13, one point for answering no
 define GdsScoreQuestion13:
-  getQuestionScore(IndexOfQuestion.thirteen, question13LinkId)
+  (getQuestionScore(IndexOfQuestion.thirteen, question13LinkId)) score
+  return
+    if score is null then 0
+    else if score = 1 then 0
+    else 1
 
-// Question 14
+// Question 14, one point for answering yes
 define GdsScoreQuestion14:
-  getQuestionScore(IndexOfQuestion.fourteen, question14LinkId)
+  (getQuestionScore(IndexOfQuestion.fourteen, question14LinkId)) score
+  return
+    if score is null then 0
+    else score
 
-// Question 15
+// Question 15, one point for answering yes
 define GdsScoreQuestion15:
-  getQuestionScore(IndexOfQuestion.fifteen, question15LinkId)
+  (getQuestionScore(IndexOfQuestion.fifteen, question15LinkId)) score
+  return
+    if score is null then 0
+    else score
 
 // Should the score for the Full Gds be displayed?
 define DisplayScoreFullGds:
@@ -269,17 +319,17 @@ define DisplayScoreFullGds:
 // sum up all numeric values for all the answers
 define ScoreFullGds:
   GdsScoreQuestion1
-  + GdsScoreQuestion2
-  + GdsScoreQuestion3
-  + GdsScoreQuestion4
-  + GdsScoreQuestion5
-  + GdsScoreQuestion6
-  + GdsScoreQuestion7
-  + GdsScoreQuestion8
-  + GdsScoreQuestion9
-  + GdsScoreQuestion10
-  + GdsScoreQuestion11
-  + GdsScoreQuestion12
-  + GdsScoreQuestion13
-  + GdsScoreQuestion14
-  + GdsScoreQuestion15
+  + Coalesce(GdsScoreQuestion2, 0)
+  + Coalesce(GdsScoreQuestion3, 0)
+  + Coalesce(GdsScoreQuestion4, 0)
+  + Coalesce(GdsScoreQuestion5, 0)
+  + Coalesce(GdsScoreQuestion6, 0)
+  + Coalesce(GdsScoreQuestion7, 0)
+  + Coalesce(GdsScoreQuestion8, 0)
+  + Coalesce(GdsScoreQuestion9, 0)
+  + Coalesce(GdsScoreQuestion10, 0)
+  + Coalesce(GdsScoreQuestion11, 0)
+  + Coalesce(GdsScoreQuestion12, 0)
+  + Coalesce(GdsScoreQuestion13, 0)
+  + Coalesce(GdsScoreQuestion14, 0)
+  + Coalesce(GdsScoreQuestion15, 0)
