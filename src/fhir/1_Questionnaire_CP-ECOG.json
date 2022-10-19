@@ -1,7 +1,7 @@
 {
   "resourceType": "Questionnaire",
-  "id": "CIRG-ECOG12-P",
-  "name": "ECOG12-P Care Partner",
+  "id": "CIRG-CP-ECOG",
+  "name": "CP-ECOG",
   "title": "Everyday Cognition Care Partner Assessment (ECog-12 Care Partner)",
   "status": "active",
   "item": [
