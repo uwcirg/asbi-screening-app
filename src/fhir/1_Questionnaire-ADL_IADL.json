@@ -1,7 +1,7 @@
 {
   "resourceType": "Questionnaire",
-  "id": "CIRG-ADLIADL",
-  "name": "ADLIADL",
+  "id": "CIRG-ADL-IADL",
+  "name": "ADL-IADL",
   "code": [
     {
       "code": "69337-4",
@@ -97,28 +97,6 @@
             "display": "Patient depends entirely upon someone else for grooming needs."
           }
         }
-      ],
-      "item": [
-        {
-          "text": "Identifies the patient's ability to tend to personal hygiene needs, excluding bathing (such as washing face and hands, hair care, shaving or make up, teeth or denture care, or fingernail care).",
-          "type": "display",
-          "linkId": "/46595-5-help",
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "text": "Help-Button",
-                "coding": [
-                  {
-                    "code": "help",
-                    "display": "Help-Button",
-                    "system": "http://hl7.org/fhir/questionnaire-item-control"
-                  }
-                ]
-              }
-            }
-          ]
-        }
       ]
     },
     {
@@ -197,28 +175,6 @@
             "display": "Patient depends entirely upon another person to dress the upper body."
           }
         }
-      ],
-      "item": [
-        {
-          "text": "Identifies the patient's ability to dress upper body, including the ability to obtain, put on and remove upper body clothing.",
-          "type": "display",
-          "linkId": "/46597-1-help",
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "text": "Help-Button",
-                "coding": [
-                  {
-                    "code": "help",
-                    "display": "Help-Button",
-                    "system": "http://hl7.org/fhir/questionnaire-item-control"
-                  }
-                ]
-              }
-            }
-          ]
-        }
       ]
     },
     {
@@ -296,28 +252,6 @@
             "code": "LA6324-3",
             "display": "Patient depends entirely upon another person to dress lower body."
           }
-        }
-      ],
-      "item": [
-        {
-          "text": "Identifies the patient's ability to dress lower body, including the ability to obtain, put on and remove lower body clothing.",
-          "type": "display",
-          "linkId": "/46599-7-help",
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "text": "Help-Button",
-                "coding": [
-                  {
-                    "code": "help",
-                    "display": "Help-Button",
-                    "system": "http://hl7.org/fhir/questionnaire-item-control"
-                  }
-                ]
-              }
-            }
-          ]
         }
       ]
     },
@@ -1150,28 +1084,6 @@
             "code": "LA6327-6",
             "display": "Patient does not have a telephone."
           }
-        }
-      ],
-      "item": [
-        {
-          "text": "Identifies the ability of the patient to answer the phone, dial number, and effectively use the telephone to communicate.",
-          "type": "display",
-          "linkId": "/46569-0-help",
-          "extension": [
-            {
-              "url": "http://hl7.org/fhir/StructureDefinition/questionnaire-itemControl",
-              "valueCodeableConcept": {
-                "text": "Help-Button",
-                "coding": [
-                  {
-                    "code": "help",
-                    "display": "Help-Button",
-                    "system": "http://hl7.org/fhir/questionnaire-item-control"
-                  }
-                ]
-              }
-            }
-          ]
         }
       ]
     }
