@@ -1,6 +1,6 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { getEnv } from "./util.js";
-
+import { applyDefinition } from "./applyEncender";
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
   console.log("instruments from environment ", envList);
@@ -43,6 +43,9 @@ export function getInstrumentListFromCarePlan(carePlan) {
 }
 
 export async function getInstrumentList(client, patientId) {
+
+  applyDefinition(getEnv("VUE_APP_PLAN_DEFINITION_ID"), client, patientId);
+
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
   const key = client.getState().key;

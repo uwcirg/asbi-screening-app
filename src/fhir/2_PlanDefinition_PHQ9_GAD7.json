@@ -16,7 +16,7 @@
           "expression": {
             "language": "text/cql",
             "expression": "PresentPHQ9",
-            "reference": "Library/QuestionnaireLogicLibrary|1.0"
+            "reference": "cql/QuestionnaireLogicLibrary|1.0"
           }
         }
       ]
@@ -30,7 +30,7 @@
           "expression": {
             "language": "text/cql",
             "expression": "PresentGAD7",
-            "reference": "Library/QuestionnaireLogicLibrary|1.0"
+            "reference": "cql/QuestionnaireLogicLibrary|1.0"
           }
         }
       ]

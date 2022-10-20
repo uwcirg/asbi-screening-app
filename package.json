@@ -9,10 +9,14 @@
     "test": "./node_modules/.bin/mocha --reporter spec --recursive;"
   },
   "dependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.18.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
     "core-js": "^3.6.4",
     "cql-exec-fhir": "^2.0.2",
     "cql-exec-vsac": "^1.2.2",
     "cql-worker": "^1.1.4",
+    "encender": "^0.6.0",
     "fhirclient": "^2.3.11",
     "questionnaire-to-survey": "^2.1.0",
     "survey-vue": "~1.8.79",
