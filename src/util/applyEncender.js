@@ -5,6 +5,7 @@ import QuestionnaireLogicLibrary from "../cql/QuestionnaireLogicLibrary.json";
 import {getEnv} from "./util";
 
 
+
 function fetchResources(client, patientId) {
   const requests = [
     "Patient/" + patientId,
@@ -80,15 +81,17 @@ const applyDefinition = async (planDefinitionId, client, patientId) => {
     //console.log(resolver);
     // console.log(resources);
 
-    console.log("elms ", elmJsonDependencies)
-
+    console.log("elms ", elmJsonDependencies);
+    const WorkerFactory = () => {
+        return new Worker();
+      }
+    
+    const isNodeJs = false;
     // Define aux object containing ELM JSON and value sets
     const aux = {
-      ...elmJsonDependencies,
-      isNodeJs: false,
-      WorkerFactory: () => {
-        return new Worker();
-      },
+      elmJsonDependencies,
+      WorkerFactory,
+      isNodeJs
     };
 
     //const planDef = JSON.parse(readFileSync("CQL/PlanDefinition.json"));

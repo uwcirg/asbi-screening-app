@@ -1,6 +1,6 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { getEnv } from "./util.js";
-import { applyDefinition } from "./applyEncender";
+import applyDefinition from "./applyEncender";
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
   console.log("instruments from environment ", envList);
@@ -44,8 +44,6 @@ export function getInstrumentListFromCarePlan(carePlan) {
 
 export async function getInstrumentList(client, patientId) {
 
-  applyDefinition(getEnv("VUE_APP_PLAN_DEFINITION_ID"), client, patientId);
-
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
   const key = client.getState().key;
@@ -81,6 +79,9 @@ export function removeSessionInstrumentList(key) {
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument(client, patientId) {
   if (!client) throw new Error("invalid FHIR client provided");
+
+  applyDefinition(getEnv("VUE_APP_PLAN_DEFINITION_ID"), client, patientId);
+
   const instrumentList = await getInstrumentList(client, patientId).catch((e) =>
     console.log("Error getting instrument list ", e)
   );

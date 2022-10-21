@@ -87,8 +87,7 @@
       "linkId": "minicog-total-score",
       "text": "Total Score (0 - 5 points)",
       "type": "decimal",
-      "required": false,
-      "readOnly": true
+      "required": false
     },
     {
       "linkId": "minicog-total-score-explanation",
@@ -104,7 +103,6 @@
           }
         }
       ],
-      "readOnly": true,
       "_text": {
         "extension": [
           {
