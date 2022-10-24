@@ -1426,8 +1426,8 @@
         }
       ],
       "required": false,
-      "linkId": "/70274-6",
-      "text": "Generalized anxiety disorder 7 item total score"
+      "linkId": "c-ids-score",
+      "text": "Cornell scale of depression in dementia total score"
     }
   ]
 }
