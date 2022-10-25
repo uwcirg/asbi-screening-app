@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set environment variable for version from git output
-        run: echo "REACT_APP_VERSION_STRING=$(git describe --always --tags)" >> $GITHUB_ENV
+        run: echo "VUE_APP_VERSION_STRING=$(git describe --always --tags)" >> $GITHUB_ENV
 
       - name: Publish to GitHub Container Registry
         # TODO: pin to hash
