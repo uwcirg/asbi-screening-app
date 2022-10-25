@@ -83,7 +83,7 @@ const applyDefinition = async (planDefinitionId, client, patientId) => {
 
     console.log("elms ", elmJsonDependencies);
     const WorkerFactory = () => {
-        return new Worker();
+        return new Worker(new URL('cql-worker/src/cql.worker.js', import.meta.url));
       }
     
     const isNodeJs = false;
