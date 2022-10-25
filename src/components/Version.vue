@@ -7,7 +7,7 @@ import { getEnv} from "../util/util.js";
 export default {
   methods: {
       getVersionString() {
-        return getEnv("VUE_APP_VERSION_STRING")
+        return getEnv("VUE_APP_VERSION_STRING");
       }
   },
 };
