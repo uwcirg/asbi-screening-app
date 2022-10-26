@@ -4,6 +4,11 @@ using FHIR version '4.0.1'
 
 include "FHIRHelpers" version '4.0.1' called FHIRHelpers
 
+// -----------------------------------------------------------------------------
+// PATIENT INFORMATION
+// -----------------------------------------------------------------------------
+context Patient
+
 define function getQuestionnaire(questionnaireName String):
   First([Questionnaire] Q
     where 
@@ -40,7 +45,13 @@ define GAD7_Responses:
   )
 
 define PresentPHQ9:
-  Length(PHQ9_Responses) = 0
+  (Length(PHQ9_Responses)) l
+  return 
+    if l != 0 then null 
+    else PHQ9_Questionnaire.id.value
   
 define PresentGAD7:
-  Length(GAD7_Responses) = 0
+  (Length(GAD7_Responses)) l 
+  return 
+    if l != 0 then null
+    else GA7_Questionnaire.id.value

@@ -1,6 +1,6 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { getEnv } from "./util.js";
-import { applyDefinition } from "./applyEncender";
+import { applyDefinition } from "./apply";
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
   console.log("instruments from environment ", envList);
@@ -9,16 +9,19 @@ export function getEnvInstrumentList() {
 
 export function getInstrumentListFromCarePlan(carePlan) {
   // no care plan entry, return empty array
-  if (!carePlan || !carePlan.entry || !carePlan.entry.length) return [];
-  const resources = carePlan.entry;
+  // if (!carePlan || !carePlan.entry || !carePlan.entry.length) return [];
+  // const resources = carePlan.entry;
+  // let instrumentList = [];
+  // let activities = [];
+  // // gather activities from careplan(s)
+  // resources.forEach((item) => {
+  //   if (item.resource.activity) {
+  //     activities = [...activities, ...item.resource.activity];
+  //   }
+  // });
   let instrumentList = [];
-  let activities = [];
-  // gather activities from careplan(s)
-  resources.forEach((item) => {
-    if (item.resource.activity) {
-      activities = [...activities, ...item.resource.activity];
-    }
-  });
+  const activities = carePlan.activity;
+  console.log("activities ", activities)
   // no activities, return empty array
   if (!activities.length) return [];
 
@@ -44,23 +47,30 @@ export function getInstrumentListFromCarePlan(carePlan) {
 
 export async function getInstrumentList(client, patientId) {
 
-  applyDefinition(getEnv("VUE_APP_PLAN_DEFINITION_ID"), client, patientId);
+  
 
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
   const key = client.getState().key;
-  // if questionnaire list is already stored within a session variable, returns it
-  const sessionList = getSessionInstrumentList(key);
-  if (sessionList) return sessionList;
   // get questionnaire(s) from care plan
   // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
-  const carePlan = await client.request(
-    `CarePlan?subject=Patient/${patientId}&_sort=-_lastUpdated`
+  // const carePlan = await client.request(
+  //   `CarePlan?subject=Patient/${patientId}&_sort=-_lastUpdated`
+  // );
+  const carePlan = await applyDefinition(
+    getEnv("VUE_APP_PLAN_DEFINITION_ID"),
+    client,
+    patientId
   );
+  console.log("WTF ", carePlan);
   let instrumentList = getInstrumentListFromCarePlan(carePlan);
+  console.log("instrument list from carePlan ", instrumentList)
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the environment variable
   if (!instrumentList || !instrumentList.length) {
+    // if questionnaire list is already stored within a session variable, returns it
+    const sessionList = getSessionInstrumentList(key);
+    if (sessionList) return sessionList;
     instrumentList = getEnvInstrumentList();
   }
   return instrumentList;

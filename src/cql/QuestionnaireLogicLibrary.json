@@ -29,8 +29,24 @@
             "version" : "4.0.1"
          } ]
       },
+      "contexts" : {
+         "def" : [ {
+            "name" : "Patient"
+         } ]
+      },
       "statements" : {
          "def" : [ {
+            "name" : "Patient",
+            "context" : "Patient",
+            "expression" : {
+               "type" : "SingletonFrom",
+               "operand" : {
+                  "dataType" : "{http://hl7.org/fhir}Patient",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/Patient",
+                  "type" : "Retrieve"
+               }
+            }
+         }, {
             "name" : "getQuestionnaire",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -462,36 +478,112 @@
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Equal",
-               "operand" : [ {
-                  "type" : "Length",
-                  "operand" : {
-                     "name" : "PHQ9_Responses",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "l",
+                  "expression" : {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "PHQ9_Responses",
+                        "type" : "ExpressionRef"
+                     }
                   }
-               }, {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "l",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "0",
+                              "type" : "Literal"
+                           } ]
+                        }
+                     },
+                     "then" : {
+                        "asType" : "{urn:hl7-org:elm-types:r1}String",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        }
+                     },
+                     "else" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "id",
+                           "type" : "Property",
+                           "source" : {
+                              "name" : "PHQ9_Questionnaire",
+                              "type" : "ExpressionRef"
+                           }
+                        }
+                     }
+                  }
+               }
             }
          }, {
             "name" : "PresentGAD7",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Equal",
-               "operand" : [ {
-                  "type" : "Length",
-                  "operand" : {
-                     "name" : "GAD7_Responses",
-                     "type" : "ExpressionRef"
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "l",
+                  "expression" : {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "GAD7_Responses",
+                        "type" : "ExpressionRef"
+                     }
                   }
-               }, {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                  "value" : "0",
-                  "type" : "Literal"
-               } ]
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Not",
+                        "operand" : {
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "name" : "l",
+                              "type" : "AliasRef"
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "0",
+                              "type" : "Literal"
+                           } ]
+                        }
+                     },
+                     "then" : {
+                        "asType" : "{urn:hl7-org:elm-types:r1}String",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        }
+                     },
+                     "else" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "id",
+                           "type" : "Property",
+                           "source" : {
+                              "name" : "GA7_Questionnaire",
+                              "type" : "ExpressionRef"
+                           }
+                        }
+                     }
+                  }
+               }
             }
          } ]
       }
