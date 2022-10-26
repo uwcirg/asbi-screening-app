@@ -28,7 +28,7 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<p style='font-size:1.3em'>The following questions pertain to your experience in the past <b>2</b> weeks.</p>"
+            "valueString": "<p style='font-size:1.3em'>The Generalized Anxiety Disorder Assessment (GAD-7) is a seven-item instrument that is used to measure or assess the severity of generalized anxiety disorder (GAD). Each item asks the individual to rate the severity of his or her symptoms over the past <b>two</b> weeks.</br>These questions are to be answered by the <b>patient</b>.</p>"
           }
         ]
       }
