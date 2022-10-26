@@ -19,6 +19,7 @@ export function getInstrumentListFromCarePlan(carePlan) {
   //     activities = [...activities, ...item.resource.activity];
   //   }
   // });
+  if (!carePlan) return null;
   let instrumentList = [];
   const activities = carePlan.activity;
   console.log("activities ", activities)
@@ -47,8 +48,6 @@ export function getInstrumentListFromCarePlan(carePlan) {
 
 export async function getInstrumentList(client, patientId) {
 
-  
-
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
   const key = client.getState().key;
@@ -57,11 +56,15 @@ export async function getInstrumentList(client, patientId) {
   // const carePlan = await client.request(
   //   `CarePlan?subject=Patient/${patientId}&_sort=-_lastUpdated`
   // );
-  const carePlan = await applyDefinition(
+  let carePlan = null;
+  carePlan = await applyDefinition(
     getEnv("VUE_APP_PLAN_DEFINITION_ID"),
     client,
     patientId
-  );
+  ).catch(e => {
+    console.log("Error loading care plan ", e);
+    carePlan = null;
+  });
   console.log("WTF ", carePlan);
   if (carePlan && carePlan.status && carePlan.status === "completed") return [];
   let instrumentList = getInstrumentListFromCarePlan(carePlan);
