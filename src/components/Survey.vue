@@ -268,6 +268,10 @@ export default {
       Object.entries(options).forEach(
         (option) => (model[option[0]] = option[1])
       );
+      if (options.showClearButton) {
+        const questions = model.getAllQuestions();
+        questions.forEach(item => item.setPropertyValue("showClearButton", true));
+      }
       this.surveyOptions = options;
       this.survey = model;
     },
