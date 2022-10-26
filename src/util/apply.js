@@ -156,8 +156,9 @@ export const applyDefinition = async (planDefinitionId, client, patientId) => {
     })
     if (activities.length) {
       carePlan.activity = activities;
-    }
+    } else carePlan.status = "completed";
    }
+
 
    console.log("carePlan ", carePlan);
 

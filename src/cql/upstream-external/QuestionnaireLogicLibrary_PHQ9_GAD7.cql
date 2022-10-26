@@ -28,7 +28,7 @@ define PHQ9_Responses:
       (PositionOf(PHQ9_Questionnaire.id, QR.questionnaire.value)  != -1 or
       PositionOf(PHQ9_Questionnaire.name, QR.questionnaire.value) != -1) and
       date from QR.authored.value >= Today() and 
-      QR.status.value = 'complete'
+      QR.status.value = 'completed'
     )
     sort by authored desc
   )
@@ -39,7 +39,7 @@ define GAD7_Responses:
       (PositionOf(GA7_Questionnaire.id, QR.questionnaire.value)  != -1 or
       PositionOf(GA7_Questionnaire.name, QR.questionnaire.value) != -1) and
       date from QR.authored.value >= Today() and 
-      QR.status.value = 'complete'
+      QR.status.value = 'completed'
     )
     sort by authored desc
   )

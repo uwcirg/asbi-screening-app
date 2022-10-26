@@ -63,6 +63,7 @@ export async function getInstrumentList(client, patientId) {
     patientId
   );
   console.log("WTF ", carePlan);
+  if (carePlan && carePlan.status && carePlan.status === "completed") return [];
   let instrumentList = getInstrumentListFromCarePlan(carePlan);
   console.log("instrument list from carePlan ", instrumentList)
   // if we don't find a specified questionnaire from a patient's careplan,

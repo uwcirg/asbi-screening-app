@@ -322,7 +322,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "complete",
+                        "value" : "completed",
                         "type" : "Literal"
                      } ]
                   } ]
@@ -460,7 +460,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "complete",
+                        "value" : "completed",
                         "type" : "Literal"
                      } ]
                   } ]
