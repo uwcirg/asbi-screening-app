@@ -1,7 +1,7 @@
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
 import valueSetJson from "../cql/valueset-db.json";
-import QuestionnaireLogicLibrary from "../cql/QuestionnaireLogicLibrary.json";
+//import QuestionnaireLogicLibrary from "../cql/QuestionnaireLogicLibrary.json";
 import {getEnv} from "./util";
 
 function fetchResources(client, patientId) {
@@ -26,8 +26,6 @@ function fetchResources(client, patientId) {
 export const applyDefinition = async (planDefinitionId, client, patientId) => {
   
 
-  console.log("Eval exp ", evaluateExpression);
-
   let patientBundle = {
     resourceType: "Bundle",
     id: "survey-bundle",
@@ -41,11 +39,23 @@ export const applyDefinition = async (planDefinitionId, client, patientId) => {
   if (!planDefinitionId) throw new Error("A valid plan definition ID must be supplied");
 
   //get plan definition json
+  const QuestionnaireLogicLibrary = await import(
+    `../cql/QuestionnaireLogicLibrary_${planDefinitionId}.json`
+  )
+    .then((module) => module.default)
+    .catch((e) => {
+      throw new Error(e);
+    });
+
+  //get corresponding logic library
   const planDef = await import(
     `../fhir/2_PlanDefinition_${planDefinitionId}.json`
-  ).then((module) => module.default).catch(e => {
-    throw new Error(e);
-  });
+  )
+    .then((module) => module.default)
+    .catch((e) => {
+      throw new Error(e);
+    });
+
   
   console.log("Plan def ", planDef);
 
@@ -149,7 +159,9 @@ export const applyDefinition = async (planDefinitionId, client, patientId) => {
     }
    }
 
-   console.log("carePlan ", carePlan)
+   console.log("carePlan ", carePlan);
+
+   //TODO post this
    return carePlan
 
 };
