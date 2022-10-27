@@ -6,6 +6,18 @@
   "status": "active",
   "item": [
     {
+      "linkId": "introduction",
+      "type": "display",
+      "_text": {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
+            "valueString": "<p style='font-size:1.3em'>The Everyday Cognition Assessment (ECog-12) is a brief questionnaire assessing the participant’s capability to perform normal everyday tasks, in comparison to activity levels 10 years prior, on a 5 point scale. Three domains are assessed: Memory, Language, and Executive Functioning.</br>Please read the following to the patient:</br>““Please rate your ability to perform certain everyday tasks  NOW, as compared to your own baseline (for example you could compare your ability to do these same tasks 10 years ago). In other words, try to remember how you were doing 10 years ago and indicate any change in your level of ability.</br>Rate the amount of change on a five-point scale ranging from: 1) there has been no change in your ability compared to 10 years ago, 2) you occasionally perform the task worse but not all the time, 3) you consistently perform the task a little worse than 10 years ago, 4) you perform the task much worse than 10 years ago or, 5) I don’t know. Please tell me which option best describes your situation.”</br>These questions are to be answered by the <b>patient</b>.</p>"
+          }
+        ]
+      }
+    },
+    {
       "type": "choice",
       "code": [
         {
