@@ -23,7 +23,7 @@ behav5_reusable_resources:
   status: in-progress
   authored: 2030-04-18
 
-# value code for each answer option (for question 1 ~ question 9, question 10 has a different answer option set)
+# value code for each answer option (for question 1 ~ question 6
 # answer option 1 value code
 - &answerOption1ValueCode
   code: LA33-6
@@ -48,7 +48,7 @@ behav5_reusable_resources:
       valueDecimal: 0
   valueCoding: *answerOption2ValueCode
   
-# answer options, apply to question 1 ~ 9, question 10 has a different set of answer options
+# answer options, apply to question 1 ~ 6
 - &questionnaireAnswerOptions
   - *answerOption1
   - *answerOption2

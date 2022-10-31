@@ -9,32 +9,6 @@
       "type": "choice",
       "code": [
         {
-          "code": "89174-7",
-          "display": "Are you concerned that your care recipient have a memory or other thinking problem?"
-        }
-      ],
-      "required": false,
-      "linkId": "/89174-7",
-      "text": "Are you concerned that your care recipient have a memory or other thinking problem?",
-      "answerOption": [
-        {
-          "valueCoding": {
-            "code": "LA33-6",
-            "display": "Yes"
-          }
-        },
-        {
-          "valueCoding": {
-            "code": "LA32-8",
-            "display": "No"
-          }
-        }
-      ]
-    },
-    {
-      "type": "choice",
-      "code": [
-        {
           "code": "89146-5",
           "display": "Compared to 10 years ago, has there been any change in remembering where they have placed objects."
         }
@@ -1155,6 +1129,30 @@
           "valueCoding": {
             "code": "LA15599-6",
             "display": "I don’t know"
+          }
+        }
+      ]
+    },
+    {
+      "type": "decimal",
+      "required": false,
+      "linkId": "cp-ecog-total-score",
+      "text": "Total Score",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullECOG12",
+            "reference": "#CP_ECOGLogicLibrary|1.0"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullECOG12",
+            "reference": "#CP_ECOGLogicLibrary|1.0"
           }
         }
       ]

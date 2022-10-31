@@ -1,4 +1,4 @@
-cidas_reusable_resources:
+ecog12_reusable_resources:
 # patient resource
 - &patientResource
   resourceType: Patient
@@ -14,32 +14,32 @@ cidas_reusable_resources:
 # questionnaire resource
 - &questionnaireResource # skeleton
   resourceType: Questionnaire
-  id: CIRG-C-IDAS
+  id: CIRG-ECOG12
 
 # questionnaire responses
 - &questionnaireResponses # skeleton
   resourceType: QuestionnaireResponse
-  questionnaire: Questionnaire/CIRG-C-IDAS
+  questionnaire: Questionnaire/CIRG-ECOG12
   status: in-progress
   authored: 2030-04-18
 
-# value code for each answer option (for question 1 ~ question 18
+# value code for each answer option (for question 1 ~ question 12)
 # answer option 1 value code
 - &answerOption1ValueCode
-  code: LA9634-2
-  display: Absent
+  code: LA28962-1
+  display: No change
 # answer option 2 value code
 - &answerOption2ValueCode
-  code: LA6752-5
-  display: Mild or intermittent
+  code: LA28963-9
+  display: Worse but not all the time
 # answer option 3 value code
 - &answerOption3ValueCode
-  code: LA6750-9
-  display: Severe
+  code: LA29135-3
+  display: Consistently worse
 # answer option 4 value code
 - &answerOption4ValueCode
-  code: LA4489-6
-  display: Unable to evaluate
+  code: LA29136-1
+  display: Much worse
 
 
 # answer option 1
@@ -47,31 +47,31 @@ cidas_reusable_resources:
   extension:
   -
     url: http://hl7.org/fhir/StructureDefinition/ordinalValue
-    valueDecimal: 0
+    valueDecimal: 1
   valueCoding: *answerOption1ValueCode
 # answer option 2
 - &answerOption2
   extension:
     -
       url: http://hl7.org/fhir/StructureDefinition/ordinalValue
-      valueDecimal: 1
+      valueDecimal: 2
   valueCoding: *answerOption2ValueCode
 # answer option 3
 - &answerOption3
   extension:
     -
       url: http://hl7.org/fhir/StructureDefinition/ordinalValue
-      valueDecimal: 2
+      valueDecimal: 3
   valueCoding: *answerOption3ValueCode
 # answer option 4
 - &answerOption4
   extension:
     -
       url: http://hl7.org/fhir/StructureDefinition/ordinalValue
-      valueString: a
+      valueDecimal: 4
   valueCoding: *answerOption4ValueCode
   
-# answer options, apply to question 1 ~ 18
+# answer options, apply to question 1 ~ 12
 - &questionnaireAnswerOptions
   - *answerOption1
   - *answerOption2
@@ -79,24 +79,18 @@ cidas_reusable_resources:
   - *answerOption4
 
 # anchor for each question link Id
-- Question1LinkId: &q1LinkId cs-idas-1
-- Question2LinkId: &q2LinkId cs-idas-2
-- Question3LinkId: &q3LinkId cs-idas-3
-- Question4LinkId: &q4LinkId cs-idas-4
-- Question5LinkId: &q5LinkId cs-idas-5
-- Question6LinkId: &q6LinkId cs-idas-6
-- Question7LinkId: &q7LinkId cs-idas-7
-- Question8LinkId: &q8LinkId cs-idas-8
-- Question9LinkId: &q9LinkId cs-idas-9
-- Question10LinkId: &q10LinkId cs-idas-10
-- Question11LinkId: &q11LinkId cs-idas-11
-- Question12LinkId: &q12LinkId cs-idas-12
-- Question13LinkId: &q13LinkId cs-idas-13
-- Question14LinkId: &q14LinkId cs-idas-14
-- Question15LinkId: &q15LinkId cs-idas-15
-- Question16LinkId: &q16LinkId cs-idas-16
-- Question17LinkId: &q17LinkId cs-idas-17
-- Question18LinkId: &q18LinkId cs-idas-18
+- Question1LinkId: &q1LinkId /89286-9/89146-5
+- Question2LinkId: &q2LinkId /89286-9/89149-9
+- Question3LinkId: &q3LinkId /89287-7/89172-1
+- Question4LinkId: &q4LinkId /89287-7/89138-2
+- Question5LinkId: &q5LinkId /89288-5/89154-9
+- Question6LinkId: &q6LinkId /89288-5/89165-5
+- Question7LinkId: &q7LinkId /89289-3/89143-2
+- Question8LinkId: &q8LinkId /89289-3/89140-8
+- Question9LinkId: &q9LinkId /89290-1/89158-0
+- Question10LinkId: &q10LinkId /89290-1/89173-9
+- Question11LinkId: &q11LinkId /89285-1/89141-6
+- Question12LinkId: &q12LinkId /89285-1/89171-3
 
 # questions
 - &Question1
@@ -145,29 +139,5 @@ cidas_reusable_resources:
   answerOption: *questionnaireAnswerOptions
 - &Question12
   linkId: *q12LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question13
-  linkId: *q13LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question14
-  linkId: *q14LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question15
-  linkId: *q15LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question16
-  linkId: *q16LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question17
-  linkId: *q17LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question18
-  linkId: *q18LinkId
   type: choices
   answerOption: *questionnaireAnswerOptions
