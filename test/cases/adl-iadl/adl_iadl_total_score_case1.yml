@@ -1,8 +1,8 @@
-# test all answers with option 1 to make sure all have a correct value of 1
+# test question 1 to 11 each with the option 1 (value 0)
 ---
-name: Behav5 Total Score (all with 1)
+name: ADL_IADL Total Score (all 0)
 externalData:
-- behav5_reusable_resources
+- adl_iadl_reusable_resources
 data:
 - *patientResource
 - <<: *questionnaireResource
@@ -13,6 +13,12 @@ data:
   - *Question4
   - *Question5
   - *Question6
+  - *Question7
+  - *Question8
+  - *Question9
+  - *Question10
+  - *Question11
+
 - <<: *questionnaireResponses  # answers are randomly assigned to test; can change to test; the goal is to test that the sum total from the scores is correct
   item:
   - # question 1
@@ -20,7 +26,6 @@ data:
     answer:
     -
       valueCoding: *answerOption1ValueCode
-
   - # question 2
     linkId: *q2LinkId
     answer:
@@ -46,8 +51,33 @@ data:
     answer:
     -
       valueCoding: *answerOption1ValueCode
+  - # question 7
+    linkId: *q7LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 8
+    linkId: *q8LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 9
+    linkId: *q9LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 10
+    linkId: *q10LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 11
+    linkId: *q11LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
 
 results:
-  Behav5Questionnaire: $should exist
+  ADL_IADL_Questionnaire: $should exist
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
-  ScoreFullBehav5: 6 # total score
+  ScoreFullADL_IADL: 0 # total score

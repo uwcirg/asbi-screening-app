@@ -1086,6 +1086,30 @@
           }
         }
       ]
+    },
+    {
+      "type": "decimal",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullADL_IADL",
+            "reference": "#ADL_IADLLogicLibrary|1.0"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullADL_IADL",
+            "reference": "#ADL_IADLLogicLibrary|1.0"
+          }
+        }
+      ],
+      "required": false,
+      "linkId": "adl-iadls-total-score",
+      "text": "ADL/IADLS 11 item total score"
     }
   ]
 }
