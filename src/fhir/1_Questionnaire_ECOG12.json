@@ -1170,6 +1170,30 @@
           }
         }
       ]
+    },
+    {
+      "type": "decimal",
+      "required": false,
+      "linkId": "ecog12-total-score",
+      "text": "Total Score",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullECOG12",
+            "reference": "#ECOG12LogicLibrary|1.0"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullECOG12",
+            "reference": "#ECOG12LogicLibrary|1.0"
+          }
+        }
+      ]
     }
   ]
 }

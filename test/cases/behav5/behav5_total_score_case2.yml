@@ -1,6 +1,6 @@
 # test all answers with option 2 to make sure all have a correct value of 0
 ---
-name: Behav5 Total Score
+name: Behav5 Total Score (all with 0)
 externalData:
 - behav5_reusable_resources
 data:

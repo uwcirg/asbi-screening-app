@@ -1,8 +1,8 @@
-# test all answers with option 1 to make sure all have a correct value of 1
+# test all answers with option 1 (absent) to make sure all have a correct value of 1
 ---
-name: Behav5 Total Score (all with 1)
+name: ECOG12 Total Score (test all 1)
 externalData:
-- behav5_reusable_resources
+- ecog12_reusable_resources
 data:
 - *patientResource
 - <<: *questionnaireResource
@@ -13,6 +13,12 @@ data:
   - *Question4
   - *Question5
   - *Question6
+  - *Question7
+  - *Question8
+  - *Question9
+  - *Question10
+  - *Question11
+  - *Question12
 - <<: *questionnaireResponses  # answers are randomly assigned to test; can change to test; the goal is to test that the sum total from the scores is correct
   item:
   - # question 1
@@ -46,8 +52,39 @@ data:
     answer:
     -
       valueCoding: *answerOption1ValueCode
+  - # question 7
+    linkId: *q7LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 8
+    linkId: *q8LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 9
+    linkId: *q9LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 10
+    linkId: *q10LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 11
+    linkId: *q11LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+  - # question 12
+    linkId: *q12LinkId
+    answer:
+    -
+      valueCoding: *answerOption1ValueCode
+ 
 
 results:
-  Behav5Questionnaire: $should exist
+  ECOG12Questionnaire: $should exist
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
-  ScoreFullBehav5: 6 # total score
+  ScoreFullECOG12: 12 # total score

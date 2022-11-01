@@ -1,8 +1,8 @@
-# test all answers with option 3 (severe) to make sure all have a correct value of 2
+# test all answers with option 3 (absent) to make sure all have a correct value of 3
 ---
-name: CIDAS Total Score (test all 2)
+name: ECOG12 Total Score (test all 3)
 externalData:
-- cidas_reusable_resources
+- ecog12_reusable_resources
 data:
 - *patientResource
 - <<: *questionnaireResource
@@ -19,11 +19,6 @@ data:
   - *Question10
   - *Question11
   - *Question12
-  - *Question13
-  - *Question14
-  - *Question15
-  - *Question16
-  - *Question17
 - <<: *questionnaireResponses  # answers are randomly assigned to test; can change to test; the goal is to test that the sum total from the scores is correct
   item:
   - # question 1
@@ -87,38 +82,9 @@ data:
     answer:
     -
       valueCoding: *answerOption3ValueCode
-  - # question 13
-    linkId: *q13LinkId
-    answer:
-    -
-      valueCoding: *answerOption3ValueCode
-  - # question 14
-    linkId: *q14LinkId
-    answer:
-    -
-      valueCoding: *answerOption3ValueCode
-  - # question 15
-    linkId: *q15LinkId
-    answer:
-    -
-      valueCoding: *answerOption3ValueCode
-  - # question 16
-    linkId: *q16LinkId
-    answer:
-    -
-      valueCoding: *answerOption3ValueCode
-  - # question 17
-    linkId: *q17LinkId
-    answer:
-    -
-      valueCoding: *answerOption3ValueCode
-  - # question 18
-    linkId: *q18LinkId
-    answer:
-    -
-      valueCoding: *answerOption3ValueCode
+ 
 
 results:
-  CIDASQuestionnaire: $should exist
+  ECOG12Questionnaire: $should exist
   CurrentQuestionnaireResponse: $should exist  # make sure questionnaire responses are returned
-  ScoreFullCIDAS: 34 # total score
+  ScoreFullECOG12: 36 # total score

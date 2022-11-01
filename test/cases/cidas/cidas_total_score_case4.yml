@@ -1,6 +1,6 @@
 # test all answers with option 4 (unable to evaluate) to make sure all have a correct value of 0
 ---
-name: CIDAS Total Score
+name: CIDAS Total Score (test all 0)
 externalData:
 - cidas_reusable_resources
 data:

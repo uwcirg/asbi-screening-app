@@ -1,6 +1,6 @@
 # test all answers question 1, 5, 7, 11, 13 should be 0, coz 1 point for answering NO for those questions
 ---
-name: GDS Total Score
+name: GDS Total Score (test 1 point for No answer)
 externalData:
 - gds_reusable_resources
 data:

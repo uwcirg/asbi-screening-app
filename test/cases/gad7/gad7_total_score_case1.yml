@@ -1,6 +1,6 @@
 # test all answers with option 1 to make sure all have a correct value of 0
 ---
-name: GAD7 Total Score
+name: GAD7 Total Score (all with value 0)
 externalData:
 - gad7_reusable_resources
 data:

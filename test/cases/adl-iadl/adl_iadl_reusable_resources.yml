@@ -1,4 +1,4 @@
-cidas_reusable_resources:
+adl_iadl_reusable_resources:
 # patient resource
 - &patientResource
   resourceType: Patient
@@ -14,33 +14,45 @@ cidas_reusable_resources:
 # questionnaire resource
 - &questionnaireResource # skeleton
   resourceType: Questionnaire
-  id: CIRG-C-IDAS
+  id: CIRG-ADL-IADL
+  code: LOINC#69337-4 Functional Impairments
 
 # questionnaire responses
 - &questionnaireResponses # skeleton
   resourceType: QuestionnaireResponse
-  questionnaire: Questionnaire/CIRG-C-IDAS
+  questionnaire: Questionnaire/CIRG-ADL-IADL
   status: in-progress
   authored: 2030-04-18
 
-# value code for each answer option (for question 1 ~ question 18
+# value code for each answer option (for question 1 ~ question 12
 # answer option 1 value code
 - &answerOption1ValueCode
-  code: LA9634-2
-  display: Absent
+  code: LA12286-3
+  display: 0
 # answer option 2 value code
 - &answerOption2ValueCode
-  code: LA6752-5
-  display: Mild or intermittent
+  code: LA12287-1
+  display: 1
 # answer option 3 value code
 - &answerOption3ValueCode
-  code: LA6750-9
-  display: Severe
+  code: LA12288-9
+  display: 2
 # answer option 4 value code
 - &answerOption4ValueCode
-  code: LA4489-6
-  display: Unable to evaluate
-
+  code: LA6147-8
+  display: 3
+# answer option 5 value code
+- &answerOption5ValueCode
+  code: LA6171-8
+  display: 4
+# answer option 6 value code
+- &answerOption6ValueCode
+  code: LA6170-0
+  display: 5
+# answer option 7 value code
+- &answerOption7ValueCode
+  code: LA6159-3
+  display: 6
 
 # answer option 1
 - &answerOption1
@@ -63,40 +75,52 @@ cidas_reusable_resources:
       url: http://hl7.org/fhir/StructureDefinition/ordinalValue
       valueDecimal: 2
   valueCoding: *answerOption3ValueCode
-# answer option 4
 - &answerOption4
   extension:
     -
       url: http://hl7.org/fhir/StructureDefinition/ordinalValue
-      valueString: a
+      valueDecimal: 3
   valueCoding: *answerOption4ValueCode
-  
-# answer options, apply to question 1 ~ 18
+- &answerOption5
+  extension:
+    -
+      url: http://hl7.org/fhir/StructureDefinition/ordinalValue
+      valueDecimal: 4
+  valueCoding: *answerOption5ValueCode
+- &answerOption6
+  extension:
+    -
+      url: http://hl7.org/fhir/StructureDefinition/ordinalValue
+      valueDecimal: 5
+  valueCoding: *answerOption6ValueCode
+- &answerOption7
+  extension:
+    -
+      url: http://hl7.org/fhir/StructureDefinition/ordinalValue
+      valueDecimal: 6
+  valueCoding: *answerOption7ValueCode
+# answer options, apply to question 1 ~ 11
 - &questionnaireAnswerOptions
   - *answerOption1
   - *answerOption2
   - *answerOption3
   - *answerOption4
+  - *answerOption5
+  - *answerOption6
+  - *answerOption7
 
 # anchor for each question link Id
-- Question1LinkId: &q1LinkId cs-idas-1
-- Question2LinkId: &q2LinkId cs-idas-2
-- Question3LinkId: &q3LinkId cs-idas-3
-- Question4LinkId: &q4LinkId cs-idas-4
-- Question5LinkId: &q5LinkId cs-idas-5
-- Question6LinkId: &q6LinkId cs-idas-6
-- Question7LinkId: &q7LinkId cs-idas-7
-- Question8LinkId: &q8LinkId cs-idas-8
-- Question9LinkId: &q9LinkId cs-idas-9
-- Question10LinkId: &q10LinkId cs-idas-10
-- Question11LinkId: &q11LinkId cs-idas-11
-- Question12LinkId: &q12LinkId cs-idas-12
-- Question13LinkId: &q13LinkId cs-idas-13
-- Question14LinkId: &q14LinkId cs-idas-14
-- Question15LinkId: &q15LinkId cs-idas-15
-- Question16LinkId: &q16LinkId cs-idas-16
-- Question17LinkId: &q17LinkId cs-idas-17
-- Question18LinkId: &q18LinkId cs-idas-18
+- Question1LinkId: &q1LinkId /46595-5
+- Question2LinkId: &q2LinkId /46597-1
+- Question3LinkId: &q3LinkId /46599-7
+- Question4LinkId: &q4LinkId /57243-8
+- Question5LinkId: &q5LinkId /57244-6
+- Question6LinkId: &q6LinkId /57245-3
+- Question7LinkId: &q7LinkId /57246-1
+- Question8LinkId: &q8LinkId /57247-9
+- Question9LinkId: &q9LinkId /57248-7
+- Question10LinkId: &q10LinkId /57249-5
+- Question11LinkId: &q11LinkId /46569-0
 
 # questions
 - &Question1
@@ -141,33 +165,5 @@ cidas_reusable_resources:
   answerOption: *questionnaireAnswerOptions
 - &Question11
   linkId: *q11LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question12
-  linkId: *q12LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question13
-  linkId: *q13LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question14
-  linkId: *q14LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question15
-  linkId: *q15LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question16
-  linkId: *q16LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question17
-  linkId: *q17LinkId
-  type: choices
-  answerOption: *questionnaireAnswerOptions
-- &Question18
-  linkId: *q18LinkId
   type: choices
   answerOption: *questionnaireAnswerOptions

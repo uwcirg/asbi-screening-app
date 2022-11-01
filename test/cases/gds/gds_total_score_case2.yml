@@ -1,6 +1,6 @@
 # test all answers with option 2, question 1, 5, 7, 11, 13 should receive 1 point
 ---
-name: GDS Total Score
+name: GDS Total Score (test all Yes)
 externalData:
 - gds_reusable_resources
 data:

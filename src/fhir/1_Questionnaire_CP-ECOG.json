@@ -2,7 +2,7 @@
   "resourceType": "Questionnaire",
   "id": "CIRG-CP-ECOG",
   "name": "CP-ECOG",
-  "title": "Everyday Cognition Care Partner Assessment (ECog-12 Care Partner)",
+  "title": "Everyday Cognition Care Partner Assessment (for Care Partner)",
   "status": "active",
   "item": [
     {
@@ -22,12 +22,12 @@
       "code": [
         {
           "code": "89174-7",
-          "display": "Are you concerned that your care recipient have a memory or other thinking problem?"
+          "display": "Are you concerned that your care recipient has a memory or other thinking problem?"
         }
       ],
       "required": false,
       "linkId": "/89174-7",
-      "text": "Are you concerned that your care recipient have a memory or other thinking problem?",
+      "text": "Are you concerned that your care recipient has a memory or other thinking problem?",
       "answerOption": [
         {
           "valueCoding": {
@@ -1167,6 +1167,30 @@
           "valueCoding": {
             "code": "LA15599-6",
             "display": "I don’t know"
+          }
+        }
+      ]
+    },
+    {
+      "type": "decimal",
+      "required": false,
+      "linkId": "cp-ecog-total-score",
+      "text": "Total Score",
+      "extension": [
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "DisplayScoreFullECOG12",
+            "reference": "#CP_ECOGLogicLibrary|1.0"
+          }
+        },
+        {
+          "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression",
+          "valueExpression": {
+            "language": "text/cql",
+            "expression": "ScoreFullECOG12",
+            "reference": "#CP_ECOGLogicLibrary|1.0"
           }
         }
       ]
