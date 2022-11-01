@@ -28,7 +28,7 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<p style='font-size:1.3em'>The Geriatric Depression Scale (GDS) short version panel is a 15-item self-report assessment used as a basic screening measure of depression in the elderly.</br>These questions are to be answered by the <b>patient</b>.</p>"
+            "valueString": "<p style='font-size:1.3em'>The <b>Geriatric Depression Scale</b> (GDS) short version panel is a 15-item self-report assessment used as a basic screening measure of depression in the elderly.</br></br>These questions are to be answered by the <b>patient</b>.</p>"
           }
         ]
       }
