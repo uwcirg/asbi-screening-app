@@ -22,7 +22,7 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<div style='font-size:1.3em'>BEHAVE 5+ is a YES/NO assessment of six high-impact behaviors of the patient over the last month.</br>These questions are to be answered by the <b>care partner</b>.</div>"
+            "valueString": "<div style='font-size:1.3em'><b>BEHAVE 5+</b> is a YES/NO assessment of six high-impact behaviors of the patient over the last month.</br></br>These questions are to be answered by the <b>care partner</b>.</div>"
           }
         ]
       }
