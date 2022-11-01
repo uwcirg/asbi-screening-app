@@ -124,7 +124,7 @@ body {
 
 .sv-item:not(.sv-radio--checked):hover {
     .sv-radio__svg {
-        border: 3px solid #777;
+        border: 3px solid $muted-color;
         use {
             fill: none
         }
