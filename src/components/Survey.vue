@@ -363,7 +363,6 @@ export default {
             (itm) => itm.linkId == options.name
           );
 
-          console.log("value? ", options.value);
           if (options.value != null) {
             let responseValue = getResponseValue(
               this.questionnaire,
