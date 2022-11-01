@@ -2,9 +2,35 @@
   "resourceType": "Questionnaire",
   "id": "CIRG-CP-ECOG",
   "name": "CP-ECOG",
-  "title": "Everyday Cognition Care Partner Assessment (ECog-12 Care Partner)",
+  "title": "Everyday Cognition Care Partner Assessment (for Care Partner)",
   "status": "active",
   "item": [
+    {
+      "type": "choice",
+      "code": [
+        {
+          "code": "89174-7",
+          "display": "Are you concerned that your care recipient has a memory or other thinking problem?"
+        }
+      ],
+      "required": false,
+      "linkId": "/89174-7",
+      "text": "Are you concerned that your care recipient has a memory or other thinking problem?",
+      "answerOption": [
+        {
+          "valueCoding": {
+            "code": "LA33-6",
+            "display": "Yes"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "LA32-8",
+            "display": "No"
+          }
+        }
+      ]
+    },
     {
       "type": "choice",
       "code": [
