@@ -28,7 +28,7 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<p style='font-size:1.3em'>The ADLs/IADLs - Functional Impairment Assessment is a eleven-item questionnaire about the patient’s current grooming and self-care ability.</br>These questions are to be answered by the <b>care partner</b>.</p>"
+            "valueString": "<p style='font-size:1.3em'>The <b>ADLs/IADLs - Functional Impairment Assessment</b> is a eleven-item questionnaire about the patient’s current grooming and self-care ability.</br></br>These questions are to be answered by the <b>care partner</b>.</p>"
           }
         ]
       }
