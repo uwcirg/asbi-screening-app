@@ -12,7 +12,7 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<p style='font-size:1.3em'>The Cornell Scale for Depression in Dementia is a nineteen question assessment on observations of the resident's behavior during the week prior to the interview.</br>These questions are to be answered by the <b>care partner</b>.</p>"
+            "valueString": "<p style='font-size:1.3em'>The <b>Cornell Scale for Depression in Dementia</b> is a nineteen-question assessment on observations of the resident's behavior during the week prior to the interview.</br></br>These questions are to be answered by the <b>care partner</b>.</p>"
           }
         ]
       }
