@@ -401,7 +401,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-6",
-      "text": "Multiple physical complaints",
+      "text": "Multiple physical complaints (score 0 if GI symptoms only)",
       "answerOption": [
         {
           "extension": [
@@ -473,7 +473,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-7",
-      "text": "Loss of interest - less involved in usual activities",
+      "text": "Loss of interest - less involved in usual activities (score only if change occurred acutely, i.e., in less than 1 month)",
       "answerOption": [
         {
           "extension": [
