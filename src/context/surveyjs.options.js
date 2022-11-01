@@ -2,6 +2,7 @@
 export default {
   default: {
     showQuestionNumbers: "off",
+    showClearButton: true,
     completeText: "Submit",
     clearInvisibleValues: "onHidden",
     requiredText: "",
@@ -11,8 +12,9 @@ export default {
   MINICOG: {
     focusFirstQuestionAutomatic: true,
     checkErrorsMode: "onValueChanged",
+    textUpdateMode: "onTyping",
     //validation
-    questionValidator: function(survey, options) {
+    questionValidator: function (survey, options) {
       const QUESTION1_ID = "minicog-question1";
       const QUESTION2_ID = "minicog-question2";
       const optionVal = parseInt(options.value);

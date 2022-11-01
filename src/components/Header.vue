@@ -22,6 +22,7 @@
         v-text="getPatientDob()"
       ></div>
     </div>
+    <div v-if="getReturnURL()"><v-btn color="primary" :href="getReturnURL()" class="ml-4">Patient List</v-btn></div>
   </v-app-bar>
 </template>
 
@@ -38,6 +39,11 @@ export default {
   methods: {
     getLogoSrc() {
       return `/${getEnv("VUE_APP_PROJECT_ID")}/img/logo.png`;
+    },
+    getReturnURL() {
+      const dashboardURL = getEnv('VUE_APP_DASHBOARD_URL');
+      if (!dashboardURL) return false;
+      return dashboardURL + "/clear_session";
     },
     handleImageLoaded(e) {
       if (!e.target) {

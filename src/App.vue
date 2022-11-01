@@ -1,12 +1,13 @@
 <template>
   <v-app id="app">
-    <Header :title="title" :patient="patient" v-if="ready"></Header>
+    <Header :title="title" :patient="patient" v-if="patient"></Header>
     <Survey
       :client="client"
       :patient="patient"
       :authError="getError()"
       @finished="finished"
     />
+    <Version></Version>
   </v-app>
 </template>
 <script>
@@ -15,6 +16,7 @@ import "survey-vue/modern.css";
 import "./style/app.scss";
 import Header from "./components/Header";
 import Survey from "./components/Survey";
+import Version from "./components/Version";
 import {
   fetchEnvData,
   getEnv,
@@ -29,6 +31,7 @@ export default {
   components: {
     Header,
     Survey,
+    Version
   },
   data() {
     return {
@@ -58,7 +61,6 @@ export default {
         this.error = "No valid patient is set.";
       }
     }
-    this.ready = true;
   },
   methods: {
     async setAuthClient() {
