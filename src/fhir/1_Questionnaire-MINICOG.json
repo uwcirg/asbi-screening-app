@@ -36,7 +36,6 @@
     {
       "linkId": "minicog-question1-instruction",
       "type": "display",
-      "text": "",
       "readOnly": true,
       "_text": {
         "extension": [
@@ -56,7 +55,6 @@
     {
       "linkId": "minicog-question2-instruction",
       "type": "display",
-      "text": "",
       "readOnly": true,
       "_text": {
         "extension": [
@@ -95,7 +93,6 @@
     {
       "linkId": "minicog-total-score-explanation",
       "type": "display",
-      "text": "",
       "extension": [
         {
           "url": "http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-enableWhenExpression",
@@ -119,7 +116,6 @@
     {
       "linkId": "minicog-questionnaire-footnote",
       "type": "display",
-      "text": "",
       "readOnly":true,
       "_text": {
         "extension": [
