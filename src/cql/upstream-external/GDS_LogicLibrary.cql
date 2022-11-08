@@ -318,7 +318,7 @@ define DisplayScoreFullGds:
 // Calculate the score for the Full Gds
 // sum up all numeric values for all the answers
 define ScoreFullGds:
-  GdsScoreQuestion1
+  Coalesce(GdsScoreQuestion1, 0)
   + Coalesce(GdsScoreQuestion2, 0)
   + Coalesce(GdsScoreQuestion3, 0)
   + Coalesce(GdsScoreQuestion4, 0)

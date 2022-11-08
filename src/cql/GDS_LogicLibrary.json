@@ -2567,8 +2567,15 @@
                                                    "operand" : [ {
                                                       "type" : "Add",
                                                       "operand" : [ {
-                                                         "name" : "GdsScoreQuestion1",
-                                                         "type" : "ExpressionRef"
+                                                         "type" : "Coalesce",
+                                                         "operand" : [ {
+                                                            "name" : "GdsScoreQuestion1",
+                                                            "type" : "ExpressionRef"
+                                                         }, {
+                                                            "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                            "value" : "0",
+                                                            "type" : "Literal"
+                                                         } ]
                                                       }, {
                                                          "type" : "Coalesce",
                                                          "operand" : [ {
