@@ -244,7 +244,7 @@ define DisplayScoreFullADL_IADL:
 // Calculate the score for the Full ADL_IADL
 // sum up all numeric values for all the answers
 define ScoreFullADL_IADL:
-  ADL_IADL_ScoreQuestion1
+  Coalesce(ADL_IADL_ScoreQuestion1, 0)
   + Coalesce(ADL_IADL_ScoreQuestion2, 0)
   + Coalesce(ADL_IADL_ScoreQuestion3, 0)
   + Coalesce(ADL_IADL_ScoreQuestion4, 0)

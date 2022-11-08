@@ -1991,8 +1991,15 @@
                                        "operand" : [ {
                                           "type" : "Add",
                                           "operand" : [ {
-                                             "name" : "ADL_IADL_ScoreQuestion1",
-                                             "type" : "ExpressionRef"
+                                             "type" : "Coalesce",
+                                             "operand" : [ {
+                                                "name" : "ADL_IADL_ScoreQuestion1",
+                                                "type" : "ExpressionRef"
+                                             }, {
+                                                "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                                "value" : "0",
+                                                "type" : "Literal"
+                                             } ]
                                           }, {
                                              "type" : "Coalesce",
                                              "operand" : [ {
