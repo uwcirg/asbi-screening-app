@@ -263,7 +263,7 @@
       ]
     },
     {
-      "type": "text",
+      "type": "string",
       "linkId": "behav-7",
       "text": "Other behaviors"
     },
