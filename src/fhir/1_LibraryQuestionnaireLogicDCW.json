@@ -1,0 +1,66 @@
+{
+  "resourceType": "Library",
+  "id": "CIRG-LibraryQuestionnaireLogicDCW",
+  "name": "CIRG-LibraryQuestionnaireLogicDCW",
+  "title": "CIRG-LibraryQuestionnaireLogicDCW",
+  "meta": {
+    "profile": [
+      "http://hl7.org/fhir/uv/cpg/StructureDefinition/cpg-computablelibrary"
+    ]
+  },
+  "url": "http://OUR-PLACEHOLDER-URL.edu/Library/CIRG-LibraryQuestionnaireLogicDCW",
+  "type": {
+    "coding": [
+      {
+        "code": "logic-library",
+        "system": "http://terminology.hl7.org/CodeSystem/library-type",
+        "display": "Logic Library"
+      }
+    ]
+  },
+  "description": "Library of logic for questionnaire administration for Dementia Care Works. Logic represented with CQL. Loosely based on https://github.com/ccsm-cds-tools/ccsm-cds-with-tests/blob/main/fsh-tank/fsh-generated/resources/Library-ScreeningLibrary.json",
+  "content": [
+    {
+      "contentType": "text/cql",
+      "data": "bGlicmFyeSBRdWVzdGlvbm5haXJlTG9naWNMaWJyYXJ5IHZlcnNpb24gJzEuMCcKdXNpbmcgRkhJUiB2ZXJzaW9uICc0LjAuMScKaW5jbHVkZSBGSElSSGVscGVycyB2ZXJzaW9uICc0LjAuMScgY2FsbGVkIEZISVJIZWxwZXJzCgpkZWZpbmUgUHJlc2VudFBIUTk6CiAgdHJ1ZQoKZGVmaW5lIFByZXNlbnRHQUQ3Ogp0cnVl"
+    }
+  ],
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/uv/cpg/StructureDefinition/cpg-knowledgeCapability",
+      "valueCode": "executable"
+    },
+    {
+      "url": "http://hl7.org/fhir/uv/cpg/StructureDefinition/cpg-knowledgeRepresentationLevel",
+      "valueCode": "structured"
+    }
+  ],
+  "version": "1.0",
+  "date": "2022-10-28",
+  "status": "draft",
+  "experimental": true,
+  "publisher": "Clinical Informatics Research Group, School of Nursing, University of Washington.",
+  "copyright": "Copyright 2022, University of Washington.",
+  "approvalDate": "2022-10-28",
+  "lastReviewDate": "2022-10-28",
+  "author": [
+    {
+      "name": "Clinical Informatics Research Group, School of Nursing, University of Washington."
+    }
+  ],
+  "editor": [
+    {
+      "name": "Clinical Informatics Research Group, School of Nursing, University of Washington."
+    }
+  ],
+  "reviewer": [
+    {
+      "name": "Clinical Informatics Research Group, School of Nursing, University of Washington."
+    }
+  ],
+  "endorser": [
+    {
+      "name": "Clinical Informatics Research Group, School of Nursing, University of Washington."
+    }
+  ]
+}
