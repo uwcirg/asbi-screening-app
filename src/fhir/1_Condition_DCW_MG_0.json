@@ -1,5 +1,6 @@
 {
   "resourceType": "Condition",
+  "id": "condition-DCW-MG-0",
   "clinicalStatus": {
     "coding": [
       {
