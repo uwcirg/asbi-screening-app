@@ -23,7 +23,7 @@
         {
             "detail": {
                 "instantiatesCanonical": [
-                    "Questionnaire/CIRG-ECOG-SELF-REPORT"
+                    "Questionnaire/CIRG-ECOG12"
                 ],
                 "code": {
                     "coding": [
@@ -33,7 +33,7 @@
                             "display": "Questionnaire"
                         }
                     ],
-                    "text": "ECOG-SELF-REPORT questionnaire"
+                    "text": "ECOG12 questionnaire"
                 },
                 "status": "scheduled",
                 "scheduledTiming": {
