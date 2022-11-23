@@ -165,9 +165,9 @@ define function getQuestionScore(qIndex Integer, qId String):
       if qResponseIndex != -1 then
         if extensionItem is not null then
           getAnswerOptionExtensionValue(extensionItem)
-        else 0
+        else null
       else
-        0
+        null
       
 // Question 1
 define Gad7ScoreQuestion1:

@@ -2,6 +2,7 @@
 export default {
   default: {
     showQuestionNumbers: "off",
+    showClearButton: true,
     completeText: "Submit",
     clearInvisibleValues: "onHidden",
     requiredText: "",
@@ -11,8 +12,9 @@ export default {
   MINICOG: {
     focusFirstQuestionAutomatic: true,
     checkErrorsMode: "onValueChanged",
+    textUpdateMode: "onTyping",
     //validation
-    questionValidator: function(survey, options) {
+    questionValidator: function (survey, options) {
       const QUESTION1_ID = "minicog-question1";
       const QUESTION2_ID = "minicog-question2";
       const optionVal = parseInt(options.value);
@@ -24,6 +26,20 @@ export default {
       if (options.name === QUESTION2_ID) {
         if (optionVal < 0 || optionVal > 2 || optionVal === 1) {
           options.error = "The value must be 0 or 2.";
+        }
+      }
+    },
+  },
+  SLUMS: {
+    focusFirstQuestionAutomatic: true,
+    checkErrorsMode: "onValueChanged",
+    //validation
+    questionValidator: function (survey, options) {
+      const SCORE_QUESTION_ID = "/71492-3";
+      const optionVal = parseInt(options.value);
+      if (options.name === SCORE_QUESTION_ID) {
+        if (optionVal > 30 || optionVal < 1) {
+          options.error = "The value must be between 1 and 30.";
         }
       }
     },

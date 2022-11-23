@@ -59,5 +59,7 @@ module.exports = {
     index: "./src/main.js",
     launch: "./src/launch.js",
   },
-  transpileDependencies: ["vuetify", "questionnaire-to-survey"],
-};
+  transpileDependencies: [
+    'vuetify', 'questionnaire-to-survey'
+  ]
+}
