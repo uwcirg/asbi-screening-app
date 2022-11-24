@@ -1,26 +1,6 @@
 const path = require("path");
 const systemType = String(process.env.VUE_APP_SYSTEM_TYPE).toLowerCase();
 module.exports = {
-  // chainWebpack: (config) => {
-  //   config.module
-  //     .rule("supportChaining")
-  //     .test(/\.js$/)
-  //     // encender lib introduces ES2020 syntax, optional-chaining and nullish-coalescing-operator
-  //     // not supported by Vue 2, looks like supported in Vue 3, TODO upgrade Vue version
-  //     // for now, add babel plugins to correctly transpile those
-  //     .include.add(path.resolve("node_modules/encender"))
-  //     .end()
-  //     .use("babel-loader")
-  //     .loader("babel-loader")
-  //     .tap((options) => ({
-  //       ...options,
-  //       plugins: [
-  //         "@babel/plugin-proposal-optional-chaining",
-  //         "@babel/plugin-proposal-nullish-coalescing-operator",
-  //       ],
-  //     }))
-  //     .end();
-  // },
   configureWebpack: {
     devtool: systemType === "development" ? "source-map" : "",
     module: {

@@ -8,10 +8,10 @@ function fetchResources(client, patientId) {
   const requests = [
     "Patient/" + patientId,
     "Questionnaire",
-    "QuestionnaireResponse",
+    "QuestionnaireResponse?patient="+patientId+"&_sort=-_lastUpdated",
   ].map((item) => {
     return client.request(item, {
-        pageLimit: 0
+      pageLimit: 0,
     });
   });
   return Promise.all(requests);
@@ -25,7 +25,6 @@ function fetchResources(client, patientId) {
 
 export const applyDefinition = async (planDefinitionId, client, patientId) => {
   
-
   let patientBundle = {
     resourceType: "Bundle",
     id: "survey-bundle",
