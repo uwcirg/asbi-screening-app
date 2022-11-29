@@ -637,7 +637,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-9",
-      "text": "In the last week have you observed Weight loss in your care recipient?",
+      "text": "In the last week have you observed weight loss in your care recipient?",
       "answerOption": [
         {
           "extension": [
