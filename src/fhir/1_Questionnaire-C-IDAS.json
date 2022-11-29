@@ -21,12 +21,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-1",
-      "text": "Anxiety - anxious expression, ruminations, worrying",
+      "text": "<div>In the last week have you observed <b>anxiety</b> in your care recipient? (anxious expression, ruminations, worrying)</div>",
       "_text": {
         "extension": [
            {
              "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-             "valueString": "<h4>Anxiety</h4><div>In the last week have you observed <b>Anxiety</b> in your care recipient? (anxious expression, ruminations, worrying)</div>"
+             "valueString": "<div>In the last week have you observed <b>anxiety</b> in your care recipient? (anxious expression, ruminations, worrying)</div>"
            }
         ]
       },
@@ -101,12 +101,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-2",
-      "text": "Sadness - sad expression, sad voice, tearfulness",
+      "text": "<div>In the last week have you observed <b>sadness</b> in your care recipient? (sad expression, sad voice, tearfulness)</div>,
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Sadness</h4><div>In the last week have you observed Sadness in your care recipient? (sad expression, sad voice, tearfulness)</div>"
+            "valueString": "<div>In the last week have you observed <b>sadness</b> in your care recipient? (sad expression, sad voice, tearfulness)</div>"
           }
         ]
       },
@@ -253,12 +253,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-4",
-      "text": "In the last week have you observed Irritability in your care recipient? (easily annoyed, short-tempered)",
+      "text": "In the last week have you observed <b>irritability</b> in your care recipient? (easily annoyed, short-tempered)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Irritability</h4><div>In the last week have you observed Irritability in your care recipient? (easily annoyed, short-tempered)</div>"
+            "valueString": "<div>In the last week have you observed <b>irritability</b> in your care recipient? (easily annoyed, short-tempered)</div>"
           }
         ]
       },
@@ -333,12 +333,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-5",
-      "text": "In the last week have you observed Agitation in your care recipient? (restlessness, handwringing, hairpulling)",
+      "text": "In the last week have you observed <b>agitation</b> in your care recipient? (restlessness, handwringing, hairpulling)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Agitation</h4><div>In the last week have you observed Agitation in your care recipient? (restlessness, handwringing, hairpulling)</div>"
+            "valueString": "<h4>Agitation</h4><div>In the last week have you observed <b>agitation</b> in your care recipient? (restlessness, handwringing, hairpulling)</div>"
           }
         ]
       },
@@ -413,7 +413,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-6",
-      "text": "In the last week have you observed Multiple physical complaints in your care recipient? (score absent if GI symptoms only)",
+      "text": "In the last week have you observed <b>multiple physical complaints</b> in your care recipient? (score absent if GI symptoms only)",
       "answerOption": [
         {
           "extension": [
@@ -485,7 +485,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-7",
-      "text": "In the last week have you observed Loss of interest in your care recipient? (less involved in usual activities (score only if change occurred acutely, i.e., in less than 1 month))",
+      "text": "In the last week have you observed <b>loss of interest</b> in your care recipient? (less involved in usual activities (score only if change occurred acutely, i.e., in less than 1 month))",
       "answerOption": [
         {
           "extension": [
@@ -557,12 +557,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-8",
-      "text": "In the last week have you observed Appetite loss in your care recipient? (eating less than usual)",
+      "text": "In the last week have you observed <b>appetite loss</b> in your care recipient? (eating less than usual)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Appetite loss</h4><div>In the last week have you observed Appetite loss in your care recipient? (eating less than usual)</div>"
+            "valueString": "<div>In the last week have you observed appetite loss in your care recipient? (eating less than usual)</div>"
           }
         ]
       },
@@ -709,12 +709,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-10",
-      "text": "In the last week have you observed Lack of energy in your care recipient? (fatigues easily, unable to sustain activities)",
+      "text": "In the last week have you observed <b>lack of energy</b> in your care recipient? (fatigues easily, unable to sustain activities)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Lack of energy</h4><div>In the last week have you observed Lack of energy in your care recipient? (fatigues easily, unable to sustain activities)</div>"
+            "valueString": "In the last week have you observed lack of energy in your care recipient? (fatigues easily, unable to sustain activities)</div>"
           }
         ]
       },
@@ -789,12 +789,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-11",
-      "text": "In the last week have you observed Diurnal variation of mood in your care recipient? (symptoms worse in the morning)",
+      "text": "In the last week have you observed <b>diurnal variation of mood</b> in your care recipient? (symptoms worse in the morning)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Diurnal variation of mood</h4><div>In the last week have you observed Diurnal variation of mood in your care recipient? (symptoms worse in the morning)</div>"
+            "valueString": "<div>In the last week have you observed diurnal variation of mood in your care recipient? (symptoms worse in the morning)</div>"
           }
         ]
       },
@@ -869,12 +869,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-12",
-      "text": "In the last week have you observed Difficulty falling asleep in your care recipient? (later than usual for this individual)",
+      "text": "In the last week have you observed <b>difficulty falling asleep</b> in your care recipient? (later than usual for this individual)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Difficulty falling asleep</h4><div>In the last week have you observed Difficulty falling asleep in your care recipient? (later than usual for this individual)</div>"
+            "valueString": "<div>In the last week have you observed difficulty falling asleep in your care recipient? (later than usual for this individual)</div>"
           }
         ]
       },
@@ -949,7 +949,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-13",
-      "text": "In the last week have you observed Multiple awakenings during sleep in your care recipient? ",
+      "text": "In the last week have you observed <b>multiple awakenings</b> during sleep in your care recipient? ",
       "answerOption": [
         {
           "extension": [
@@ -1021,12 +1021,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-14",
-      "text": "In the last week have you observed Early-morning awakening in your care recipient? (earlier than usual for this individual)",
+      "text": "In the last week have you observed <b>early-morning awakening</b> in your care recipient? (earlier than usual for this individual)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Early-morning awakening</h4><div>In the last week have you observed Early-morning awakening in your care recipient? (earlier than usual for this individual)</div>"
+            "valueString": "<div>In the last week have you observed early-morning awakening in your care recipient? (earlier than usual for this individual)</div>"
           }
         ]
       },
@@ -1101,12 +1101,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-15",
-      "text": "In the last week have you observed Suicide in your care recipient? (feels life is not worth living, has suicidal wishes or makes suicide attempt)",
+      "text": "In the last week have you observed <b>suicidal feelings</b> in your care recipient? (feels life is not worth living, has suicidal wishes or makes suicide attempt)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Suicide</h4><div>In the last week have you observed Suicide in your care recipient? (feels life is not worth living, has suicidal wishes or makes suicide attempt)</div>"
+            "valueString": "<div>In the last week have you observed suicidal feelings in your care recipient? (feels life is not worth living, has suicidal wishes or makes suicide attempt)</div>"
           }
         ]
       },
@@ -1181,12 +1181,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-16",
-      "text": "In the last week have you observed Poor self-esteem in your care recipient? (self-blame, self-deprecation, feelings of failure)",
+      "text": "In the last week have you observed <b>poor self-esteem</b> in your care recipient? (self-blame, self-deprecation, feelings of failure)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Poor self-esteem</h4><div>In the last week have you observed Poor self-esteem in your care recipient? (self-blame, self-deprecation, feelings of failure)</div>"
+            "valueString": "<div>In the last week have you observed poor self-esteem in your care recipient? (self-blame, self-deprecation, feelings of failure)</div>"
           }
         ]
       },
@@ -1261,12 +1261,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-17",
-      "text": "In the last week have you observed Pessimism in your care recipient? (anticipation of the worst)",
+      "text": "In the last week have you observed <b>pessimism</b> in your care recipient? (anticipation of the worst)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Pessimism</h4><div>In the last week have you observed Pessimism in your care recipient? (anticipation of the worst)</div>"
+            "valueString": "<div>In the last week have you observed pessimism in your care recipient? (anticipation of the worst)</div>"
           }
         ]
       },
@@ -1341,12 +1341,12 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-18",
-      "text": "In the last week have you observed Mood-congruent delusions in your care recipient? (delusions of poverty, illness or loss)",
+      "text": "In the last week have you observed <b>mood-congruent delusions</b> in your care recipient? (delusions of poverty, illness or loss)",
       "_text": {
         "extension": [
           {
             "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
-            "valueString": "<h4>Mood-congruent delusions</h4><div>In the last week have you observed Mood-congruent delusions in your care recipient? (delusions of poverty, illness or loss)</div>"
+            "valueString": "<div>In the last week have you observed mood-congruent delusions in your care recipient? (delusions of poverty, illness or loss)</div>"
           }
         ]
       },
