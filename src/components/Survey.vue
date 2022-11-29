@@ -506,11 +506,16 @@ export default {
     },
     handleSkippingQuestionnaire() {
       this.reload = true;
+
+      // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
+      
+      // if there are still questionnaire(s) left to do, reload the page to go to the next
       if (this.currentQuestionnaireList.length > 0) {
         location.reload();
         return;
       }
+      // no more questionnaire to do, handle it
       this.handleEndOfQuestionnaires();
     },
     handleAdvanceQuestionnaireList() {
