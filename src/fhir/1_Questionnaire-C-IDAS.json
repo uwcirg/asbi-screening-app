@@ -1181,7 +1181,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-16",
-      "text": "In the last week have you observed <b>poor self-esteem</b> in your care recipient? (self-blame, self-deprecation, feelings of failure)",
+      "text": "In the last week have you observed poor self-esteem in your care recipient? (self-blame, self-deprecation, feelings of failure)",
       "_text": {
         "extension": [
           {
