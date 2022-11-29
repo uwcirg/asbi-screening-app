@@ -369,6 +369,7 @@ export default {
             "sender page number on page changed ",
             sender.currentPageNo
           );
+          // only allow skip questionnaire botón on the first page
           this.allowSkip = !sender.currentPageNo;
           setTimeout(() => {
             // find all question elements
@@ -499,6 +500,7 @@ export default {
         );
         return;
       }
+      // if no dashboard URL is specified, just show a message informing user that all questionnaires are completed
       this.dialogMessage = "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
       this.showDialog = true;
     },
