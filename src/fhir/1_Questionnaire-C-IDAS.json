@@ -21,7 +21,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-1",
-      "text": "<div>In the last week have you observed <b>anxiety</b> in your care recipient? (anxious expression, ruminations, worrying)</div>",
+      "text": "In the last week have you observed anxiety in your care recipient? (anxious expression, rumination, worrying)",
       "_text": {
         "extension": [
            {
