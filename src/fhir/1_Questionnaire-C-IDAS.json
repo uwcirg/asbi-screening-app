@@ -253,7 +253,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-4",
-      "text": "In the last week have you observed <b>irritability</b> in your care recipient? (easily annoyed, short-tempered)",
+      "text": "In the last week have you observed irritability in your care recipient? (easily annoyed, short-tempered)",
       "_text": {
         "extension": [
           {
