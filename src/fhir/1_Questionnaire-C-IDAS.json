@@ -101,7 +101,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-2",
-      "text": "<div>In the last week have you observed <b>sadness</b> in your care recipient? (sad expression, sad voice, tearfulness)</div>,
+      "text": "In the last week have you observed sadness in your care recipient? (sad expression, sad voice, tearfulness)",
       "_text": {
         "extension": [
           {
