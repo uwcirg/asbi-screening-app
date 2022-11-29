@@ -333,7 +333,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-5",
-      "text": "In the last week have you observed <b>agitation</b> in your care recipient? (restlessness, handwringing, hairpulling)",
+      "text": "In the last week have you observed agitation in your care recipient? (restlessness, handwringing, hairpulling)",
       "_text": {
         "extension": [
           {
