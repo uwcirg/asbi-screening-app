@@ -869,7 +869,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-12",
-      "text": "In the last week have you observed <b>difficulty falling asleep</b> in your care recipient? (later than usual for this individual)",
+      "text": "In the last week have you observed difficulty falling asleep in your care recipient? (later than usual for this individual)",
       "_text": {
         "extension": [
           {
