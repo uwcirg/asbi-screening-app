@@ -181,7 +181,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-3",
-      "text": "In the last week have you observed a Lack of reactivity to pleasant events in your care recipient?",
+      "text": "In the last week have you observed a lack of reactivity to pleasant events in your care recipient?",
       "answerOption": [
         {
           "extension": [
