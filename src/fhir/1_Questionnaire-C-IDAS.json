@@ -557,7 +557,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-8",
-      "text": "In the last week have you observed <b>appetite loss</b> in your care recipient? (eating less than usual)",
+      "text": "In the last week have you observed appetite loss in your care recipient? (eating less than usual)",
       "_text": {
         "extension": [
           {
