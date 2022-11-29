@@ -1261,7 +1261,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-17",
-      "text": "In the last week have you observed <b>pessimism</b> in your care recipient? (anticipation of the worst)",
+      "text": "In the last week have you observed pessimism in your care recipient? (anticipation of the worst)",
       "_text": {
         "extension": [
           {
