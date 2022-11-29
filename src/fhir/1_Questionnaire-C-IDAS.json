@@ -485,7 +485,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-7",
-      "text": "In the last week have you observed <b>loss of interest</b> in your care recipient? (less involved in usual activities (score only if change occurred acutely, i.e., in less than 1 month))",
+      "text": "In the last week have you observed loss of interest in your care recipient? (less involved in usual activities (score only if change occurred acutely, i.e., in less than 1 month))",
       "answerOption": [
         {
           "extension": [
