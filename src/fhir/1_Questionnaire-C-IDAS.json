@@ -1101,7 +1101,7 @@
       "type": "choice",
       "required": false,
       "linkId": "cs-idas-15",
-      "text": "In the last week have you observed <b>suicidal feelings</b> in your care recipient? (feels life is not worth living, has suicidal wishes or makes suicide attempt)",
+      "text": "In the last week have you observed suicidal feelings in your care recipient? (feels life is not worth living, has suicidal wishes or makes suicide attempt)",
       "_text": {
         "extension": [
           {
