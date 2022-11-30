@@ -4,15 +4,15 @@
       <div v-html="getError()" class="font-weight-bold"></div>
     </v-alert>
     <div
-      class="survey--skip-questionnaire-container"
-      v-if="showShowSkipQuestionnaireButton()"
+      class="survey--actions-container"
     >
       <v-btn
         color="primary"
         class="ml-4"
         @click="handleSkippingQuestionnaire"
-        :loading="reload"
-        :disabled="reload"
+        :loading="reloadInProgress"
+        :disabled="reloadInProgress"
+        v-if="showShowSkipQuestionnaireButton()"
         >Skip this Questionnaire</v-btn
       >
     </div>
@@ -116,8 +116,8 @@ export default {
       error: false,
       showDialog: false,
       dialogMessage: "Saving in progress ...",
-      allowSkip: !getEnv("VUE_APP_DISABLE_SKIPPED_QUESTIONNAIRE"),
-      reload: false
+      allowSkip: getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE"),
+      reloadInProgress: false
     };
   },
   methods: {
@@ -492,7 +492,13 @@ export default {
       );
     },
     handleEndOfQuestionnaires() {
+
+      // don't end survey session if there is still questionnaire to do
       if (this.currentQuestionnaireList.length > 0) return;
+      
+      // turn off skip flag
+      this.allowSkip = false;
+
       if (this.dashboardURL) {
         setTimeout(
           () => (window.location = this.dashboardURL + "/clear_session"),
@@ -505,7 +511,7 @@ export default {
       this.showDialog = true;
     },
     handleSkippingQuestionnaire() {
-      this.reload = true;
+      this.reloadInProgress = true;
 
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
