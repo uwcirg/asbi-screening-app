@@ -121,9 +121,11 @@ export default {
         .then(() => {
           if (this.error) return; // error getting instrument, abort
 
-          getInstrumentCSS(this.currentQuestionnaireId).catch((e) =>
-            console.log(`loading instrument css error: ${e}`)
-          );
+          if (this.questionnaire) {
+            getInstrumentCSS(this.questionnaire.name).catch((e) =>
+              console.log(`loading instrument css error: ${e}`)
+            );
+          }
           // set response identifier
           this.setUniqueQuestionnaireResponseIdentifier();
           this.setAppFavicon();
@@ -181,7 +183,8 @@ export default {
     setFirstInputFocus() {
       if (!this.surveyOptions.focusFirstQuestionAutomatic) return;
       setTimeout(() => {
-        document.querySelector("input[type=text]").focus();
+        const textInput = document.querySelector("input[type=text]");
+        if (textInput) textInput.focus();
       }, 350);
     },
     initializeInstrument() {
