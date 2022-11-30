@@ -1,6 +1,21 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { getEnv } from "./util.js";
 
+export async function getPatientCarePlan(client, patientId) {
+  if (!client || !patientId) return null;
+  const sessionKey = client.getState().key;
+  const CARE_PLAN_STORAGE_KEY = `careplan_${sessionKey}`;
+  const storageItem = sessionStorage.getItem(CARE_PLAN_STORAGE_KEY);
+  if (storageItem) return JSON.parse(storageItem);
+  const carePlan = await client.request(
+    `CarePlan?subject=Patient/${patientId}&category:text=questionnaire&_sort=-_lastUpdated`
+  );
+  if (carePlan) {
+    sessionStorage.setItem(CARE_PLAN_STORAGE_KEY, JSON.stringify(carePlan));
+  }
+  return carePlan;
+}
+
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
   console.log("instruments from environment ", envList);
@@ -51,9 +66,10 @@ export async function getInstrumentList(client, patientId) {
   if (sessionList) return sessionList;
   // get questionnaire(s) from care plan
   // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
-  const carePlan = await client.request(
-    `CarePlan?subject=Patient/${patientId}&_sort=-_lastUpdated`
-  );
+  // const carePlan = await client.request(
+  //   `CarePlan?subject=Patient/${patientId}&category:text=questionnaire&_sort=-_lastUpdated`
+  // );
+  const carePlan = await getPatientCarePlan(client, patientId);
   let instrumentList = getInstrumentListFromCarePlan(carePlan);
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the environment variable
