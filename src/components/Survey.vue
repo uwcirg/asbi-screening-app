@@ -3,9 +3,7 @@
     <v-alert color="error" v-if="error" class="ma-4 pa-4" dark>
       <div v-html="getError()" class="font-weight-bold"></div>
     </v-alert>
-    <div
-      class="survey--actions-container"
-    >
+    <div class="survey--actions-container">
       <v-btn
         color="primary"
         class="ml-4"
@@ -23,12 +21,7 @@
         color="primary"
       ></v-progress-circular>
     </div>
-    <v-dialog
-      v-model="showDialog"
-      fullscreen
-      hide-overlay
-      :transition="false"
-    >
+    <v-dialog v-model="showDialog" fullscreen hide-overlay :transition="false">
       <v-card
         ><div v-html="dialogMessage" class="dialog-body-container"></div
       ></v-card>
@@ -115,8 +108,9 @@ export default {
       error: false,
       showDialog: false,
       dialogMessage: "Saving in progress ...",
-      allowSkip: String(getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE")) === "true",
-      reloadInProgress: false
+      allowSkip:
+        String(getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE")) === "true",
+      reloadInProgress: false,
     };
   },
   methods: {
@@ -192,7 +186,8 @@ export default {
     setFirstInputFocus() {
       if (!this.surveyOptions.focusFirstQuestionAutomatic) return;
       setTimeout(() => {
-        document.querySelector("input[type=text]").focus();
+        const textElement = document.querySelector("input[type=text]");
+        if (textElement) textElement.focus();
       }, 350);
     },
     initializeInstrument() {
@@ -377,8 +372,9 @@ export default {
               // get the first question
               const firstQuestionElement = questionElements[0];
               // check if the first question contains a text input field
-              const inputTextElement =
-                firstQuestionElement.querySelector("input[type='text']");
+              const inputTextElement = firstQuestionElement
+                ? firstQuestionElement.querySelector("input[type='text']")
+                : null;
               // if so, focus on it
               if (inputTextElement) inputTextElement.focus();
             }
@@ -491,10 +487,9 @@ export default {
       );
     },
     handleEndOfQuestionnaires() {
-
       // don't end survey session if there is still questionnaire to do
       if (this.currentQuestionnaireList.length > 0) return;
-      
+
       // turn off skip flag
       this.allowSkip = false;
 
@@ -506,7 +501,8 @@ export default {
         return;
       }
       // if no dashboard URL is specified, just show a message informing user that all questionnaires are completed
-      this.dialogMessage = "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
+      this.dialogMessage =
+        "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
       this.showDialog = true;
     },
     handleSkippingQuestionnaire() {
@@ -514,7 +510,7 @@ export default {
 
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
-      
+
       // if there are still questionnaire(s) left to do, reload the page to go to the next
       if (this.currentQuestionnaireList.length > 0) {
         setTimeout(() => location.reload(), 350);
