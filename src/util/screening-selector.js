@@ -5,8 +5,10 @@ export async function getPatientCarePlan(client, patientId) {
   if (!client || !patientId) return null;
   const sessionKey = client.getState().key;
   const CARE_PLAN_STORAGE_KEY = `careplan_${sessionKey}_${patientId}`;
+  // return stored careplan with same session key from session storage if available
   const storageItem = sessionStorage.getItem(CARE_PLAN_STORAGE_KEY);
   if (storageItem) return JSON.parse(storageItem);
+  // otherwise query for it
   const carePlan = await client.request(
     `CarePlan?subject=Patient/${patientId}&category:text=questionnaire&_sort=-_lastUpdated`
   );
@@ -48,6 +50,7 @@ export function getInstrumentListFromCarePlan(
   activities.forEach((a) => {
     let qId = null;
     const detailElement = a.detail;
+    // get questionnaire id for associated with this activity
     if (
       detailElement &&
       detailElement.instantiatesCanonical &&
@@ -58,7 +61,7 @@ export function getInstrumentListFromCarePlan(
     }
     if (!qId) return true;
 
-    // get matched questionnaire response(s) for the questionnaire
+    // get matched questionnaire response(s) by questionnaire id
     const qResults = responses.filter((q) => {
       const questionnaireIdentifier = q.questionnaire.toUpperCase();
       return questionnaireIdentifier.indexOf(qId.toUpperCase()) !== -1;
@@ -68,15 +71,11 @@ export function getInstrumentListFromCarePlan(
     const scheduledTiming = detailElement.scheduledTiming;
     const repeat = scheduledTiming ? scheduledTiming.repeat : null;
     // check repeat schedule
-
     const period =
       repeat.period && !isNaN(repeat.period) ? parseInt(repeat.period) : 0;
     // h | d | wk | mo, https://fhir-ru.github.io/datatypes.html#Timing
-    // based on period unit and period, convert scheduled time to hours 
-    // event should occur frequency times per period
-    // so for instance: period 1, periodUnit "d", frequency 1
-    // event should occur 1 time over 1 day period
 
+    // helper object to convert time period to hours using period unit as key
     const toHours = {
       h: 1 * period,
       d: 24 * period, // day
@@ -88,9 +87,14 @@ export function getInstrumentListFromCarePlan(
       ? null
       : parseInt(repeat.frequency);
 
-    // convert time period to hours
+    // based on period unit and period, convert scheduled time to hours
+    // event should occur frequency times per period
+    // ergo, for instance: period 1, periodUnit "d", frequency 1
+    // event should occur 1 time over 1 day period
     const timePeriod = repeat.periodUnit ? toHours[repeat.periodUnit] : 0;
 
+    // if no matching questionaire response or no valid scheduled time to compare against
+    // count this questionnaire as need to administer
     if (!qResults.length || !frequency || !timePeriod) {
       if (instrumentList.indexOf(qId) === -1) instrumentList.push(qId);
       return true;
@@ -99,9 +103,10 @@ export function getInstrumentListFromCarePlan(
     // get today's date
     let today = new Date();
     today.setHours(0, 0, 0, 0);
-  
-    // search for questionnaire responses that fall within time range
+
+    // search for questionnaire responses that fall within the period time range
     const matchedResults = qResults.filter((q) => {
+      // authoredDate needs to be correctly converted to local time for accurate comparison against today's date
       let authoredDate = new Date(q.authored);
       let timeZoneCorrection = authoredDate.getTimezoneOffset() * 60 * 1000; // [minutes] * [seconds/minutes] * [milliseconds/second]
       let correctedDate = new Date(authoredDate.getTime() + timeZoneCorrection);
@@ -111,6 +116,19 @@ export function getInstrumentListFromCarePlan(
       );
       // hours between two dates
       const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
+
+      //debug
+      console.log(
+        "questionnaire id: ",
+        qId,
+        "authoredDate: ",
+        correctedDate,
+         " time period to administer: ",
+        timePeriod,
+        " time elapsed (hours) from today: ",
+        hoursBetweenDates,
+       
+      );
       return hoursBetweenDates < timePeriod;
     });
 
