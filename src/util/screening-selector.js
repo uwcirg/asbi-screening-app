@@ -68,9 +68,15 @@ export function getInstrumentListFromCarePlan(
     const scheduledTiming = detailElement.scheduledTiming;
     const repeat = scheduledTiming ? scheduledTiming.repeat : null;
     // check repeat schedule
+
     const period =
       repeat.period && !isNaN(repeat.period) ? parseInt(repeat.period) : 0;
     // h | d | wk | mo, https://fhir-ru.github.io/datatypes.html#Timing
+    // based on period unit and period, convert scheduled time to hours 
+    // event should occur frequency times per period
+    // so for instance: period 1, periodUnit "d", frequency 1
+    // event should occur 1 time over 1 day period
+
     const toHours = {
       h: 1 * period,
       d: 24 * period, // day
@@ -82,9 +88,10 @@ export function getInstrumentListFromCarePlan(
       ? null
       : parseInt(repeat.frequency);
 
-    const dueInHours = repeat.periodUnit ? toHours[repeat.periodUnit] : 0;
+    // convert time period to hours
+    const timePeriod = repeat.periodUnit ? toHours[repeat.periodUnit] : 0;
 
-    if (!qResults.length || !frequency || !dueInHours) {
+    if (!qResults.length || !frequency || !timePeriod) {
       if (instrumentList.indexOf(qId) === -1) instrumentList.push(qId);
       return true;
     }
@@ -104,7 +111,7 @@ export function getInstrumentListFromCarePlan(
       );
       // hours between two dates
       const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
-      return hoursBetweenDates < dueInHours;
+      return hoursBetweenDates < timePeriod;
     });
 
     // questionnaire response(s) found within the scheduled time and matched the frequency
