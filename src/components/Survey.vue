@@ -85,6 +85,8 @@ export default {
     return {
       projectID: getEnv("VUE_APP_PROJECT_ID"),
       dashboardURL: getEnv("VUE_APP_DASHBOARD_URL"),
+      confidentialBackendURL: getEnv("VUE_APP_CONF_API_URL"),
+      systemType: getEnv("VUE_APP_SYSTEM_TYPE"),
       sessionKey: 0,
       currentQuestionnaireId: null,
       currentQuestionnaireList: [],
@@ -115,12 +117,13 @@ export default {
   },
   methods: {
     init() {
-      if (this.error || !this.patient) false;
+      if (this.error || !this.patient) return false;
       //console.log("state ", this.client.getState("tokenResponse.id_token"));
       console.log("client state ", this.client.getState());
       this.sessionKey = this.client.getState().key;
       console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
+      this.writeToLog("info", ["sessionCreated"]);
       this.patientBundle.entry.unshift({ resource: this.patient });
       this.initializeInstrument()
         .then(() => {
@@ -166,10 +169,58 @@ export default {
           console.log("Error loading Questionnaire ", e);
         });
     },
+    getDefaultLogObject() {
+      return {
+        level: "info",
+        tags: ["screener-front-end"],
+        message: {
+          patientID: this.patientId,
+          projectID: this.projectID,
+          sessionID: this.sessionKey,
+          systemType: this.systemType,
+          systemURL: window.location.href,
+        },
+      };
+    },
+    //write to audit log
+    // @param level, expect string
+    // @param tags, expect array, e.g. ['etc']
+    // @param message, expect object, e.g. { "questionId": "123"}
+    writeToLog(level, tags, message) {
+      let postBody = this.getDefaultLogObject();
+      if (level) postBody.level = level;
+      if (tags) postBody.tags = [...postBody.tags, ...tags];
+      if (message)
+        postBody.message = {
+          ...postBody.message,
+          ...message,
+        };
+      const auditURL = `${this.confidentialBackendURL || ""}/auditlog`;
+      fetch(auditURL, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postBody),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          return response.json();
+        })
+        .then(function (data) {
+          console.log("audit request succeeded with response ", data);
+        })
+        .catch(function (error) {
+          console.log("Request failed", error);
+        });
+    },
     isDevelopment() {
       return (
         String(getEnv("NODE_ENV")).toLowerCase() === "development" ||
-        String(getEnv("VUE_APP_SYSTEM_TYPE")).toLowerCase() === "development"
+        String(this.systemType).toLowerCase() === "development"
       );
     },
     getTheme() {
@@ -358,11 +409,35 @@ export default {
       //add validation to question
       this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
 
+      this.survey.onAfterRenderPage.add(
+        function (sender, options) {
+          console.log("On page rendered.  Sender: ", sender);
+          console.log("page html element ", options.htmlElement);
+          console.log("page object ", options.page);
+          const rootElement = options.htmlElement;
+          if (!rootElement) return;
+          const questions = rootElement.querySelectorAll(".sv-question");
+          let arrQuestionIds = [];
+          questions.forEach((q) => {
+            arrQuestionIds.push(q.getAttribute("name"));
+          });
+          console.log("questions ", questions);
+          console.log("question ids ", arrQuestionIds);
+          if (arrQuestionIds.length > 0) {
+            this.writeToLog("info", ["questionDisplayed"], {
+              questionID: arrQuestionIds,
+            });
+          }
+        }.bind(this)
+      );
+
       this.survey.onCurrentPageChanged.add(
         function (sender) {
           console.log(
             "sender page number on page changed ",
-            sender.currentPageNo
+            sender.currentPageNo,
+            " sender object ",
+            sender
           );
           // only allow skip questionnaire botón on the first page
           this.allowSkip = !sender.currentPageNo;
@@ -393,7 +468,7 @@ export default {
             let answerItemIndex = this.questionnaireResponse.item.findIndex(
               (itm) => itm.linkId == options.name
             );
-
+        
             if (options.value != null) {
               let responseValue = getResponseValue(
                 this.questionnaire,
@@ -405,6 +480,11 @@ export default {
                 (item) => item.linkId === options.name
               )[0];
               let questionText = question && question.text ? question.text : "";
+
+              this.writeToLog("info", ["answerEvent"], {
+                questionId: options.name,
+                answerEntered: options.value,
+              });
 
               // If the index is undefined, add a new entry to questionnaireResponse.item
               if (answerItemIndex == -1) {
