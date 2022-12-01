@@ -133,7 +133,7 @@ export function getInstrumentListFromCarePlan(
     });
 
     // questionnaire response(s) found within the scheduled time and matched the frequency
-    if (matchedResults.length > 0 && matchedResults.length === repeat.frequency)
+    if (matchedResults.length > 0 && matchedResults.length === frequency)
       return true;
     if (instrumentList.indexOf(qId) === -1) instrumentList.push(qId);
   });
