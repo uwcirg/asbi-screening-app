@@ -164,4 +164,8 @@ body {
     padding-top: 16px;
     padding-bottom: 16px;
     margin: auto;
+    &:empty {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
 }

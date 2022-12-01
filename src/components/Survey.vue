@@ -11,8 +11,7 @@
         class="ml-4"
         @click="handleSkippingQuestionnaire"
         :loading="reloadInProgress"
-        :disabled="reloadInProgress"
-        v-if="showShowSkipQuestionnaireButton()"
+        v-if="shouldShowSkipQuestionnaireButton()"
         >Skip this Questionnaire</v-btn
       >
     </div>
@@ -116,7 +115,7 @@ export default {
       error: false,
       showDialog: false,
       dialogMessage: "Saving in progress ...",
-      allowSkip: getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE"),
+      allowSkip: String(getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE")) === "true",
       reloadInProgress: false
     };
   },
@@ -518,7 +517,7 @@ export default {
       
       // if there are still questionnaire(s) left to do, reload the page to go to the next
       if (this.currentQuestionnaireList.length > 0) {
-        location.reload();
+        setTimeout(() => location.reload(), 350);
         return;
       }
       // no more questionnaire to do, handle it
@@ -536,7 +535,7 @@ export default {
         removeSessionInstrumentList(this.sessionKey);
       }
     },
-    showShowSkipQuestionnaireButton() {
+    shouldShowSkipQuestionnaireButton() {
       return !this.error && this.ready && this.allowSkip;
     },
     getError() {
