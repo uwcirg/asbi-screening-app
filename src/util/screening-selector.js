@@ -1,5 +1,5 @@
 import valueSetJson from "../cql/valueset-db.json";
-import { getEnv } from "./util.js";
+import { getCorrectedDateByTimeZone, getEnv } from "./util.js";
 
 export async function getPatientCarePlan(client, patientId) {
   if (!client || !patientId) return null;
@@ -9,15 +9,35 @@ export async function getPatientCarePlan(client, patientId) {
   const storageItem = sessionStorage.getItem(CARE_PLAN_STORAGE_KEY);
   if (storageItem) return JSON.parse(storageItem);
   // otherwise query for it
-  const carePlan = await client.request(
-    `CarePlan?subject=Patient/${patientId}&category:text=questionnaire&_sort=-_lastUpdated`
-  );
+  const carePlan = await client
+    .request(
+      `CarePlan?subject=Patient/${patientId}&category:text=questionnaire&_sort=-_lastUpdated`
+    )
+    .catch((e) => console.log("Error retrieving patient careplan ", e));
   if (carePlan && carePlan.entry && carePlan.entry.length) {
     sessionStorage.setItem(CARE_PLAN_STORAGE_KEY, JSON.stringify(carePlan));
     return carePlan;
   }
 
   return null;
+}
+
+export async function getQuestionnaireResponsesForPatient(client, patientId) {
+  if (!client || !patientId) return null;
+
+  const questionnaireResponsesResult = await client
+    .request(`QuestionnaireResponse?patient=${patientId}`)
+    .catch((e) => {
+      console.log(
+        "Error occurred retrieving patient questionnaire responses ",
+        e
+      );
+    });
+  const questionnaireResponses =
+    questionnaireResponsesResult && questionnaireResponsesResult.entry
+      ? questionnaireResponsesResult.entry.map((result) => result.resource)
+      : null;
+  return questionnaireResponses;
 }
 
 export function getEnvInstrumentList() {
@@ -107,13 +127,9 @@ export function getInstrumentListFromCarePlan(
     // search for questionnaire responses that fall within the period time range
     const matchedResults = qResults.filter((q) => {
       // authoredDate needs to be correctly converted to local time for accurate comparison against today's date
-      let authoredDate = new Date(q.authored);
-      let timeZoneCorrection = authoredDate.getTimezoneOffset() * 60 * 1000; // [minutes] * [seconds/minutes] * [milliseconds/second]
-      let correctedDate = new Date(authoredDate.getTime() + timeZoneCorrection);
+      let authoredDate = getCorrectedDateByTimeZone(q.authored);
       // miniseconds between two dates
-      const msBetweenDates = Math.abs(
-        today.getTime() - correctedDate.getTime()
-      );
+      const msBetweenDates = Math.abs(today.getTime() - authoredDate.getTime());
       // hours between two dates
       const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
 
@@ -122,17 +138,17 @@ export function getInstrumentListFromCarePlan(
         "questionnaire id: ",
         qId,
         "authoredDate: ",
-        correctedDate,
-         " time period to administer: ",
+        authoredDate,
+        " time period to administer: ",
         timePeriod,
         " time elapsed (hours) from today: ",
-        hoursBetweenDates,
-       
+        hoursBetweenDates
       );
       return hoursBetweenDates < timePeriod;
     });
 
     // questionnaire response(s) found within the scheduled time and matched the frequency
+    // count this questionnaire as done
     if (matchedResults.length > 0 && matchedResults.length === frequency)
       return true;
     if (instrumentList.indexOf(qId) === -1) instrumentList.push(qId);
@@ -148,6 +164,7 @@ export function getInstrumentListFromCarePlan(
 export async function getInstrumentList(client, patientId) {
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
+  // client session key
   const key = client.getState().key;
   // if questionnaire list is already stored within a session variable, returns it
   const sessionList = getSessionInstrumentList(key);
@@ -156,16 +173,12 @@ export async function getInstrumentList(client, patientId) {
   // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
   const carePlan = await getPatientCarePlan(client, patientId);
 
-  const questionnaireResponsesResult = await client.request(
-    `QuestionnaireResponse?patient=${patientId}`
-  );
-  const questionnaireResponses =
-    questionnaireResponsesResult && questionnaireResponsesResult.entry
-      ? questionnaireResponsesResult.entry.map((result) => result.resource)
-      : null;
-
+  // get instruments from care plan if possible
   let instrumentList = carePlan
-    ? getInstrumentListFromCarePlan(carePlan, questionnaireResponses)
+    ? getInstrumentListFromCarePlan(
+        carePlan,
+        await getQuestionnaireResponsesForPatient(client, patientId)
+      )
     : [];
 
   // if we don't find a specified questionnaire from a patient's careplan,
