@@ -120,7 +120,6 @@ export default {
       this.initializeInstrument()
         .then(() => {
           if (this.error) return; // error getting instrument, abort
-
           if (this.questionnaire) {
             getInstrumentCSS(this.questionnaire.name).catch((e) =>
               console.log(`loading instrument css error: ${e}`)
