@@ -24,7 +24,6 @@ export async function getPatientCarePlan(client, patientId) {
 
 export async function getQuestionnaireResponsesForPatient(client, patientId) {
   if (!client || !patientId) return null;
-
   const questionnaireResponsesResult = await client
     .request(`QuestionnaireResponse?patient=${patientId}`)
     .catch((e) => {
@@ -135,7 +134,7 @@ export function getInstrumentListFromCarePlan(
 
       //debug
       console.log(
-        "questionnaire id: ",
+        "matched questionnaire id: ",
         qId,
         "authoredDate: ",
         authoredDate,
@@ -172,7 +171,6 @@ export async function getInstrumentList(client, patientId) {
   // get questionnaire(s) from care plan
   // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
   const carePlan = await getPatientCarePlan(client, patientId);
-
   // get instruments from care plan if possible
   let instrumentList = carePlan
     ? getInstrumentListFromCarePlan(
@@ -180,7 +178,6 @@ export async function getInstrumentList(client, patientId) {
         await getQuestionnaireResponsesForPatient(client, patientId)
       )
     : [];
-
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the environment variable
   if (!carePlan && (!instrumentList || !instrumentList.length)) {
