@@ -409,36 +409,29 @@ export default {
       //add validation to question
       this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
 
-      this.survey.onAfterRenderPage.add(
-        function (sender, options) {
-          console.log("On page rendered.  Sender: ", sender);
-          console.log("page html element ", options.htmlElement);
-          console.log("page object ", options.page);
-          const rootElement = options.htmlElement;
-          if (!rootElement) return;
-          const questions = rootElement.querySelectorAll(".sv-question");
-          let arrQuestionIds = [];
-          questions.forEach((q) => {
-            arrQuestionIds.push(q.getAttribute("name"));
-          });
-          console.log("questions ", questions);
-          console.log("question ids ", arrQuestionIds);
-          if (arrQuestionIds.length > 0) {
-            this.writeToLog("info", ["questionDisplayed"], {
-              questionID: arrQuestionIds,
-            });
-          }
-        }.bind(this)
-      );
-
       this.survey.onCurrentPageChanged.add(
-        function (sender) {
+        function (sender, options) {
           console.log(
             "sender page number on page changed ",
             sender.currentPageNo,
             " sender object ",
             sender
           );
+
+          const questionElements = options.oldCurrentPage ? options.oldCurrentPage.questions: null;
+          if (questionElements) {
+            let arrVisibleQuestions = questionElements.filter(q => q.isVisible).map(q => q.name);
+            // questionElements.forEach(q => {
+            //   if (q.isVisible) arrVisibleQuestions.push(q.name);
+            // });
+            console.log("visible questions ", arrVisibleQuestions);
+            const navDirection = options.isNextPage ? "clickNext": (options.isPrevPage? "clickPrev": "");
+            if (arrVisibleQuestions.length) {
+              this.writeToLog("info", ["questionDisplayed", "onPageChanged", navDirection], {
+              questionID: arrVisibleQuestions,
+            });
+            }
+          }
           // only allow skip questionnaire botón on the first page
           this.allowSkip = !sender.currentPageNo;
           setTimeout(() => {
@@ -468,7 +461,7 @@ export default {
             let answerItemIndex = this.questionnaireResponse.item.findIndex(
               (itm) => itm.linkId == options.name
             );
-        
+
             if (options.value != null) {
               let responseValue = getResponseValue(
                 this.questionnaire,
