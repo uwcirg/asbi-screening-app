@@ -423,40 +423,6 @@ export default {
         return function () {};
       return this.surveyOptions.questionValidator;
     },
-    writeLogOnPageChange(options) {
-      if (!options) return;
-      const questionElements = options.oldCurrentPage
-        ? options.oldCurrentPage.questions
-        : null;
-      if (questionElements) {
-        let arrVisibleQuestions = questionElements
-          .filter((q) => q.isVisible)
-          .map((q) => q.name);
-        const navDirection = options.isNextPage
-          ? "clickNext"
-          : options.isPrevPage
-          ? "clickPrev"
-          : "";
-        if (arrVisibleQuestions.length) {
-          this.writeToLog(
-            "info",
-            ["questionDisplayed", "onPageChanged", navDirection],
-            {
-              questionID: arrVisibleQuestions,
-            }
-          );
-        }
-      }
-    },
-    writeLogOnValueChange(options, params) {
-      if (!options) return;
-      params = params || {};
-      this.writeToLog("info", ["answerEvent"], {
-        questionId: options.name,
-        answerEntered: options.value,
-        ...params
-      });
-    },
     initializeSurveyObjEvents() {
       //add validation to question
       this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
@@ -549,6 +515,12 @@ export default {
           // Mark the QuestionnaireResponse as completed
           this.questionnaireResponse.status = "completed";
 
+          this.writeLogOnSubmit(
+            sender.currentPage && sender.currentPage.questions
+              ? sender.currentPage.questions
+              : null
+          );
+
           // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
           if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
             options.showDataSaving();
@@ -640,6 +612,51 @@ export default {
       this.$emit("finished", {
         title: this.questionnaire.title,
       });
+    },
+    writeLogOnPageChange(options) {
+      if (!options) return;
+      const questionElements = options.oldCurrentPage
+        ? options.oldCurrentPage.questions
+        : null;
+      if (questionElements) {
+        let arrVisibleQuestions = questionElements
+          .filter((q) => q.isVisible)
+          .map((q) => q.name);
+        const navDirection = options.isNextPage
+          ? "clickNext"
+          : options.isPrevPage
+          ? "clickPrev"
+          : "";
+        if (arrVisibleQuestions.length) {
+          this.writeToLog(
+            "info",
+            ["questionDisplayed", "onPageChanged", navDirection],
+            {
+              questionID: arrVisibleQuestions,
+            }
+          );
+        }
+      }
+    },
+    writeLogOnValueChange(options, params) {
+      if (!options) return;
+      params = params || {};
+      this.writeToLog("info", ["answerEvent"], {
+        questionId: options.name,
+        answerEntered: options.value,
+        ...params,
+      });
+    },
+    writeLogOnSubmit(questionElements) {
+      if (!questionElements) return;
+      let arrVisibleQuestions = questionElements
+        .filter((q) => q.isVisible)
+        .map((q) => q.name);
+      if (arrVisibleQuestions.length) {
+        this.writeToLog("info", ["questionDisplayed", "onSubmit"], {
+          questionID: arrVisibleQuestions,
+        });
+      }
     },
   },
 };
