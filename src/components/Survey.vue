@@ -51,6 +51,12 @@ import {
 } from "../util/util.js";
 import surveyOptions from "../context/surveyjs.options.js";
 import themes from "../context/themes.js";
+import {
+  writeToLog,
+  writeLogOnSurveyPageChange,
+  writeLogOnSurveyQuestionValueChange,
+  writeLogOnSurveySubmit,
+} from "../util/log";
 import { FunctionFactory, Model, Serializer, StylesManager } from "survey-vue";
 
 // Define a web worker for evaluating CQL expressions
@@ -85,7 +91,6 @@ export default {
     return {
       projectID: getEnv("VUE_APP_PROJECT_ID"),
       dashboardURL: getEnv("VUE_APP_DASHBOARD_URL"),
-      confidentialBackendURL: getEnv("VUE_APP_CONF_API_URL"),
       systemType: getEnv("VUE_APP_SYSTEM_TYPE"),
       sessionKey: 0,
       currentQuestionnaireId: null,
@@ -123,7 +128,7 @@ export default {
       this.sessionKey = this.client.getState().key;
       console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
-      this.writeToLog("info", ["sessionCreated"]);
+      writeToLog("info", ["sessionCreated"], this.getDefaultLogMessageObject());
       this.patientBundle.entry.unshift({ resource: this.patient });
       this.initializeInstrument()
         .then(() => {
@@ -169,53 +174,14 @@ export default {
           console.log("Error loading Questionnaire ", e);
         });
     },
-    getDefaultLogObject() {
+    getDefaultLogMessageObject() {
       return {
-        level: "info",
-        tags: ["screener-front-end"],
-        message: {
-          patientID: this.patientId,
-          projectID: this.projectID,
-          sessionID: this.sessionKey,
-          systemType: this.systemType,
-          systemURL: window.location.href,
-        },
+        patientID: this.patientId,
+        projectID: this.projectID,
+        sessionID: this.sessionKey,
+        systemType: this.systemType,
+        systemURL: window.location.href,
       };
-    },
-    //write to audit log
-    // @param level, expect string
-    // @param tags, expect array, e.g. ['etc']
-    // @param message, expect object, e.g. { "questionId": "123"}
-    writeToLog(level, tags, message) {
-      let postBody = this.getDefaultLogObject();
-      if (level) postBody.level = level;
-      if (tags) postBody.tags = [...postBody.tags, ...tags];
-      if (message)
-        postBody.message = {
-          ...postBody.message,
-          ...message,
-        };
-      const auditURL = `${this.confidentialBackendURL || ""}/auditlog`;
-      fetch(auditURL, {
-        method: "post",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(postBody),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw Error(response.statusText);
-          }
-          return response.json();
-        })
-        .then(function (data) {
-          console.log("audit request succeeded with response ", data);
-        })
-        .catch(function (error) {
-          console.log("Request failed", error);
-        });
     },
     isDevelopment() {
       return (
@@ -439,7 +405,7 @@ export default {
           this.allowSkip = !sender.currentPageNo;
           this.setFocusOnFirstQuestion();
           // write to log
-          this.writeLogOnPageChange(options);
+          writeLogOnSurveyPageChange(options, this.getDefaultLogMessageObject());
         }.bind(this)
       ),
         // Add an event listener which updates questionnaireResponse based upon user responses
@@ -490,9 +456,10 @@ export default {
                 };
               }
               // write to log
-              this.writeLogOnValueChange(options, {
+              writeLogOnSurveyQuestionValueChange(options, {
                 answerType: responseValue.type,
                 answerValue: responseValue.value,
+                ...this.getDefaultLogMessageObject()
               });
             } // end check if value is null
             else {
@@ -515,11 +482,8 @@ export default {
           // Mark the QuestionnaireResponse as completed
           this.questionnaireResponse.status = "completed";
 
-          this.writeLogOnSubmit(
-            sender.currentPage && sender.currentPage.questions
-              ? sender.currentPage.questions
-              : null
-          );
+          // write log
+          writeLogOnSurveySubmit(sender, this.getDefaultLogMessageObject());
 
           // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
           if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
@@ -612,51 +576,6 @@ export default {
       this.$emit("finished", {
         title: this.questionnaire.title,
       });
-    },
-    writeLogOnPageChange(options) {
-      if (!options) return;
-      const questionElements = options.oldCurrentPage
-        ? options.oldCurrentPage.questions
-        : null;
-      if (questionElements) {
-        let arrVisibleQuestions = questionElements
-          .filter((q) => q.isVisible)
-          .map((q) => q.name);
-        const navDirection = options.isNextPage
-          ? "clickNext"
-          : options.isPrevPage
-          ? "clickPrev"
-          : "";
-        if (arrVisibleQuestions.length) {
-          this.writeToLog(
-            "info",
-            ["questionDisplayed", "onPageChanged", navDirection],
-            {
-              questionID: arrVisibleQuestions,
-            }
-          );
-        }
-      }
-    },
-    writeLogOnValueChange(options, params) {
-      if (!options) return;
-      params = params || {};
-      this.writeToLog("info", ["answerEvent"], {
-        questionId: options.name,
-        answerEntered: options.value,
-        ...params,
-      });
-    },
-    writeLogOnSubmit(questionElements) {
-      if (!questionElements) return;
-      let arrVisibleQuestions = questionElements
-        .filter((q) => q.isVisible)
-        .map((q) => q.name);
-      if (arrVisibleQuestions.length) {
-        this.writeToLog("info", ["questionDisplayed", "onSubmit"], {
-          questionID: arrVisibleQuestions,
-        });
-      }
     },
   },
 };
