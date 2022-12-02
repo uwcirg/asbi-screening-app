@@ -417,19 +417,26 @@ export default {
             " sender object ",
             sender
           );
-
-          const questionElements = options.oldCurrentPage ? options.oldCurrentPage.questions: null;
+          const questionElements = options.oldCurrentPage
+            ? options.oldCurrentPage.questions
+            : null;
           if (questionElements) {
-            let arrVisibleQuestions = questionElements.filter(q => q.isVisible).map(q => q.name);
-            // questionElements.forEach(q => {
-            //   if (q.isVisible) arrVisibleQuestions.push(q.name);
-            // });
-            console.log("visible questions ", arrVisibleQuestions);
-            const navDirection = options.isNextPage ? "clickNext": (options.isPrevPage? "clickPrev": "");
+            let arrVisibleQuestions = questionElements
+              .filter((q) => q.isVisible)
+              .map((q) => q.name);
+            const navDirection = options.isNextPage
+              ? "clickNext"
+              : options.isPrevPage
+              ? "clickPrev"
+              : "";
             if (arrVisibleQuestions.length) {
-              this.writeToLog("info", ["questionDisplayed", "onPageChanged", navDirection], {
-              questionID: arrVisibleQuestions,
-            });
+              this.writeToLog(
+                "info",
+                ["questionDisplayed", "onPageChanged", navDirection],
+                {
+                  questionID: arrVisibleQuestions,
+                }
+              );
             }
           }
           // only allow skip questionnaire botón on the first page
