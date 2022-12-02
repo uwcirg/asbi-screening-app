@@ -400,10 +400,62 @@ export default {
         };
       }
     },
+    setFocusOnFirstQuestion() {
+      // find all question elements
+      const questionElements = document.querySelectorAll(".sv-question");
+      if (!questionElements.length) {
+        return;
+      }
+      // get the first question
+      const firstQuestionElement = questionElements[0];
+      // check if the first question contains a text input field
+      const inputTextElement = firstQuestionElement
+        ? firstQuestionElement.querySelector("input[type='text']")
+        : null;
+      if (!inputTextElement) return;
+      // if so, focus on it
+      setTimeout(() => {
+        inputTextElement.focus();
+      }, 250);
+    },
     getSurveyQuestionValidator() {
       if (!this.surveyOptions || !this.surveyOptions.questionValidator)
         return function () {};
       return this.surveyOptions.questionValidator;
+    },
+    writeLogOnPageChange(options) {
+      if (!options) return;
+      const questionElements = options.oldCurrentPage
+        ? options.oldCurrentPage.questions
+        : null;
+      if (questionElements) {
+        let arrVisibleQuestions = questionElements
+          .filter((q) => q.isVisible)
+          .map((q) => q.name);
+        const navDirection = options.isNextPage
+          ? "clickNext"
+          : options.isPrevPage
+          ? "clickPrev"
+          : "";
+        if (arrVisibleQuestions.length) {
+          this.writeToLog(
+            "info",
+            ["questionDisplayed", "onPageChanged", navDirection],
+            {
+              questionID: arrVisibleQuestions,
+            }
+          );
+        }
+      }
+    },
+    writeLogOnValueChange(options, params) {
+      if (!options) return;
+      params = params || {};
+      this.writeToLog("info", ["answerEvent"], {
+        questionId: options.name,
+        answerEntered: options.value,
+        ...params
+      });
     },
     initializeSurveyObjEvents() {
       //add validation to question
@@ -417,44 +469,11 @@ export default {
             " sender object ",
             sender
           );
-          const questionElements = options.oldCurrentPage
-            ? options.oldCurrentPage.questions
-            : null;
-          if (questionElements) {
-            let arrVisibleQuestions = questionElements
-              .filter((q) => q.isVisible)
-              .map((q) => q.name);
-            const navDirection = options.isNextPage
-              ? "clickNext"
-              : options.isPrevPage
-              ? "clickPrev"
-              : "";
-            if (arrVisibleQuestions.length) {
-              this.writeToLog(
-                "info",
-                ["questionDisplayed", "onPageChanged", navDirection],
-                {
-                  questionID: arrVisibleQuestions,
-                }
-              );
-            }
-          }
           // only allow skip questionnaire botón on the first page
           this.allowSkip = !sender.currentPageNo;
-          setTimeout(() => {
-            // find all question elements
-            const questionElements = document.querySelectorAll(".sv-question");
-            if (questionElements.length) {
-              // get the first question
-              const firstQuestionElement = questionElements[0];
-              // check if the first question contains a text input field
-              const inputTextElement = firstQuestionElement
-                ? firstQuestionElement.querySelector("input[type='text']")
-                : null;
-              // if so, focus on it
-              if (inputTextElement) inputTextElement.focus();
-            }
-          }, 300);
+          this.setFocusOnFirstQuestion();
+          // write to log
+          this.writeLogOnPageChange(options);
         }.bind(this)
       ),
         // Add an event listener which updates questionnaireResponse based upon user responses
@@ -481,11 +500,6 @@ export default {
               )[0];
               let questionText = question && question.text ? question.text : "";
 
-              this.writeToLog("info", ["answerEvent"], {
-                questionId: options.name,
-                answerEntered: options.value,
-              });
-
               // If the index is undefined, add a new entry to questionnaireResponse.item
               if (answerItemIndex == -1) {
                 this.questionnaireResponse.item.push({
@@ -509,6 +523,11 @@ export default {
                   ],
                 };
               }
+              // write to log
+              this.writeLogOnValueChange(options, {
+                answerType: responseValue.type,
+                answerValue: responseValue.value,
+              });
             } // end check if value is null
             else {
               // if answer item is null, e.g. due to user hitting clear button
@@ -519,7 +538,6 @@ export default {
                 this.questionnaireResponse.item = items;
               }
             }
-
             // Need to reload the patient bundle since the responses have been updated
             cqlWorker.postMessage({ patientBundle: this.patientBundle });
           }.bind(this)
