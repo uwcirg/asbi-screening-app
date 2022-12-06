@@ -102,9 +102,10 @@ export function getInstrumentListFromCarePlan(
       mo: 24 * 30 * period, // assume 30 days in a month
     };
 
-    const frequency = isNaN(repeat.frequency)
-      ? null
-      : parseInt(repeat.frequency);
+    const frequency =
+      isNaN(repeat.frequency) || parseInt(repeat.frequency) === 0
+        ? null
+        : parseInt(repeat.frequency);
 
     // based on period unit and period, convert scheduled time to hours
     // event should occur frequency times per period
