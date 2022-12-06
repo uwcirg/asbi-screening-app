@@ -15,6 +15,10 @@ function getDefaultLogObject() {
 // @param message, expect object, e.g. { "questionId": "123"}
 export function writeToLog(level, tags, message) {
   const confidentialBackendURL = getEnv("VUE_APP_CONF_API_URL");
+  if (!confidentialBackendURL) {
+    console.log("confidential backend URL is not set.");
+    return;
+  }
   let postBody = getDefaultLogObject();
   if (level) postBody.level = level;
   if (tags) postBody.tags = [...postBody.tags, ...tags];
