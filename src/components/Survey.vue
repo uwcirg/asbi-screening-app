@@ -51,12 +51,7 @@ import {
 } from "../util/util.js";
 import surveyOptions from "../context/surveyjs.options.js";
 import themes from "../context/themes.js";
-import {
-  writeToLog,
-  writeLogOnSurveyPageChange,
-  writeLogOnSurveyQuestionValueChange,
-  writeLogOnSurveySubmit,
-} from "../util/log";
+import * as LogHelper from "../util/log";
 import { FunctionFactory, Model, Serializer, StylesManager } from "survey-vue";
 
 // Define a web worker for evaluating CQL expressions
@@ -128,7 +123,7 @@ export default {
       this.sessionKey = this.client.getState().key;
       console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
-      writeToLog("info", ["sessionCreated"], this.getDefaultLogMessageObject());
+      LogHelper.writeToLog("info", ["sessionCreated"], this.getDefaultLogMessageObject());
       this.patientBundle.entry.unshift({ resource: this.patient });
       this.initializeInstrument()
         .then(() => {
@@ -405,7 +400,7 @@ export default {
           this.allowSkip = !sender.currentPageNo;
           this.setFocusOnFirstQuestion();
           // write to log
-          writeLogOnSurveyPageChange(options, this.getDefaultLogMessageObject());
+          LogHelper.writeLogOnSurveyPageChange(options, this.getDefaultLogMessageObject());
         }.bind(this)
       ),
         // Add an event listener which updates questionnaireResponse based upon user responses
@@ -456,7 +451,8 @@ export default {
                 };
               }
               // write to log
-              writeLogOnSurveyQuestionValueChange(options, {
+              LogHelper.writeLogOnSurveyQuestionValueChange(options, {
+                questionText: questionText,
                 answerType: responseValue.type,
                 answerValue: responseValue.value,
                 ...this.getDefaultLogMessageObject()
@@ -483,7 +479,7 @@ export default {
           this.questionnaireResponse.status = "completed";
 
           // write log
-          writeLogOnSurveySubmit(sender, this.getDefaultLogMessageObject());
+          LogHelper.writeLogOnSurveySubmit(sender, this.getDefaultLogMessageObject());
 
           // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
           if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
