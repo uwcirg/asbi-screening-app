@@ -3,6 +3,8 @@ $muted-color: #777;
 $link-color: #0000ff;
 $hr-color: #ececec;
 $body-bg-color: #f7f6f6;
+$survey-body-width: 900px;
+
 body {
     padding: 0;
     margin: 0;
@@ -45,8 +47,12 @@ body {
 .sv-body {
     background: #FFF;
     padding: 8px 0 40px;
-    max-width: 900px;
+    max-width: $survey-body-width;
     margin: auto;
+
+    input[type=text]:focus {
+        border-bottom-width: 2px;
+    }
 }
 .sv-container-modern__title {
     padding-top: 1em;
@@ -82,12 +88,15 @@ body {
 .sv-footer__prev-btn,
 .sv-footer__complete-btn {
     padding: 8px 24px;
-    font-size: 0.95em;
 }
 .sv-footer__complete-btn,
 .sv-footer__next-btn {
     float: left;
-    margin-left: 8px;
+    margin-left: 24px;
+}
+.sv-footer__next-btn {
+    min-width: 120px;
+    text-align: center;
 }
 .sv-footer__prev-btn {
     margin-right: 8px;
@@ -149,3 +158,14 @@ body {
     font-size: 0.9em;
 }
 
+.survey--actions-container {
+    text-align: right;
+    max-width: $survey-body-width;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin: auto;
+    &:empty {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}

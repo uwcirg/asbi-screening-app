@@ -1,6 +1,6 @@
 # test all answers with option 2, this is to make sure that each option has the correct value of 1
 ---
-name: GAD7 Total Score
+name: GAD7 Total Score (all with value 2)
 externalData:
 - gad7_reusable_resources
 data:
