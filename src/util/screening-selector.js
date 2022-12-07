@@ -80,10 +80,13 @@ export function getInstrumentListFromCarePlan(
     }
     if (!qId) return true;
 
-    // get matched questionnaire response(s) by questionnaire id
+    // get matched completed questionnaire response(s) by questionnaire id
     const qResults = responses.filter((q) => {
       const questionnaireIdentifier = q.questionnaire.toUpperCase();
-      return questionnaireIdentifier.indexOf(qId.toUpperCase()) !== -1;
+      return (
+        q.status === "completed" &&
+        questionnaireIdentifier.indexOf(qId.toUpperCase()) !== -1
+      );
     });
 
     // check instruments against scheduled scheduledTiming
