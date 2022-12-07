@@ -1,11 +1,13 @@
 {
   "resourceType": "PlanDefinition",
-  "id": "CIRG-PlanDefinition-PHQ9-GAD7",
+  "id": "CirgPlanDefinitionPhq9Gad7",
+  "url": "https://fhir.fl.ivanc.dcw.dev.cirg.uw.edu/fhir/PlanDefinition/CirgPlanDefinitionPhq9Gad7",
   "title": "PlanDefinition - mostly for logic around collection administering questionnaires",
-  "status": "draft",
-  "experimental": "true",
+  "status": "active",
+  "experimental": "false",
   "publisher": "Clinical Informatics Research Group, School of Nursing, University of Washington.",
   "copyright": "Copyright 2022, University of Washington.",
+  "library" : ["https://fhir.fl.ivanc.dcw.dev.cirg.uw.edu/fhir/Library/CirgLibraryQuestionnaireLogicDCW|0.1.0"],
   "action": [
     {
       "title": "Administer PHQ-9 questionnaire",
@@ -14,9 +16,9 @@
         {
           "kind": "applicability",
           "expression": {
-            "language": "text/cql",
+            "language": "text/cql-identifier",
             "expression": "PresentPHQ9",
-            "reference": "Library/CIRG-LibraryQuestionnaireLogic|1.0"
+            "reference": "Library/CirgLibraryQuestionnaireLogicDCW|0.1.0"
           }
         }
       ]
@@ -28,9 +30,9 @@
         {
           "kind": "applicability",
           "expression": {
-            "language": "text/cql",
+            "language": "text/cql-identifier",
             "expression": "PresentGAD7",
-            "reference": "Library/CIRG-LibraryQuestionnaireLogic|1.0"
+            "reference": "Library/CirgLibraryQuestionnaireLogicDCW|0.1.0"
           }
         }
       ]

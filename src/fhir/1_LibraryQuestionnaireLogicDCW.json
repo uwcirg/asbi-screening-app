@@ -1,14 +1,15 @@
 {
   "resourceType": "Library",
-  "id": "CIRG-LibraryQuestionnaireLogicDCW",
-  "name": "CIRG-LibraryQuestionnaireLogicDCW",
-  "title": "CIRG-LibraryQuestionnaireLogicDCW",
+  "id": "CirgLibraryQuestionnaireLogicDCW",
+  "name": "CirgLibraryQuestionnaireLogicDCW",
+  "title": "CirgLibraryQuestionnaireLogicDCW",
   "meta": {
     "profile": [
       "http://hl7.org/fhir/uv/cpg/StructureDefinition/cpg-computablelibrary"
     ]
   },
-  "url": "http://OUR-PLACEHOLDER-URL.edu/Library/CIRG-LibraryQuestionnaireLogicDCW",
+  "url": "https://fhir.fl.ivanc.dcw.dev.cirg.uw.edu/fhir/Library/CirgLibraryQuestionnaireLogicDCW",
+  "version": "0.1.0",
   "type": {
     "coding": [
       {
@@ -22,7 +23,7 @@
   "content": [
     {
       "contentType": "text/cql",
-      "data": "bGlicmFyeSBRdWVzdGlvbm5haXJlTG9naWNMaWJyYXJ5IHZlcnNpb24gJzEuMCcKdXNpbmcgRkhJUiB2ZXJzaW9uICc0LjAuMScKaW5jbHVkZSBGSElSSGVscGVycyB2ZXJzaW9uICc0LjAuMScgY2FsbGVkIEZISVJIZWxwZXJzCgpkZWZpbmUgUHJlc2VudFBIUTk6CiAgdHJ1ZQoKZGVmaW5lIFByZXNlbnRHQUQ3Ogp0cnVl"
+      "data": "bGlicmFyeSBDaXJnTGlicmFyeVF1ZXN0aW9ubmFpcmVMb2dpY0RDVyB2ZXJzaW9uICcwLjEuMCcKCnVzaW5nIEZISVIgdmVyc2lvbiAnNC4wLjEnCgppbmNsdWRlIEZISVJIZWxwZXJzIHZlcnNpb24gJzQuMC4xJyBjYWxsZWQgRkhJUkhlbHBlcnMKCmNvbnRleHQgUGF0aWVudAoKZGVmaW5lIFByZXNlbnRQSFE5OiB0cnVlCgpkZWZpbmUgUHJlc2VudEdBRDc6IHRydWU"
     }
   ],
   "extension": [
@@ -35,10 +36,9 @@
       "valueCode": "structured"
     }
   ],
-  "version": "1.0",
   "date": "2022-10-28",
-  "status": "draft",
-  "experimental": true,
+  "status": "active",
+  "experimental": false,
   "publisher": "Clinical Informatics Research Group, School of Nursing, University of Washington.",
   "copyright": "Copyright 2022, University of Washington.",
   "approvalDate": "2022-10-28",

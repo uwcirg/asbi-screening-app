@@ -76,7 +76,7 @@ def load_files(fhir_url, fhir_files):
                 exit(1)
         fhir_resources.append(resource)
     tx_bundle = bundle_files(fhir_resources)
-    response = requests.post(fhir_url, json=tx_bundle, timeout=30)
+    response = requests.post(fhir_url, json=tx_bundle, timeout=300)
     print(response.content)
     response.raise_for_status()
 
