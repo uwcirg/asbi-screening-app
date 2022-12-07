@@ -179,9 +179,12 @@ export default {
         });
     },
     async setCarePlan() {
-      const carePlan = await getPatientCarePlan(this.client, this.patient.id).catch(e => console.log("Get care plan error ", e));
+      const carePlan = await getPatientCarePlan(
+        this.client,
+        this.patient.id
+      ).catch((e) => console.log("Get care plan error ", e));
       if (carePlan && carePlan.entry && carePlan.entry.length) {
-        this.careplan = carePlan.entry.map(item => item.resource)[0];
+        this.careplan = carePlan.entry.map((item) => item.resource)[0];
       }
     },
     getDefaultLogMessageObject() {
@@ -400,7 +403,8 @@ export default {
         return function () {};
       return this.surveyOptions.questionValidator;
     },
-    onAfterRenderPage(options) {
+    onAfterRenderPage(sender, options) {
+      console.log("sender object on page rendered ", sender);
       // write to log
       LogHelper.writeLogOnSurveyPageRendered(options, {
         questionnaireId: this.questionnaire.id,
@@ -408,11 +412,18 @@ export default {
       });
     },
     onCurrentPageChanged(sender) {
+      console.log(
+        "sender page number on page changed ",
+        sender.currentPageNo,
+        " sender object ",
+        sender
+      );
       // only allow skip questionnaire botón on the first page
       this.allowSkip = !sender.currentPageNo;
       this.setFocusOnFirstQuestion();
     },
-    onValueChanging(options) {
+    onValueChanging(sender, options) {
+      console.log("sender object on value changing ", sender);
       // Find the index of this item (may not exist)
       // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
       let answerItemIndex = this.questionnaireResponse.item.findIndex(
@@ -476,17 +487,15 @@ export default {
       cqlWorker.postMessage({ patientBundle: this.patientBundle });
     },
     onComplete(sender, options) {
-      console.log("sender on complete ", sender);
+      console.log("sender object on complete ", sender);
       // Mark the QuestionnaireResponse as completed
       this.questionnaireResponse.status = "completed";
 
       // write log
-      LogHelper.writeLogOnSurveySubmit(
-        {
-          questionnaireId: this.questionnaire.id,
-          ...this.getDefaultLogMessageObject(),
-        }
-      );
+      LogHelper.writeLogOnSurveySubmit({
+        questionnaireId: this.questionnaire.id,
+        ...this.getDefaultLogMessageObject(),
+      });
 
       // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
       if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
@@ -522,19 +531,12 @@ export default {
 
       this.survey.onAfterRenderPage.add(
         function (sender, options) {
-          console.log(" sender object on page render ", sender);
-          this.onAfterRenderPage(options);
+          this.onAfterRenderPage(sender, options);
         }.bind(this)
       );
 
       this.survey.onCurrentPageChanged.add(
         function (sender) {
-          console.log(
-            "sender page number on page changed ",
-            sender.currentPageNo,
-            " sender object ",
-            sender
-          );
           this.onCurrentPageChanged(sender);
         }.bind(this)
       ),
@@ -544,7 +546,7 @@ export default {
             // We don't want to modify anything if the survey has been submitted/completed.
             if (sender.isCompleted == true) return;
 
-            this.onValueChanging(options);
+            this.onValueChanging(sender, options);
           }.bind(this)
         );
       // Add a handler which will fire when the Questionnaire is submittedc
