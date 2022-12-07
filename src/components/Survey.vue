@@ -33,6 +33,7 @@
 import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
 import {
+  getPatientCarePlan,
   getScreeningInstrument,
   removeSessionInstrumentList,
   setSessionInstrumentList,
@@ -90,6 +91,7 @@ export default {
       sessionKey: 0,
       currentQuestionnaireId: null,
       currentQuestionnaireList: [],
+      careplan: null,
       survey: null,
       surveyOptions: {},
       patientId: 0,
@@ -116,6 +118,13 @@ export default {
     };
   },
   methods: {
+    onAuthSessionStarted() {
+      LogHelper.writeToLog(
+        "info",
+        ["authSessionStarted"],
+        this.getDefaultLogMessageObject()
+      );
+    },
     init() {
       if (this.error || !this.patient) return false;
       //console.log("state ", this.client.getState("tokenResponse.id_token"));
@@ -123,8 +132,8 @@ export default {
       this.sessionKey = this.client.getState().key;
       console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
-      LogHelper.writeToLog("info", ["sessionCreated"], this.getDefaultLogMessageObject());
       this.patientBundle.entry.unshift({ resource: this.patient });
+      this.setCarePlan().then(() => this.onAuthSessionStarted());
       this.initializeInstrument()
         .then(() => {
           if (this.error) return; // error getting instrument, abort
@@ -169,13 +178,20 @@ export default {
           console.log("Error loading Questionnaire ", e);
         });
     },
+    async setCarePlan() {
+      const carePlan = await getPatientCarePlan(this.client, this.patient.id).catch(e => console.log("Get care plan error ", e));
+      if (carePlan && carePlan.entry && carePlan.entry.length) {
+        this.careplan = carePlan.entry.map(item => item.resource)[0];
+      }
+    },
     getDefaultLogMessageObject() {
       return {
         patientID: this.patientId,
         projectID: this.projectID,
-        sessionID: this.sessionKey,
+        authSessionID: this.sessionKey,
         systemType: this.systemType,
         systemURL: window.location.href,
+        careplanID: this.careplan ? this.careplan.id : null,
       };
     },
     isDevelopment() {
@@ -384,23 +400,142 @@ export default {
         return function () {};
       return this.surveyOptions.questionValidator;
     },
+    onAfterRenderPage(options) {
+      // write to log
+      LogHelper.writeLogOnSurveyPageRendered(options, {
+        questionnaireId: this.questionnaire.id,
+        ...this.getDefaultLogMessageObject(),
+      });
+    },
+    onCurrentPageChanged(sender) {
+      // only allow skip questionnaire botón on the first page
+      this.allowSkip = !sender.currentPageNo;
+      this.setFocusOnFirstQuestion();
+    },
+    onValueChanging(options) {
+      // Find the index of this item (may not exist)
+      // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
+      let answerItemIndex = this.questionnaireResponse.item.findIndex(
+        (itm) => itm.linkId == options.name
+      );
+
+      if (options.value != null) {
+        let responseValue = getResponseValue(
+          this.questionnaire,
+          options.name,
+          options.value
+        );
+
+        let question = this.questionnaire.item.filter(
+          (item) => item.linkId === options.name
+        )[0];
+        let questionText = question && question.text ? question.text : "";
+
+        // If the index is undefined, add a new entry to questionnaireResponse.item
+        if (answerItemIndex == -1) {
+          this.questionnaireResponse.item.push({
+            linkId: options.name,
+            text: questionText,
+            answer: [
+              {
+                [responseValue.type]: responseValue.value,
+              },
+            ],
+          });
+        } else {
+          // Otherwise update the existing index with the new response
+          this.questionnaireResponse.item[answerItemIndex] = {
+            linkId: options.name,
+            text: questionText,
+            answer: [
+              {
+                [responseValue.type]: responseValue.value,
+              },
+            ],
+          };
+        }
+        // write to log
+        LogHelper.writeLogOnSurveyQuestionValueChange(options, {
+          questionnaireId: this.questionnaire.id,
+          questionText: questionText,
+          answerType: responseValue.type,
+          answerValue: responseValue.value,
+          ...this.getDefaultLogMessageObject(),
+        });
+      } // end check if value is null
+      else {
+        // if answer item is null, e.g. due to user hitting clear button
+        // remove it from questionnaire responses
+        if (answerItemIndex !== -1) {
+          const items = this.questionnaireResponse.item;
+          items.splice(answerItemIndex, 1);
+          this.questionnaireResponse.item = items;
+        }
+      }
+      // Need to reload the patient bundle since the responses have been updated
+      cqlWorker.postMessage({ patientBundle: this.patientBundle });
+    },
+    onComplete(sender, options) {
+      console.log("sender on complete ", sender);
+      // Mark the QuestionnaireResponse as completed
+      this.questionnaireResponse.status = "completed";
+
+      // write log
+      LogHelper.writeLogOnSurveySubmit(
+        {
+          questionnaireId: this.questionnaire.id,
+          ...this.getDefaultLogMessageObject(),
+        }
+      );
+
+      // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
+      if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
+        options.showDataSaving();
+        this.showDialog = true;
+        this.client
+          .create(this.questionnaireResponse, {
+            headers: {
+              "Content-Type": "application/fhir+json",
+            },
+          })
+          .then(() => {
+            options.showDataSavingSuccess();
+            options.showDataSavingClear();
+            this.handleAdvanceQuestionnaireList();
+            this.showDialog = this.currentQuestionnaireList.length > 0;
+            if (this.currentQuestionnaireList.length) {
+              this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
+            } else {
+              this.handleEndOfQuestionnaires();
+            }
+          })
+          .catch((e) => {
+            this.error = `Error saving the questionnaire response for ${this.currentQuestionnaireId.toUpperCase()}.  See console for details.`;
+            this.showDialog = false;
+            console.log(e);
+          });
+      } else this.handleAdvanceQuestionnaireList();
+    },
     initializeSurveyObjEvents() {
       //add validation to question
       this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
 
-      this.survey.onCurrentPageChanged.add(
+      this.survey.onAfterRenderPage.add(
         function (sender, options) {
+          console.log(" sender object on page render ", sender);
+          this.onAfterRenderPage(options);
+        }.bind(this)
+      );
+
+      this.survey.onCurrentPageChanged.add(
+        function (sender) {
           console.log(
             "sender page number on page changed ",
             sender.currentPageNo,
             " sender object ",
             sender
           );
-          // only allow skip questionnaire botón on the first page
-          this.allowSkip = !sender.currentPageNo;
-          this.setFocusOnFirstQuestion();
-          // write to log
-          LogHelper.writeLogOnSurveyPageChange(options, this.getDefaultLogMessageObject());
+          this.onCurrentPageChanged(sender);
         }.bind(this)
       ),
         // Add an event listener which updates questionnaireResponse based upon user responses
@@ -409,105 +544,14 @@ export default {
             // We don't want to modify anything if the survey has been submitted/completed.
             if (sender.isCompleted == true) return;
 
-            // Find the index of this item (may not exist)
-            // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
-            let answerItemIndex = this.questionnaireResponse.item.findIndex(
-              (itm) => itm.linkId == options.name
-            );
-
-            if (options.value != null) {
-              let responseValue = getResponseValue(
-                this.questionnaire,
-                options.name,
-                options.value
-              );
-
-              let question = this.questionnaire.item.filter(
-                (item) => item.linkId === options.name
-              )[0];
-              let questionText = question && question.text ? question.text : "";
-
-              // If the index is undefined, add a new entry to questionnaireResponse.item
-              if (answerItemIndex == -1) {
-                this.questionnaireResponse.item.push({
-                  linkId: options.name,
-                  text: questionText,
-                  answer: [
-                    {
-                      [responseValue.type]: responseValue.value,
-                    },
-                  ],
-                });
-              } else {
-                // Otherwise update the existing index with the new response
-                this.questionnaireResponse.item[answerItemIndex] = {
-                  linkId: options.name,
-                  text: questionText,
-                  answer: [
-                    {
-                      [responseValue.type]: responseValue.value,
-                    },
-                  ],
-                };
-              }
-              // write to log
-              LogHelper.writeLogOnSurveyQuestionValueChange(options, {
-                questionText: questionText,
-                answerType: responseValue.type,
-                answerValue: responseValue.value,
-                ...this.getDefaultLogMessageObject()
-              });
-            } // end check if value is null
-            else {
-              // if answer item is null, e.g. due to user hitting clear button
-              // remove it from questionnaire responses
-              if (answerItemIndex !== -1) {
-                const items = this.questionnaireResponse.item;
-                items.splice(answerItemIndex, 1);
-                this.questionnaireResponse.item = items;
-              }
-            }
-            // Need to reload the patient bundle since the responses have been updated
-            cqlWorker.postMessage({ patientBundle: this.patientBundle });
+            this.onValueChanging(options);
           }.bind(this)
         );
       // Add a handler which will fire when the Questionnaire is submittedc
       this.survey.onComplete.add(
         function (sender, options) {
           console.log("sender ", sender);
-          // Mark the QuestionnaireResponse as completed
-          this.questionnaireResponse.status = "completed";
-
-          // write log
-          LogHelper.writeLogOnSurveySubmit(sender, this.getDefaultLogMessageObject());
-
-          // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
-          if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
-            options.showDataSaving();
-            this.showDialog = true;
-            this.client
-              .create(this.questionnaireResponse, {
-                headers: {
-                  "Content-Type": "application/fhir+json",
-                },
-              })
-              .then(() => {
-                options.showDataSavingSuccess();
-                options.showDataSavingClear();
-                this.handleAdvanceQuestionnaireList();
-                this.showDialog = this.currentQuestionnaireList.length > 0;
-                if (this.currentQuestionnaireList.length) {
-                  this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
-                } else {
-                  this.handleEndOfQuestionnaires();
-                }
-              })
-              .catch((e) => {
-                this.error = `Error saving the questionnaire response for ${this.currentQuestionnaireId.toUpperCase()}.  See console for details.`;
-                this.showDialog = false;
-                console.log(e);
-              });
-          } else this.handleAdvanceQuestionnaireList();
+          this.onComplete(sender, options);
           if (this.isDevelopment()) {
             console.log(
               "questionnaire responses ",

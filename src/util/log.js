@@ -15,10 +15,10 @@ function getDefaultLogObject() {
 // @param message, expect object, e.g. { "questionId": "123"}
 export function writeToLog(level, tags, message) {
   const confidentialBackendURL = getEnv("VUE_APP_CONF_API_URL");
-  if (!confidentialBackendURL) {
-    console.log("confidential backend URL is not set.");
-    return;
-  }
+  // if (!confidentialBackendURL) {
+  //   console.log("confidential backend URL is not set.");
+  //   return;
+  // }
   let postBody = getDefaultLogObject();
   if (level) postBody.level = level;
   if (tags) postBody.tags = [...postBody.tags, ...tags];
@@ -79,6 +79,30 @@ export function writeLogOnSurveyPageChange(options, params) {
     });
   }
 }
+
+// write to log on survey page rendered event
+// @param options, see options object available on SurveyJS onAfterRenderPage event
+// https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onAfterRenderPage
+// @param params, of type object, optional, additional params post to log server
+export function writeLogOnSurveyPageRendered(options, params) {
+  if (!options) return;
+  const questionElements = options.page ?
+    options.page.questions
+    : null;
+  if (!questionElements) {
+    return;
+  }
+  params = params || {};
+  let arrVisibleQuestions = questionElements
+    .filter((q) => q.isVisible)
+    .map((q) => q.name);
+  if (arrVisibleQuestions.length) {
+    writeToLog("info", ["questionDisplayed", "onPageRendered"], {
+      questionID: arrVisibleQuestions,
+      ...params,
+    });
+  }
+}
 // write to log on survey question value change event
 // @param options, see options object available on SurveyJS onValueChanging event
 // https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onValueChanging
@@ -97,30 +121,6 @@ export function writeLogOnSurveyQuestionValueChange(options, params) {
 // @params sender, see sender object available on SurveyJs OnComplete event
 // https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onComplete
 // @param params, of type object, optional, additional params post to log server
-export function writeLogOnSurveySubmit(sender, params) {
-  const questionElements =
-    sender.currentPage && sender.currentPage.questions
-      ? sender.currentPage.questions
-      : null;
-  if (!questionElements) return;
-  params = params || {};
-  questionElements.forEach((el) => {
-    console.log("value ", el.value);
-  });
-  let arrAnswers = questionElements
-    .filter((q) => q.value)
-    .map((q) => ({
-      questionID: q.name,
-      answer: q.value,
-    }));
-  let arrVisibleQuestions = questionElements
-    .filter((q) => q.isVisible)
-    .map((q) => q.name);
-  if (arrVisibleQuestions.length) {
-    writeToLog("info", ["onSubmit"], {
-      questionsDisplayedOnPage: arrVisibleQuestions,
-      questionsAnsweredOnPage: arrAnswers,
-      ...params,
-    });
-  }
+export function writeLogOnSurveySubmit(params) {
+    writeToLog("info", ["onSubmit"], params);
 }
