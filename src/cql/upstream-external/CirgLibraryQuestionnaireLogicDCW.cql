@@ -6,11 +6,7 @@ include "FHIRHelpers" version '4.0.1' called FHIRHelpers
 
 context Patient
 
-// CIRG-ECOG12 is Questionnaire.id
-define PresentQnr_CIRG-ECOG12:
-// if no dementia condition
-  return true
-
+// Naming pattern: "CIRG-ECOG12" is Questionnaire.id
 define PresentQnr_CIRG-ECOG12:
 // if no dementia condition
   return true
