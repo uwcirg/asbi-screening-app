@@ -8,12 +8,66 @@ context Patient
 
 // Naming pattern: "CIRG-ECOG12" is Questionnaire.id
 define PresentQnr_CIRG-ECOG12:
-// if no dementia condition
+// if (no dementia condition)
   return true
 
 define PresentQnr_CIRG-CP-ECOG:
-// if no dementia condition & Care Partner present
+// if (no dementia condition)
+// and
+// Care Partner present (via CP gateway question, or field in FHIR?)
   return true
+
+define PresentQnr_CIRG-MINICOG:
+// if (no dementia condition)
+  return true
+
+define PresentQnr_CIRG-SLUMS:
+// if (dementia condition)
+// and/or 
+// CIRG-MINICOG score is fail 
+  return true
+
+define PresentQnr_CIRG-ADL-IADL:
+// if (
+//   dementia condition
+//   and/or 
+//   CIRG-MINICOG score is fail 
+// )
+// and
+// Care Partner present (via CP gateway question, or field in FHIR?)
+  return true
+
+define PresentQnr_CIRG-BEHAV5:
+// if
+// Care Partner present (via CP gateway question, or field in FHIR?)
+  return true
+
+define PresentQnr_CIRG-GAD7:
+// if (
+//   depression condition
+//   and/or 
+//   anxiety condition
+//   and/or 
+//   CIRG-BEHAV5 score is fail 
+// )
+// and
+//   CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder 
+  return true
+
+define PresentQnr_CIRG-GDS:
+// Note this is the same as PresentQnr_CIRG-GAD7
+// if (
+//   depression condition
+//   and/or 
+//   anxiety condition
+//   and/or 
+//   CIRG-BEHAV5 score is fail 
+// )
+// and
+//   CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder 
+  return true
+
+// TODO define PresentQnr_CIRG-C-IDAS:
 
 // below from: https://github.com/uwcirg/asbi-screening-app/blob/feature/apply-plandefinition-without-encender/src/cql/upstream-external/QuestionnaireLogicLibrary_PHQ9_GAD7.cql
 
