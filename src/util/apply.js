@@ -8,7 +8,7 @@ function fetchResources(client, patientId) {
   const requests = [
     "Patient/" + patientId,
     "Questionnaire",
-    "QuestionnaireResponse",
+    "QuestionnaireResponse?patient=" + patientId,
   ].map((item) => {
     return client.request(item, {
         pageLimit: 0
