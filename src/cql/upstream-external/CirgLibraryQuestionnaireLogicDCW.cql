@@ -6,43 +6,51 @@ include "FHIRHelpers" version '4.0.1' called FHIRHelpers
 
 context Patient
 
-// Naming pattern: "CIRG-ECOG12" is Questionnaire.id
-define PresentQnr_CIRG-ECOG12:
+define dcw_cog_level_1:
 // if (no dementia condition)
   return true
 
+// Naming pattern: "CIRG-ECOG12" is Questionnaire.id
+define PresentQnr_CIRG-ECOG12:
+// if dcw_cog_level_1 
+  return true
+
 define PresentQnr_CIRG-CP-ECOG:
-// if (no dementia condition)
+// if dcw_cog_level_1 
 // and
 // Care Partner present (via CP gateway question, or field in FHIR?)
   return true
 
 define PresentQnr_CIRG-MINICOG:
-// if (no dementia condition)
+// if dcw_cog_level_1 
   return true
 
-define PresentQnr_CIRG-SLUMS:
+define dcw_cog_level_2:
 // if (dementia condition)
 // and/or 
 // CIRG-MINICOG score is fail 
   return true
 
+define PresentQnr_CIRG-SLUMS:
+// if dcw_cog_level_2
+  return true
+
 define PresentQnr_CIRG-ADL-IADL:
-// if (
-//   dementia condition
-//   and/or 
-//   CIRG-MINICOG score is fail 
-// )
+// if dcw_cog_level_2
 // and
 // Care Partner present (via CP gateway question, or field in FHIR?)
   return true
 
-define PresentQnr_CIRG-BEHAV5:
+define dcw_mood_level_1:
 // if
 // Care Partner present (via CP gateway question, or field in FHIR?)
   return true
 
-define PresentQnr_CIRG-GAD7:
+define PresentQnr_CIRG-BEHAV5:
+// if dcw_mood_level_1
+  return true
+
+define dcw_mood_level_2:
 // if (
 //   depression condition
 //   and/or 
@@ -50,24 +58,31 @@ define PresentQnr_CIRG-GAD7:
 //   and/or 
 //   CIRG-BEHAV5 score is fail 
 // )
+  return true
+
+define PresentQnr_CIRG-GAD7:
+// if 
+//   dcw_mood_level_2
 // and
 //   CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder 
   return true
 
 define PresentQnr_CIRG-GDS:
-// Note this is the same as PresentQnr_CIRG-GAD7
-// if (
-//   depression condition
-//   and/or 
-//   anxiety condition
-//   and/or 
-//   CIRG-BEHAV5 score is fail 
-// )
+// if 
+//   dcw_mood_level_2
 // and
 //   CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder 
   return true
 
-// TODO define PresentQnr_CIRG-C-IDAS:
+define PresentQnr_CIRG-C-IDAS:
+// if 
+//   dcw_mood_level_2
+// and
+//   CIRG-SLUMS score indicates dementia 
+// and
+//   Care Partner present (via CP gateway question, or field in FHIR?)
+  return true
+
 
 // below from: https://github.com/uwcirg/asbi-screening-app/blob/feature/apply-plandefinition-without-encender/src/cql/upstream-external/QuestionnaireLogicLibrary_PHQ9_GAD7.cql
 
