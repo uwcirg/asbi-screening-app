@@ -8,47 +8,41 @@ context Patient
 
 define dcw_cog_level_1:
 // if (no dementia condition)
-  return true
+  true
+
+define dcw_care_partner_present:
+// Care Partner present (via CP gateway question, or field in FHIR?)
+  true
 
 // Naming pattern: "CIRG-ECOG12" is Questionnaire.id
 define PresentQnr_CIRG-ECOG12:
-// if dcw_cog_level_1 
-  return true
+  dcw_cog_level_1 
 
 define PresentQnr_CIRG-CP-ECOG:
-// if dcw_cog_level_1 
-// and
-// Care Partner present (via CP gateway question, or field in FHIR?)
-  return true
+  dcw_cog_level_1
+    and dcw_care_partner_present
 
 define PresentQnr_CIRG-MINICOG:
-// if dcw_cog_level_1 
-  return true
+  dcw_cog_level_1 
 
 define dcw_cog_level_2:
 // if (dementia condition)
 // and/or 
 // CIRG-MINICOG score is fail 
-  return true
+  true
 
 define PresentQnr_CIRG-SLUMS:
-// if dcw_cog_level_2
-  return true
+  dcw_cog_level_2
 
 define PresentQnr_CIRG-ADL-IADL:
-// if dcw_cog_level_2
-// and
-// Care Partner present (via CP gateway question, or field in FHIR?)
-  return true
+  dcw_cog_level_2
+    and dcw_care_partner_present
 
 define dcw_mood_level_1:
-// if
-// Care Partner present (via CP gateway question, or field in FHIR?)
-  return true
+  dcw_care_partner_present
 
 define PresentQnr_CIRG-BEHAV5:
-// if dcw_mood_level_1
-  return true
+  dcw_mood_level_1
 
 define dcw_mood_level_2:
 // if (
@@ -58,30 +52,24 @@ define dcw_mood_level_2:
 //   and/or 
 //   CIRG-BEHAV5 score is fail 
 // )
-  return true
+  true
 
 define PresentQnr_CIRG-GAD7:
-// if 
-//   dcw_mood_level_2
+  dcw_mood_level_2
 // and
 //   CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder 
-  return true
 
 define PresentQnr_CIRG-GDS:
-// if 
-//   dcw_mood_level_2
+  dcw_mood_level_2
 // and
 //   CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder 
-  return true
 
 define PresentQnr_CIRG-C-IDAS:
-// if 
-//   dcw_mood_level_2
+  dcw_mood_level_2
 // and
 //   CIRG-SLUMS score indicates dementia 
 // and
 //   Care Partner present (via CP gateway question, or field in FHIR?)
-  return true
 
 
 // below from: https://github.com/uwcirg/asbi-screening-app/blob/feature/apply-plandefinition-without-encender/src/cql/upstream-external/QuestionnaireLogicLibrary_PHQ9_GAD7.cql
