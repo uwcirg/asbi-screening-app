@@ -46,9 +46,9 @@ define PresentQnr_CIRG-BEHAV5:
 
 define dcw_mood_level_2:
 // if (
-//   depression condition
+//   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
 //   and/or 
-//   anxiety condition
+//   anxiety condition ("F41.1 - Generalized Anxiety Disorder" - not present in our 3 test patients...)
 //   and/or 
 //   CIRG-BEHAV5 score is fail 
 // )
@@ -70,6 +70,21 @@ define PresentQnr_CIRG-C-IDAS:
 //   CIRG-SLUMS score indicates dementia 
 // and
 //   Care Partner present (via CP gateway question, or field in FHIR?)
+
+// these draft additions based on clinical_quality_language/Examples/ChlamydiaScreening_Common.cql ,
+// however I think that's more about mapping conditions to lab tests...
+valueset "Dementia NOS": 'F03.9'
+valueset "Vascular Dementia, unspecified severity": 'F01.5'
+valueset "Frontotemporal dementia": 'G31.0'
+valueset "Parkinson's disease": 'G20'
+valueset "Unspecified dementia, with behavioral disturbance": 'F03.91'
+
+define "Conditions Indicating Dementia":
+    ["Condition": "Dementia NOS"]
+    union ["Condition": "Vascular Dementia, unspecified severity"]
+    union ["Condition": "Frontotemporal dementia"]
+    union ["Condition": "Parkinson's disease"]
+    union ["Condition": "Unspecified dementia, with behavioral disturbance"]
 
 
 // below from: https://github.com/uwcirg/asbi-screening-app/blob/feature/apply-plandefinition-without-encender/src/cql/upstream-external/QuestionnaireLogicLibrary_PHQ9_GAD7.cql
