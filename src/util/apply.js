@@ -198,7 +198,7 @@ export const applyDefinition = async (client, patientId) => {
     } else carePlan.status = "completed";
   }
 
-  console.log("carePlan ", carePlan);
+  console.log("generated carePlan: ", carePlan);
   const requestParams = {
     headers: {
       "Content-Type": "application/fhir+json",

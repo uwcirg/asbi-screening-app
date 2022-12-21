@@ -227,4 +227,9 @@ export function removeArrayItem (arr, value) {
   return arr;
 }
 
+export function getSkippedQuestionnaireListStorageKey(sessionKey) {
+  return `skipped_questionnaires_${sessionKey}`;
+}
+
 export const queryPatientIdKey = "launch_queryPatientId";
+

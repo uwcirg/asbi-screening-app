@@ -1,6 +1,6 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { applyDefinition } from "./apply";
-import { getCorrectedDateByTimeZone, getEnv } from "./util.js";
+import { getCorrectedDateByTimeZone, getEnv, getSkippedQuestionnaireListStorageKey } from "./util.js";
 
 export async function getPatientCarePlan(client, patientId) {
   if (!client || !patientId) return null;
@@ -161,20 +161,18 @@ export function getInstrumentListFromCarePlan(
 export async function getInstrumentList(client, patientId) {
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
+
+  // client session key
+  const key = client.getState().key;
   // get questionnaire(s) from care plan
   // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
-  let carePlan = await applyDefinition(
-    client,
-    patientId
-  ).catch((e) => {
+  let carePlan = await applyDefinition(client, patientId).catch((e) => {
     console.log("Error loading care plan ", e);
     carePlan = null;
   });
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the sessionStorage or environment variable
   if (!carePlan) {
-    // client session key
-    const key = client.getState().key;
     // if questionnaire list is already stored within a session variable, returns it
     const sessionList = getSessionInstrumentList(key);
     if (sessionList) return sessionList;
@@ -188,7 +186,22 @@ export async function getInstrumentList(client, patientId) {
       )
     : [];
 
+  const skippedQList = getSkippedQuestionnaireListFromStorage(key);
+  if (skippedQList) {
+    let ListToAdminister = [];
+    instrumentList.forEach(q => {
+      if (skippedQList.indexOf(q) === -1) ListToAdminister.push(q);
+    });
+    return ListToAdminister;
+  }
+
   return instrumentList;
+}
+
+export function getSkippedQuestionnaireListFromStorage(key) {
+  const storedItem = sessionStorage.getItem(getSkippedQuestionnaireListStorageKey(key));
+  if (storedItem) return JSON.parse(storedItem);
+  return null;
 }
 
 export function setSessionInstrumentList(key, data) {

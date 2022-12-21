@@ -46,6 +46,7 @@ import {
   getErrorText,
   getFHIRResourcePaths,
   getResponseValue,
+  getSkippedQuestionnaireListStorageKey,
   setFavicon,
   removeArrayItem,
 } from "../util/util.js";
@@ -508,6 +509,15 @@ export default {
     },
     handleSkippingQuestionnaire() {
       this.reloadInProgress = true;
+      let skippedList = [];
+      const storageKey = getSkippedQuestionnaireListStorageKey(this.sessionKey);
+      const storedItem = sessionStorage.getItem(storageKey);
+      if (storedItem) {
+        skippedList = JSON.parse(storedItem);
+        skippedList.push(this.currentQuestionnaireId);
+      }
+      else skippedList = [this.currentQuestionnaireId];
+      sessionStorage.setItem(storageKey, JSON.stringify(skippedList));
 
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
