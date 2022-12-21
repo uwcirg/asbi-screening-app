@@ -13,3 +13,4 @@ data:
         code: F32.A
 results:
   HasMoodConditions: true
+  dcw_mood_level_2: true

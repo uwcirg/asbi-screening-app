@@ -13,3 +13,5 @@ data:
         code: G31.0
 results:
   HasDementia: true
+  dcw_cog_level_1: false
+  dcw_cog_level_2: true
