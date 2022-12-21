@@ -1,6 +1,10 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { applyDefinition } from "./apply";
-import { getCorrectedDateByTimeZone, getEnv, getSkippedQuestionnaireListStorageKey } from "./util.js";
+import {
+  getCorrectedDateByTimeZone,
+  getEnv,
+  getSkippedQuestionnaireListStorageKey,
+} from "./util.js";
 
 export async function getPatientCarePlan(client, patientId) {
   if (!client || !patientId) return null;
@@ -42,7 +46,8 @@ export async function getQuestionnaireResponsesForPatient(client, patientId) {
 
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
-  if (!envList) throw new Error("no instrument id(s) set in environment variable");
+  if (!envList)
+    throw new Error("no instrument id(s) set in environment variable");
   console.log("instruments from environment ", envList);
   return envList.split(",").map((item) => item.trim());
 }
@@ -54,7 +59,7 @@ export function getInstrumentListFromCarePlan(
   if (!carePlan) return null;
   let instrumentList = [];
   const activities = carePlan.activity;
-  console.log("activities ", activities)
+  console.log("activities ", activities);
   // no activities, return empty array
   if (!activities.length) return [];
 
@@ -190,7 +195,7 @@ export async function getInstrumentList(client, patientId) {
   const skippedQList = getSessionSkippedQuestionnaireList(key);
   if (skippedQList) {
     let ListToAdminister = [];
-    instrumentList.forEach(q => {
+    instrumentList.forEach((q) => {
       if (skippedQList.indexOf(q) === -1) ListToAdminister.push(q);
     });
     return ListToAdminister;
@@ -211,7 +216,9 @@ export function setSessionSkippedQuestionnaireList(key, list) {
 }
 
 export function getSessionSkippedQuestionnaireList(key) {
-  const storedItem = sessionStorage.getItem(getSkippedQuestionnaireListStorageKey(key));
+  const storedItem = sessionStorage.getItem(
+    getSkippedQuestionnaireListStorageKey(key)
+  );
   if (storedItem) return JSON.parse(storedItem);
   return null;
 }
@@ -231,8 +238,10 @@ export function removeSessionInstrumentList(key) {
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument(client, patientId) {
   if (!client) throw new Error("invalid FHIR client provided");
-  const instrumentList = await getInstrumentList(client, patientId).catch((e) =>
-    console.log("Error getting instrument list ", e)
+  const instrumentList = await getInstrumentList(client, patientId).catch(
+    (e) => {
+      throw new Error(e);
+    }
   );
   if (!instrumentList || !instrumentList.length) {
     // TODO need to figure out if no questionnaire to administer is due to whether the user has completed all the survey(s)
