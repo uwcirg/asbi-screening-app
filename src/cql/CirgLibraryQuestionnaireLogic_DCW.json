@@ -1468,24 +1468,46 @@
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Or",
-               "operand" : [ {
-                  "name" : "HasDementia",
-                  "type" : "ExpressionRef"
-               }, {
-                  "type" : "LessOrEqual",
-                  "operand" : [ {
-                     "type" : "First",
-                     "source" : {
-                        "name" : "MINICOG_Score",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "3",
+               "type" : "If",
+               "condition" : {
+                  "type" : "IsTrue",
+                  "operand" : {
+                     "name" : "HasDementia",
+                     "type" : "ExpressionRef"
+                  }
+               },
+               "then" : {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "value" : "true",
+                  "type" : "Literal"
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "MINICOG_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "3",
+                        "type" : "Literal"
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "true",
                      "type" : "Literal"
-                  } ]
-               } ]
+                  },
+                  "else" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "false",
+                     "type" : "Literal"
+                  }
+               }
             }
          }, {
             "name" : "dcw_mood_level_1",
@@ -1870,24 +1892,46 @@
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Or",
-               "operand" : [ {
-                  "name" : "HasMoodConditions",
-                  "type" : "ExpressionRef"
-               }, {
-                  "type" : "LessOrEqual",
-                  "operand" : [ {
-                     "type" : "First",
-                     "source" : {
-                        "name" : "BEHAV5_Score",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "7",
+               "type" : "If",
+               "condition" : {
+                  "type" : "IsTrue",
+                  "operand" : {
+                     "name" : "HasMoodConditions",
+                     "type" : "ExpressionRef"
+                  }
+               },
+               "then" : {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                  "value" : "true",
+                  "type" : "Literal"
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "BEHAV5_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "7",
+                        "type" : "Literal"
+                     } ]
+                  },
+                  "then" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "true",
                      "type" : "Literal"
-                  } ]
-               } ]
+                  },
+                  "else" : {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+                     "value" : "false",
+                     "type" : "Literal"
+                  }
+               }
             }
          }, {
             "name" : "PresentQnr_CIRG_MINICOG",

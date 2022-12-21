@@ -101,7 +101,9 @@ define dcw_cog_level_2:
 // and/or 
 // CIRG-MINICOG score is fail
 // a failed score is 0,1,2, or 3
-  HasDementia or First(MINICOG_Score) <= 3
+  if HasDementia is true then true
+  else if First(MINICOG_Score) <= 3 then true
+  else false
 
 define dcw_mood_level_1:
   dcw_care_partner_present
@@ -114,7 +116,9 @@ define dcw_mood_level_2:
 //   and/or 
 //   CIRG-BEHAV5 score is fail 
 // )
-  HasMoodConditions or First(BEHAV5_Score) <= 7
+  if HasMoodConditions is true then true 
+  else if First(BEHAV5_Score) <= 7 then true
+  else false
 
 
 // these draft additions based on clinical_quality_language/Examples/ChlamydiaScreening_Common.cql ,

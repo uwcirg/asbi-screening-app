@@ -1,0 +1,12 @@
+---
+name: DCW Cog Level 2 (score is null)
+externalData:
+- minicog_reusable_resources
+data:
+- *patientResource
+- <<: *questionnaireResource
+  item: 
+  - *question1
+  - *question2
+results:
+  dcw_cog_level_2: false
