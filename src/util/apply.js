@@ -81,6 +81,49 @@ function getResultInBundle(results) {
   return bundle;
 }
 
+// evaluate CQL expression(s) specified in plan actions
+async function getEvaluationsFromPlanActions(actions, evaluateExpressionFunc) {
+  const evaluations = [];
+  if (!actions || !Array.isArray(actions)) return evaluations;
+  actions.forEach((action) => {
+    if (Array.isArray(action.condition)) {
+      action.condition.forEach((item) => {
+        if (
+          item.kind === "applicability" &&
+          item.expression &&
+          item.expression.language === "text/cql"
+        ) {
+          evaluations.push(evaluateExpressionFunc(item.expression.expression));
+        }
+      });
+    }
+  });
+  return Promise.all(evaluations);
+}
+
+// generate activities from evaluated CQL results
+function getActivitiesFromEvalResults(evalResults) {
+  let activities = [];
+  if (!evalResults) return activities;
+  const defaultSchedule = {
+    repeat: {
+      frequency: 1,
+      period: 1,
+      periodUnit: "d",
+    },
+  };
+  evalResults.forEach((result) => {
+    activities.push({
+      detail: {
+        instantiatesCanonical: ["Questionnaire/" + result.id],
+        status: "scheduled",
+        scheduledTiming: result.schedule ? result.schedule : defaultSchedule,
+      },
+    });
+  });
+  return activities;
+}
+
 export const applyDefinition = async (client, patientId) => {
   // Define a web worker for evaluating CQL expressions
   const cqlWorker = new Worker();
@@ -93,6 +136,24 @@ export const applyDefinition = async (client, patientId) => {
     id: "survey-bundle",
     type: "collection",
     entry: [],
+  };
+
+  const carePlanStub = {
+    resourceType: "CarePlan",
+    status: "active",
+    intent: "order",
+    category: [
+      {
+        coding: [
+          {
+            system: "http://snomed.info/sct",
+            code: "719091000000102",
+            display: "Questionnaire",
+          },
+        ],
+        text: "Questionnaire",
+      },
+    ],
   };
 
   const projectID = getEnv("VUE_APP_PROJECT_ID");
@@ -123,82 +184,35 @@ export const applyDefinition = async (client, patientId) => {
   setupExecution(QuestionnaireLogicLibrary, valueSetJson, {}); //empty CQL parameters for now
   sendPatientBundle(patientBundle);
 
-  const actions = planDef.action;
-  const evaluations = [];
+  // debug
+  // const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
+  // console.log("minicog score", minicogscore);
 
-  if (actions && Array.isArray(actions)) {
-    actions.forEach((action) => {
-      if (Array.isArray(action.condition)) {
-        action.condition.forEach((item) => {
-          if (
-            item.kind === "applicability" &&
-            item.expression &&
-            item.expression.language === "text/cql"
-          ) {
-            evaluations.push(evaluateExpression(item.expression.expression));
-          }
-        });
-      }
-    });
-  }
+  let evalResults = await getEvaluationsFromPlanActions(
+    planDef.action,
+    evaluateExpression
+  );
+  console.log("CQL evaluation results ", evalResults);
 
+  // filter out null results
+  evalResults = evalResults.filter((result) => result && result.id);
+
+  // initialize carePlan
   let carePlan;
   let patientCarePlan = await getPatientCarePlan(client, patientId);
   const hasPatientCarePlan =
     patientCarePlan && patientCarePlan.entry && patientCarePlan.entry.length;
   if (hasPatientCarePlan) carePlan = patientCarePlan.entry[0].resource;
   if (!carePlan) {
-    carePlan = {
-      resourceType: "CarePlan",
-      status: "active",
-      intent: "order",
-      category: [
-        {
-          coding: [
-            {
-              system: "http://snomed.info/sct",
-              code: "719091000000102",
-              display: "Questionnaire",
-            },
-          ],
-          text: "Questionnaire",
-        },
-      ],
-    };
+    carePlan = carePlanStub;
   }
   carePlan.subject = {
-    reference: "Patient/" + patientId
+    reference: "Patient/" + patientId,
   };
 
-  // debug
-  // const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
-  // console.log("minicog score", minicogscore);
-  let evalResults = await Promise.all(evaluations);
-  console.log("CQL evaluation results ", evalResults);
-
-  // filter out null results
-  evalResults = evalResults.filter((result) => result && result.id);
-  const defaultSchedule = {
-    repeat: {
-      frequency: 1,
-      period: 1,
-      periodUnit: "d",
-    },
-  };
-  if (evalResults) {
-    let activities = [];
-    evalResults.forEach((result) => {
-      activities.push({
-        detail: {
-          instantiatesCanonical: ["Questionnaire/" + result.id],
-          status: "scheduled",
-          scheduledTiming: result.schedule ? result.schedule : defaultSchedule,
-        },
-      });
-    });
-    if (activities.length) {
-      carePlan.activity = activities;
-    }
+  const activities = getActivitiesFromEvalResults(evalResults);
+  if (activities.length) {
+    carePlan.activity = activities;
   }
 
   console.log("generated carePlan: ", carePlan);
@@ -207,6 +221,8 @@ export const applyDefinition = async (client, patientId) => {
       "Content-Type": "application/fhir+json",
     },
   };
+
+  // save carePlan to FHIR server
   if (hasPatientCarePlan) client.update(carePlan, requestParams);
   else client.create(carePlan, requestParams);
 
