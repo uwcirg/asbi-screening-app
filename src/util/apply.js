@@ -20,9 +20,12 @@ function fetchResources(client, patientId) {
 
 async function getQuestionnaireLogicLibrary(projectID) {
   const libraryName = `CirgLibraryQuestionnaireLogic_${projectID}`;
-  if (sessionStorage.getItem(libraryName)) return JSON.parse(sessionStorage.getItem(libraryName));
-   //get corresponding logic library
-  const QuestionnaireLogicLibraryJson = await import(`../cql/${libraryName}.json`)
+  if (sessionStorage.getItem(libraryName))
+    return JSON.parse(sessionStorage.getItem(libraryName));
+  //get corresponding logic library
+  const QuestionnaireLogicLibraryJson = await import(
+    `../cql/${libraryName}.json`
+  )
     .then((module) => module.default)
     .catch((e) => {
       throw new Error(e);
@@ -32,13 +35,14 @@ async function getQuestionnaireLogicLibrary(projectID) {
       libraryName,
       JSON.stringify(QuestionnaireLogicLibraryJson)
     );
-    }
+  }
   return QuestionnaireLogicLibraryJson;
 }
 
 async function getPlanDefinition(projectID) {
   const definitionName = `2_PlanDefinition_${projectID}`;
-  if (sessionStorage.getItem(definitionName)) return JSON.parse(sessionStorage.getItem(definitionName));
+  if (sessionStorage.getItem(definitionName))
+    return JSON.parse(sessionStorage.getItem(definitionName));
   //get plan definition json
   const planDef = await import(`../fhir/${definitionName}.json`)
     .then((module) => module.default)
@@ -70,8 +74,10 @@ export const applyDefinition = async (client, patientId) => {
   if (!projectID) throw new Error("A valid project ID must be supplied");
 
   // get questionnaire logic library
-  const QuestionnaireLogicLibrary = await getQuestionnaireLogicLibrary(projectID);
-  console.log("Questionnaire lib ", QuestionnaireLogicLibrary)
+  const QuestionnaireLogicLibrary = await getQuestionnaireLogicLibrary(
+    projectID
+  );
+  console.log("Questionnaire lib ", QuestionnaireLogicLibrary);
 
   // get plan definition json
   const planDef = await getPlanDefinition(projectID);
@@ -110,11 +116,10 @@ export const applyDefinition = async (client, patientId) => {
   setupExecution(QuestionnaireLogicLibrary, valueSetJson, {}); //empty CQL parameters for now
   sendPatientBundle(patientBundle);
 
-
   const actions = planDef.action;
   const evaluations = [];
 
-  if (Array.isArray(actions)) {
+  if (actions && Array.isArray(actions)) {
     actions.forEach((action) => {
       if (Array.isArray(action.condition)) {
         action.condition.forEach((item) => {
@@ -138,7 +143,7 @@ export const applyDefinition = async (client, patientId) => {
   const patientResource = patientBundle.entry
     .filter((entry) => entry.resource.resourceType === "Patient")
     .map((entry) => entry.resource)[0];
- 
+
   const patientName = [
     patientResource.name[0].family,
     patientResource.name[0].given[0],
@@ -174,6 +179,7 @@ export const applyDefinition = async (client, patientId) => {
     reference: "Patient/" + patientId,
     display: patientName,
   };
+  // filter out null results
   evalResults = evalResults.filter((result) => result && result.id);
   const defaultSchedule = {
     repeat: {
@@ -195,7 +201,7 @@ export const applyDefinition = async (client, patientId) => {
     });
     if (activities.length) {
       carePlan.activity = activities;
-    } else carePlan.status = "completed";
+    }
   }
 
   console.log("generated carePlan: ", carePlan);
