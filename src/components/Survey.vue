@@ -21,8 +21,14 @@
         color="primary"
       ></v-progress-circular>
     </div>
-    <v-dialog v-model="showDialog" fullscreen hide-overlay :transition="false">
-      <v-card
+    <v-dialog
+      content-class="dialog-container"
+      v-model="showDialog"
+      fullscreen
+      hide-overlay
+      :transition="false"
+    >
+      <v-card :rounded="false"
         ><div v-html="dialogMessage" class="dialog-body-container"></div
       ></v-card>
     </v-dialog>
@@ -34,8 +40,9 @@ import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
 import {
   getScreeningInstrument,
-  removeSessionInstrumentList,
+  //removeSessionInstrumentList,
   setSessionInstrumentList,
+  setSessionSkippedQuestionnaireList,
 } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
@@ -46,7 +53,6 @@ import {
   getErrorText,
   getFHIRResourcePaths,
   getResponseValue,
-  getSkippedQuestionnaireListStorageKey,
   setFavicon,
   removeArrayItem,
 } from "../util/util.js";
@@ -198,7 +204,9 @@ export default {
           // Load the Questionniare, CQL ELM JSON, and value set cache which represents the alcohol screening instrument
           const [instrumentList, questionnaire, elmJson, valueSetJson] = data;
           if (!instrumentList || !instrumentList.length) {
-            this.error = "No questionnaire to administer.";
+            this.handleEndOfQuestionnaires(
+              `<h3><span class='text-warning'>No questionnaire left to adminster.</span><br/>All questionnaires completed.</h3>`
+            );
             return;
           }
           this.currentQuestionnaireList = instrumentList;
@@ -268,8 +276,7 @@ export default {
       var options = {
         ...surveyOptions["default"],
         ...(surveyOptions[optionsKeys] || {}),
-        navigateToUrl:
-          this.currentQuestionnaireList.length > 1 ? location.href : null,
+        navigateToUrl: location.href,
       };
 
       if (this.dashboardURL) {
@@ -463,15 +470,18 @@ export default {
                 },
               })
               .then(() => {
-                options.showDataSavingSuccess();
-                options.showDataSavingClear();
                 this.handleAdvanceQuestionnaireList();
-                this.showDialog = this.currentQuestionnaireList.length > 0;
+                this.showDialog = true;
                 if (this.currentQuestionnaireList.length) {
-                  this.dialogMessage = `Loading questionnaire. Please wait...`;
+                  this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
                 } else {
-                  this.handleEndOfQuestionnaires();
+                  this.dialogMessage = `Processing data.  Please wait...`;
+                  //this.handleEndOfQuestionnaires();
                 }
+                setTimeout(() => {
+                  options.showDataSavingSuccess();
+                  options.showDataSavingClear();
+                }, 500);
               })
               .catch((e) => {
                 this.error = `Error saving the questionnaire response for ${this.currentQuestionnaireId.toUpperCase()}.  See console for details.`;
@@ -488,47 +498,53 @@ export default {
         }.bind(this)
       );
     },
-    handleEndOfQuestionnaires() {
+    handleEndOfQuestionnaires(message) {
       // don't end survey session if there is still questionnaire to do
       if (this.currentQuestionnaireList.length > 0) return;
 
       // turn off skip flag
       this.allowSkip = false;
 
+      // if no dashboard URL is specified, just show a message informing user that all questionnaires are completed
+      this.dialogMessage = message
+        ? message
+        : "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
+      this.showDialog = true;
+
       if (this.dashboardURL) {
         setTimeout(
           () => (window.location = this.dashboardURL + "/clear_session"),
-          1000
+          1500
         );
         return;
       }
-      // if no dashboard URL is specified, just show a message informing user that all questionnaires are completed
-      this.dialogMessage =
-        "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
-      this.showDialog = true;
     },
     handleSkippingQuestionnaire() {
       this.reloadInProgress = true;
-      let skippedList = [];
-      const storageKey = getSkippedQuestionnaireListStorageKey(this.sessionKey);
-      const storedItem = sessionStorage.getItem(storageKey);
-      if (storedItem) {
-        skippedList = JSON.parse(storedItem);
-        skippedList.push(this.currentQuestionnaireId);
-      }
-      else skippedList = [this.currentQuestionnaireId];
-      sessionStorage.setItem(storageKey, JSON.stringify(skippedList));
+      // let skippedList = [];
+      // const storageKey = getSkippedQuestionnaireListStorageKey(this.sessionKey);
+      // const storedItem = sessionStorage.getItem(storageKey);
+      // if (storedItem) {
+      //   skippedList = JSON.parse(storedItem);
+      //   skippedList.push(this.currentQuestionnaireId);
+      // }
+      // else skippedList = [this.currentQuestionnaireId];
+      // sessionStorage.setItem(storageKey, JSON.stringify(skippedList));
+      setSessionSkippedQuestionnaireList(this.sessionKey, [
+        this.currentQuestionnaireId,
+      ]);
 
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
 
       // if there are still questionnaire(s) left to do, reload the page to go to the next
-      if (this.currentQuestionnaireList.length > 0) {
-        setTimeout(() => location.reload(), 500);
-        return;
-      }
+      // if (this.currentQuestionnaireList.length > 0) {
+      //   setTimeout(() => location.reload(), 500);
+      //   return;
+      // }
+      setTimeout(() => location.reload(), 500);
       // no more questionnaire to do, handle it
-      this.handleEndOfQuestionnaires();
+      // this.handleEndOfQuestionnaires();
     },
     handleAdvanceQuestionnaireList() {
       setSessionInstrumentList(
@@ -538,9 +554,9 @@ export default {
           this.currentQuestionnaireId
         )
       );
-      if (this.currentQuestionnaireList.length === 0) {
-        removeSessionInstrumentList(this.sessionKey);
-      }
+      // if (this.currentQuestionnaireList.length === 0) {
+      //   removeSessionInstrumentList(this.sessionKey);
+      // }
     },
     shouldShowSkipQuestionnaireButton() {
       return !this.error && this.ready && this.allowSkip;

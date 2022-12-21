@@ -42,6 +42,7 @@ export async function getQuestionnaireResponsesForPatient(client, patientId) {
 
 export function getEnvInstrumentList() {
   const envList = getEnv("VUE_APP_SCREENING_INSTRUMENT") || "";
+  if (!envList) throw new Error("no instrument id(s) set in environment variable");
   console.log("instruments from environment ", envList);
   return envList.split(",").map((item) => item.trim());
 }
@@ -186,7 +187,7 @@ export async function getInstrumentList(client, patientId) {
       )
     : [];
 
-  const skippedQList = getSkippedQuestionnaireListFromStorage(key);
+  const skippedQList = getSessionSkippedQuestionnaireList(key);
   if (skippedQList) {
     let ListToAdminister = [];
     instrumentList.forEach(q => {
@@ -198,7 +199,18 @@ export async function getInstrumentList(client, patientId) {
   return instrumentList;
 }
 
-export function getSkippedQuestionnaireListFromStorage(key) {
+export function setSessionSkippedQuestionnaireList(key, list) {
+  let skippedList = [];
+  const storageKey = getSkippedQuestionnaireListStorageKey(key);
+  const storedItem = sessionStorage.getItem(storageKey);
+  if (storedItem) {
+    skippedList = JSON.parse(storedItem);
+    skippedList = [...skippedList, ...list];
+  } else skippedList = list;
+  sessionStorage.setItem(storageKey, JSON.stringify(skippedList));
+}
+
+export function getSessionSkippedQuestionnaireList(key) {
   const storedItem = sessionStorage.getItem(getSkippedQuestionnaireListStorageKey(key));
   if (storedItem) return JSON.parse(storedItem);
   return null;
