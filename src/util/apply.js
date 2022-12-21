@@ -55,13 +55,13 @@ async function getPlanDefinition(projectID) {
   return planDef;
 }
 
-// Define a web worker for evaluating CQL expressions
-const cqlWorker = new Worker();
-// Initialize the cql-worker
-let [setupExecution, sendPatientBundle, evaluateExpression] =
-  initialzieCqlWorker(cqlWorker);
-
 export const applyDefinition = async (client, patientId) => {
+  // Define a web worker for evaluating CQL expressions
+  const cqlWorker = new Worker();
+  // Initialize the cql-worker
+  let [setupExecution, sendPatientBundle, evaluateExpression] =
+    initialzieCqlWorker(cqlWorker);
+  
   let patientBundle = {
     resourceType: "Bundle",
     id: "survey-bundle",
@@ -134,11 +134,6 @@ export const applyDefinition = async (client, patientId) => {
       }
     });
   }
-  // debug
-  // const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
-  // console.log("minicog score", minicogscore);
-  let evalResults = await Promise.all(evaluations);
-  console.log("evaluation results ", evalResults);
 
   const patientResource = patientBundle.entry
     .filter((entry) => entry.resource.resourceType === "Patient")
@@ -179,6 +174,13 @@ export const applyDefinition = async (client, patientId) => {
     reference: "Patient/" + patientId,
     display: patientName,
   };
+
+  // debug
+  // const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
+  // console.log("minicog score", minicogscore);
+  let evalResults = await Promise.all(evaluations);
+  console.log("CQL evaluation results ", evalResults);
+
   // filter out null results
   evalResults = evalResults.filter((result) => result && result.id);
   const defaultSchedule = {

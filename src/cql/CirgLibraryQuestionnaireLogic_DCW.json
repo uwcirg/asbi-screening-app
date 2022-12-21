@@ -254,7 +254,7 @@
                }
             } ]
          }, {
-            "name" : "getScoringByResponseItem",
+            "name" : "getValueByResponseItem",
             "context" : "Patient",
             "accessLevel" : "Public",
             "type" : "FunctionDef",
@@ -453,7 +453,7 @@
                                        "path" : "name",
                                        "type" : "Property",
                                        "source" : {
-                                          "name" : "currentQuestionnaire",
+                                          "name" : "targetQuestionnaire",
                                           "type" : "OperandRef"
                                        }
                                     } ]
@@ -496,7 +496,7 @@
                                        "path" : "id",
                                        "type" : "Property",
                                        "source" : {
-                                          "name" : "currentQuestionnaire",
+                                          "name" : "targetQuestionnaire",
                                           "type" : "OperandRef"
                                        }
                                     } ]
@@ -574,7 +574,7 @@
                   }
                }
             }, {
-               "name" : "currentQuestionnaire",
+               "name" : "targetQuestionnaire",
                "operandTypeSpecifier" : {
                   "name" : "{http://hl7.org/fhir}Questionnaire",
                   "type" : "NamedTypeSpecifier"
@@ -685,7 +685,7 @@
                                     "pattern" : {
                                        "type" : "Lower",
                                        "operand" : {
-                                          "name" : "questionnaireName",
+                                          "name" : "matchedString",
                                           "type" : "OperandRef"
                                        }
                                     },
@@ -720,7 +720,7 @@
                                     "pattern" : {
                                        "type" : "Lower",
                                        "operand" : {
-                                          "name" : "questionnaireName",
+                                          "name" : "matchedString",
                                           "type" : "OperandRef"
                                        }
                                     },
@@ -769,7 +769,7 @@
                                  "string" : {
                                     "type" : "Lower",
                                     "operand" : {
-                                       "name" : "questionnaireName",
+                                       "name" : "matchedString",
                                        "type" : "OperandRef"
                                     }
                                  }
@@ -800,7 +800,7 @@
                         }, {
                            "type" : "Lower",
                            "operand" : {
-                              "name" : "questionnaireName",
+                              "name" : "matchedString",
                               "type" : "OperandRef"
                            }
                         } ]
@@ -809,7 +809,7 @@
                }
             },
             "operand" : [ {
-               "name" : "questionnaireName",
+               "name" : "matchedString",
                "operandTypeSpecifier" : {
                   "name" : "{urn:hl7-org:elm-types:r1}String",
                   "type" : "NamedTypeSpecifier"
@@ -849,6 +849,15 @@
                      } ]
                   }
                } ]
+            }
+         }, {
+            "name" : "dcw_care_partner_present",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
+               "value" : "true",
+               "type" : "Literal"
             }
          }, {
             "name" : "DementiaConditions",
@@ -1057,15 +1066,6 @@
                   "name" : "HasDementia",
                   "type" : "ExpressionRef"
                }
-            }
-         }, {
-            "name" : "dcw_care_partner_present",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
-               "value" : "true",
-               "type" : "Literal"
             }
          }, {
             "name" : "MINICOG_Questionnaire",
@@ -1346,27 +1346,25 @@
                   "expression" : {
                      "type" : "If",
                      "condition" : {
-                        "type" : "And",
+                        "type" : "Less",
                         "operand" : [ {
-                           "type" : "Not",
+                           "type" : "Length",
                            "operand" : {
-                              "type" : "IsNull",
-                              "operand" : {
-                                 "name" : "word_recall_score",
-                                 "type" : "QueryLetRef"
-                              }
-                           }
-                        }, {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "name" : "clock_draw_score",
+                              "name" : "responses",
                               "type" : "QueryLetRef"
                            }
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
                         } ]
                      },
                      "then" : {
-                        "name" : "word_recall_score",
-                        "type" : "QueryLetRef"
+                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        }
                      },
                      "else" : {
                         "type" : "If",
@@ -1377,20 +1375,20 @@
                               "operand" : {
                                  "type" : "IsNull",
                                  "operand" : {
-                                    "name" : "clock_draw_score",
+                                    "name" : "word_recall_score",
                                     "type" : "QueryLetRef"
                                  }
                               }
                            }, {
                               "type" : "IsNull",
                               "operand" : {
-                                 "name" : "word_recall_score",
+                                 "name" : "clock_draw_score",
                                  "type" : "QueryLetRef"
                               }
                            } ]
                         },
                         "then" : {
-                           "name" : "clock_draw_score",
+                           "name" : "word_recall_score",
                            "type" : "QueryLetRef"
                         },
                         "else" : {
@@ -1402,36 +1400,62 @@
                                  "operand" : {
                                     "type" : "IsNull",
                                     "operand" : {
-                                       "name" : "word_recall_score",
-                                       "type" : "QueryLetRef"
-                                    }
-                                 }
-                              }, {
-                                 "type" : "Not",
-                                 "operand" : {
-                                    "type" : "IsNull",
-                                    "operand" : {
                                        "name" : "clock_draw_score",
                                        "type" : "QueryLetRef"
                                     }
                                  }
+                              }, {
+                                 "type" : "IsNull",
+                                 "operand" : {
+                                    "name" : "word_recall_score",
+                                    "type" : "QueryLetRef"
+                                 }
                               } ]
                            },
                            "then" : {
-                              "type" : "Add",
-                              "operand" : [ {
-                                 "name" : "word_recall_score",
-                                 "type" : "QueryLetRef"
-                              }, {
-                                 "name" : "clock_draw_score",
-                                 "type" : "QueryLetRef"
-                              } ]
+                              "name" : "clock_draw_score",
+                              "type" : "QueryLetRef"
                            },
                            "else" : {
-                              "asType" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "type" : "As",
-                              "operand" : {
-                                 "type" : "Null"
+                              "type" : "If",
+                              "condition" : {
+                                 "type" : "And",
+                                 "operand" : [ {
+                                    "type" : "Not",
+                                    "operand" : {
+                                       "type" : "IsNull",
+                                       "operand" : {
+                                          "name" : "word_recall_score",
+                                          "type" : "QueryLetRef"
+                                       }
+                                    }
+                                 }, {
+                                    "type" : "Not",
+                                    "operand" : {
+                                       "type" : "IsNull",
+                                       "operand" : {
+                                          "name" : "clock_draw_score",
+                                          "type" : "QueryLetRef"
+                                       }
+                                    }
+                                 } ]
+                              },
+                              "then" : {
+                                 "type" : "Add",
+                                 "operand" : [ {
+                                    "name" : "word_recall_score",
+                                    "type" : "QueryLetRef"
+                                 }, {
+                                    "name" : "clock_draw_score",
+                                    "type" : "QueryLetRef"
+                                 } ]
+                              },
+                              "else" : {
+                                 "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                 "type" : "As",
+                                 "operand" : {
+                                    "type" : "Null"
+                                 }
                               }
                            }
                         }
@@ -1462,6 +1486,14 @@
                      "type" : "Literal"
                   } ]
                } ]
+            }
+         }, {
+            "name" : "dcw_mood_level_1",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "dcw_care_partner_present",
+               "type" : "ExpressionRef"
             }
          }, {
             "name" : "MoodConditions",
@@ -1639,8 +1671,32 @@
                "relationship" : [ ],
                "return" : {
                   "expression" : {
-                     "type" : "Add",
-                     "operand" : [ {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Less",
+                        "operand" : [ {
+                           "type" : "Length",
+                           "operand" : {
+                              "type" : "ToList",
+                              "operand" : {
+                                 "name" : "I",
+                                 "type" : "AliasRef"
+                              }
+                           }
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        } ]
+                     },
+                     "then" : {
+                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        }
+                     },
+                     "else" : {
                         "type" : "Add",
                         "operand" : [ {
                            "type" : "Add",
@@ -1649,36 +1705,64 @@
                               "operand" : [ {
                                  "type" : "Add",
                                  "operand" : [ {
-                                    "type" : "Coalesce",
+                                    "type" : "Add",
                                     "operand" : [ {
-                                       "type" : "First",
-                                       "source" : {
-                                          "name" : "getScoringByResponseItem",
-                                          "type" : "FunctionRef",
-                                          "operand" : [ {
-                                             "name" : "BEHAV5_Questionnaire",
-                                             "type" : "ExpressionRef"
-                                          }, {
-                                             "path" : "item",
-                                             "scope" : "I",
-                                             "type" : "Property"
-                                          }, {
-                                             "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                             "value" : "behav-1",
-                                             "type" : "Literal"
-                                          } ]
-                                       }
+                                       "type" : "Coalesce",
+                                       "operand" : [ {
+                                          "type" : "First",
+                                          "source" : {
+                                             "name" : "getValueByResponseItem",
+                                             "type" : "FunctionRef",
+                                             "operand" : [ {
+                                                "name" : "BEHAV5_Questionnaire",
+                                                "type" : "ExpressionRef"
+                                             }, {
+                                                "path" : "item",
+                                                "scope" : "I",
+                                                "type" : "Property"
+                                             }, {
+                                                "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                                                "value" : "behav-1",
+                                                "type" : "Literal"
+                                             } ]
+                                          }
+                                       }, {
+                                          "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "value" : "0",
+                                          "type" : "Literal"
+                                       } ]
                                     }, {
-                                       "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "value" : "0",
-                                       "type" : "Literal"
+                                       "type" : "Coalesce",
+                                       "operand" : [ {
+                                          "type" : "First",
+                                          "source" : {
+                                             "name" : "getValueByResponseItem",
+                                             "type" : "FunctionRef",
+                                             "operand" : [ {
+                                                "name" : "BEHAV5_Questionnaire",
+                                                "type" : "ExpressionRef"
+                                             }, {
+                                                "path" : "item",
+                                                "scope" : "I",
+                                                "type" : "Property"
+                                             }, {
+                                                "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                                                "value" : "behav-2",
+                                                "type" : "Literal"
+                                             } ]
+                                          }
+                                       }, {
+                                          "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "value" : "0",
+                                          "type" : "Literal"
+                                       } ]
                                     } ]
                                  }, {
                                     "type" : "Coalesce",
                                     "operand" : [ {
                                        "type" : "First",
                                        "source" : {
-                                          "name" : "getScoringByResponseItem",
+                                          "name" : "getValueByResponseItem",
                                           "type" : "FunctionRef",
                                           "operand" : [ {
                                              "name" : "BEHAV5_Questionnaire",
@@ -1689,7 +1773,7 @@
                                              "type" : "Property"
                                           }, {
                                              "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                             "value" : "behav-2",
+                                             "value" : "behav-3",
                                              "type" : "Literal"
                                           } ]
                                        }
@@ -1704,7 +1788,7 @@
                                  "operand" : [ {
                                     "type" : "First",
                                     "source" : {
-                                       "name" : "getScoringByResponseItem",
+                                       "name" : "getValueByResponseItem",
                                        "type" : "FunctionRef",
                                        "operand" : [ {
                                           "name" : "BEHAV5_Questionnaire",
@@ -1715,7 +1799,7 @@
                                           "type" : "Property"
                                        }, {
                                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                          "value" : "behav-3",
+                                          "value" : "behav-4",
                                           "type" : "Literal"
                                        } ]
                                     }
@@ -1730,7 +1814,7 @@
                               "operand" : [ {
                                  "type" : "First",
                                  "source" : {
-                                    "name" : "getScoringByResponseItem",
+                                    "name" : "getValueByResponseItem",
                                     "type" : "FunctionRef",
                                     "operand" : [ {
                                        "name" : "BEHAV5_Questionnaire",
@@ -1741,7 +1825,7 @@
                                        "type" : "Property"
                                     }, {
                                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                       "value" : "behav-4",
+                                       "value" : "behav-5",
                                        "type" : "Literal"
                                     } ]
                                  }
@@ -1756,7 +1840,7 @@
                            "operand" : [ {
                               "type" : "First",
                               "source" : {
-                                 "name" : "getScoringByResponseItem",
+                                 "name" : "getValueByResponseItem",
                                  "type" : "FunctionRef",
                                  "operand" : [ {
                                     "name" : "BEHAV5_Questionnaire",
@@ -1767,7 +1851,7 @@
                                     "type" : "Property"
                                  }, {
                                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                    "value" : "behav-5",
+                                    "value" : "behav-6",
                                     "type" : "Literal"
                                  } ]
                               }
@@ -1777,32 +1861,7 @@
                               "type" : "Literal"
                            } ]
                         } ]
-                     }, {
-                        "type" : "Coalesce",
-                        "operand" : [ {
-                           "type" : "First",
-                           "source" : {
-                              "name" : "getScoringByResponseItem",
-                              "type" : "FunctionRef",
-                              "operand" : [ {
-                                 "name" : "BEHAV5_Questionnaire",
-                                 "type" : "ExpressionRef"
-                              }, {
-                                 "path" : "item",
-                                 "scope" : "I",
-                                 "type" : "Property"
-                              }, {
-                                 "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "value" : "behav-6",
-                                 "type" : "Literal"
-                              } ]
-                           }
-                        }, {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                           "value" : "0",
-                           "type" : "Literal"
-                        } ]
-                     } ]
+                     }
                   }
                }
             }
@@ -1829,14 +1888,6 @@
                      "type" : "Literal"
                   } ]
                } ]
-            }
-         }, {
-            "name" : "dcw_mood_level_1",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "name" : "dcw_care_partner_present",
-               "type" : "ExpressionRef"
             }
          }, {
             "name" : "PresentQnr_CIRG_MINICOG",
@@ -2319,17 +2370,161 @@
                }
             }
          }, {
+            "name" : "SLUMS_Questionnaire",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "getQuestionnaire",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                  "value" : "SLUMS",
+                  "type" : "Literal"
+               } ]
+            }
+         }, {
+            "name" : "SLUMS_Responses",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MatchedReponsesByQuestionnaire",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                  "type" : "Retrieve"
+               }, {
+                  "name" : "SLUMS_Questionnaire",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
+            "name" : "SLUMS_Score",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "I",
+                  "expression" : {
+                     "name" : "SLUMS_Responses",
+                     "type" : "ExpressionRef"
+                  }
+               } ],
+               "let" : [ {
+                  "identifier" : "answerValue",
+                  "expression" : {
+                     "type" : "First",
+                     "source" : {
+                        "name" : "GetResponseValueByLinkId",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "/71492-3",
+                           "type" : "Literal"
+                        }, {
+                           "path" : "item",
+                           "scope" : "I",
+                           "type" : "Property"
+                        } ]
+                     }
+                  }
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "If",
+                     "condition" : {
+                        "type" : "Less",
+                        "operand" : [ {
+                           "type" : "Length",
+                           "operand" : {
+                              "type" : "ToList",
+                              "operand" : {
+                                 "name" : "I",
+                                 "type" : "AliasRef"
+                              }
+                           }
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "value" : "1",
+                           "type" : "Literal"
+                        } ]
+                     },
+                     "then" : {
+                        "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "type" : "As",
+                        "operand" : {
+                           "type" : "Null"
+                        }
+                     },
+                     "else" : {
+                        "type" : "If",
+                        "condition" : {
+                           "type" : "Not",
+                           "operand" : {
+                              "type" : "IsNull",
+                              "operand" : {
+                                 "name" : "answerValue",
+                                 "type" : "QueryLetRef"
+                              }
+                           }
+                        },
+                        "then" : {
+                           "strict" : false,
+                           "type" : "As",
+                           "operand" : {
+                              "path" : "value",
+                              "type" : "Property",
+                              "source" : {
+                                 "name" : "answerValue",
+                                 "type" : "QueryLetRef"
+                              }
+                           },
+                           "asTypeSpecifier" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        },
+                        "else" : {
+                           "asType" : "{urn:hl7-org:elm-types:r1}Integer",
+                           "type" : "As",
+                           "operand" : {
+                              "type" : "Null"
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }, {
             "name" : "PresentQnr_CIRG_GAD7",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
                "type" : "If",
                "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_mood_level_2",
-                     "type" : "ExpressionRef"
-                  }
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_mood_level_2",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "21",
+                        "type" : "Literal"
+                     } ]
+                  } ]
                },
                "then" : {
                   "type" : "Tuple",
@@ -2402,11 +2597,27 @@
             "expression" : {
                "type" : "If",
                "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_mood_level_2",
-                     "type" : "ExpressionRef"
-                  }
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_mood_level_2",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "21",
+                        "type" : "Literal"
+                     } ]
+                  } ]
                },
                "then" : {
                   "type" : "Tuple",
@@ -2479,11 +2690,36 @@
             "expression" : {
                "type" : "If",
                "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_mood_level_2",
-                     "type" : "ExpressionRef"
-                  }
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_mood_level_2",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_care_partner_present",
+                           "type" : "ExpressionRef"
+                        }
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "20",
+                        "type" : "Literal"
+                     } ]
+                  } ]
                },
                "then" : {
                   "type" : "Tuple",
@@ -2546,126 +2782,6 @@
                            } ]
                         }
                      } ]
-                  }
-               }
-            }
-         }, {
-            "name" : "SLUMS_Questionnaire",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "name" : "getQuestionnaire",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                  "value" : "SLUMS",
-                  "type" : "Literal"
-               } ]
-            }
-         }, {
-            "name" : "SLUMS_Responses",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "name" : "MatchedReponsesByQuestionnaire",
-               "type" : "FunctionRef",
-               "operand" : [ {
-                  "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
-                  "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
-                  "type" : "Retrieve"
-               }, {
-                  "name" : "SLUMS_Questionnaire",
-                  "type" : "ExpressionRef"
-               } ]
-            }
-         }, {
-            "name" : "SLUMS_Score",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "Query",
-               "source" : [ {
-                  "alias" : "I",
-                  "expression" : {
-                     "name" : "SLUMS_Responses",
-                     "type" : "ExpressionRef"
-                  }
-               } ],
-               "let" : [ {
-                  "identifier" : "answerValue",
-                  "expression" : {
-                     "type" : "First",
-                     "source" : {
-                        "name" : "GetResponseValueByLinkId",
-                        "type" : "FunctionRef",
-                        "operand" : [ {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "/71492-3",
-                           "type" : "Literal"
-                        }, {
-                           "path" : "item",
-                           "scope" : "I",
-                           "type" : "Property"
-                        } ]
-                     }
-                  }
-               } ],
-               "relationship" : [ ],
-               "return" : {
-                  "expression" : {
-                     "type" : "If",
-                     "condition" : {
-                        "type" : "Not",
-                        "operand" : {
-                           "type" : "IsNull",
-                           "operand" : {
-                              "name" : "answerValue",
-                              "type" : "QueryLetRef"
-                           }
-                        }
-                     },
-                     "then" : {
-                        "path" : "value",
-                        "type" : "Property",
-                        "source" : {
-                           "name" : "answerValue",
-                           "type" : "QueryLetRef"
-                        }
-                     },
-                     "else" : {
-                        "type" : "As",
-                        "operand" : {
-                           "type" : "Null"
-                        },
-                        "asTypeSpecifier" : {
-                           "type" : "ChoiceTypeSpecifier",
-                           "choice" : [ {
-                              "name" : "{urn:hl7-org:elm-types:r1}Boolean",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Time",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}DateTime",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{http://hl7.org/fhir}decimal",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Date",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}String",
-                              "type" : "NamedTypeSpecifier"
-                           }, {
-                              "name" : "{urn:hl7-org:elm-types:r1}Decimal",
-                              "type" : "NamedTypeSpecifier"
-                           } ]
-                        }
-                     }
                   }
                }
             }
