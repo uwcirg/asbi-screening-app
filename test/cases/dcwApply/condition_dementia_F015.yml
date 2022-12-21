@@ -1,0 +1,15 @@
+# test dementia condition code = F01.5
+---
+name: DWC Test Dementia Condtion F01.5
+externalData:
+- reusable_resources
+data:
+- *patientResource
+-
+  resourceType: Condition
+  code:
+    coding:
+      -
+        code: F01.5
+results:
+  HasDementia: true

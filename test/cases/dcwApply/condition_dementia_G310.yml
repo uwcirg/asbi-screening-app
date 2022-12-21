@@ -1,0 +1,15 @@
+# test dementia condition code = G31.0
+---
+name: DWC Test Dementia Condtion G31.0
+externalData:
+- reusable_resources
+data:
+- *patientResource
+-
+  resourceType: Condition
+  code:
+    coding:
+      -
+        code: G31.0
+results:
+  HasDementia: true
