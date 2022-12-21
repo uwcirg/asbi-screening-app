@@ -18,6 +18,39 @@ function fetchResources(client, patientId) {
   return Promise.all(requests);
 }
 
+async function getQuestionnaireLogicLibrary(projectID) {
+  const libraryName = `CirgLibraryQuestionnaireLogic_${projectID}`;
+  if (sessionStorage.getItem(libraryName)) return JSON.parse(sessionStorage.getItem(libraryName));
+   //get corresponding logic library
+  const QuestionnaireLogicLibraryJson = await import(`../cql/${libraryName}.json`)
+    .then((module) => module.default)
+    .catch((e) => {
+      throw new Error(e);
+    });
+  if (QuestionnaireLogicLibraryJson) {
+    sessionStorage.setItem(
+      libraryName,
+      JSON.stringify(QuestionnaireLogicLibraryJson)
+    );
+    }
+  return QuestionnaireLogicLibraryJson;
+}
+
+async function getPlanDefinition(projectID) {
+  const definitionName = `2_PlanDefinition_${projectID}`;
+  if (sessionStorage.getItem(definitionName)) return JSON.parse(sessionStorage.getItem(definitionName));
+  //get plan definition json
+  const planDef = await import(`../fhir/${definitionName}.json`)
+    .then((module) => module.default)
+    .catch((e) => {
+      throw new Error(e);
+    });
+  if (planDef) {
+    sessionStorage.setItem(definitionName, JSON.stringify(planDef));
+  }
+  return planDef;
+}
+
 // Define a web worker for evaluating CQL expressions
 const cqlWorker = new Worker();
 // Initialize the cql-worker
@@ -36,28 +69,20 @@ export const applyDefinition = async (client, patientId) => {
 
   if (!projectID) throw new Error("A valid project ID must be supplied");
 
-  //get corresponding logic library
-  const QuestionnaireLogicLibrary = await import(
-    `../cql/CirgLibraryQuestionnaireLogic_${projectID}.json`
-  )
-    .then((module) => module.default)
-    .catch((e) => {
-      throw new Error(e);
-    });
+  // get questionnaire logic library
+  const QuestionnaireLogicLibrary = await getQuestionnaireLogicLibrary(projectID);
+  console.log("Questionnaire lib ", QuestionnaireLogicLibrary)
 
-  //get plan definition json
-  const planDef = await import(`../fhir/2_PlanDefinition_${projectID}.json`)
-    .then((module) => module.default)
-    .catch((e) => {
-      throw new Error(e);
-    });
+  // get plan definition json
+  const planDef = await getPlanDefinition(projectID);
 
-  console.log("Plan def ", planDef);
-
+  // fetch FHIR resources
   const results = await fetchResources(client, patientId).catch((e) => {
     console.log("Error retrieving FHIR resources ", e);
   });
-  console.log("FIRE resources ", results);
+  console.log("FHIR resources ", results);
+
+  // add FHIR resources to patient bundle
   results.forEach((result) => {
     console.log("result ", result);
     if (result.resourceType == "Bundle" && result.entry) {
@@ -84,6 +109,8 @@ export const applyDefinition = async (client, patientId) => {
   // Send the cqlWorker an initial message containing the ELM JSON representation of the CQL expressions
   setupExecution(QuestionnaireLogicLibrary, valueSetJson, {}); //empty CQL parameters for now
   sendPatientBundle(patientBundle);
+
+
   const actions = planDef.action;
   const evaluations = [];
 
@@ -103,13 +130,15 @@ export const applyDefinition = async (client, patientId) => {
     });
   }
 
+  const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
+  console.log("minicog score", minicogscore);
   let evalResults = await Promise.all(evaluations);
   console.log("evaluation results ", evalResults);
 
   const patientResource = patientBundle.entry
     .filter((entry) => entry.resource.resourceType === "Patient")
     .map((entry) => entry.resource)[0];
-  console.log("patientResource ", patientResource);
+ 
   const patientName = [
     patientResource.name[0].family,
     patientResource.name[0].given[0],

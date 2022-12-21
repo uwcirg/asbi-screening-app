@@ -170,8 +170,6 @@ export async function getInstrumentList(client, patientId) {
     console.log("Error loading care plan ", e);
     carePlan = null;
   });
-  console.log("carePlan ", carePlan);
-
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the sessionStorage or environment variable
   if (!carePlan) {
@@ -182,12 +180,6 @@ export async function getInstrumentList(client, patientId) {
     if (sessionList) return sessionList;
     return getEnvInstrumentList();
   }
-  if (carePlan.status && carePlan.status === "completed") return [];
-  // let instrumentList = getInstrumentListFromCarePlan(carePlan);
-  // console.log("instrument list from carePlan ", instrumentList)
-  // // if we don't find a specified questionnaire from a patient's careplan,
-  // // we look to see if it is specifed in the environment variable
-  // const carePlan = await getPatientCarePlan(client, patientId);
   // get instruments from care plan if possible
   let instrumentList = carePlan
     ? getInstrumentListFromCarePlan(
