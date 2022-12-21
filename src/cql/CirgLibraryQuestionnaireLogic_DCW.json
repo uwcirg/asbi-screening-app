@@ -2600,7 +2600,7 @@
                         "type" : "FunctionRef",
                         "operand" : [ {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "minicog-question2",
+                           "value" : "/71492-3",
                            "type" : "Literal"
                         }, {
                            "path" : "item",

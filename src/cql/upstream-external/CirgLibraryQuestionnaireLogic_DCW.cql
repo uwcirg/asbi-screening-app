@@ -290,6 +290,6 @@ define SLUMS_Responses:
 
 define SLUMS_Score:
   (SLUMS_Responses) I
-    let answerValue : First(GetResponseValueByLinkId('minicog-question2', I.item))
+    let answerValue : First(GetResponseValueByLinkId('/71492-3', I.item))
     return if answerValue is not null then answerValue.value
     else null
