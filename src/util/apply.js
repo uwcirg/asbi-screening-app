@@ -55,13 +55,39 @@ async function getPlanDefinition(projectID) {
   return planDef;
 }
 
+function getResultInBundle(results) {
+  if (!results) return [];
+  let bundle = [];
+  // add FHIR resources results bundle
+  results.forEach((result) => {
+    if (result.resourceType == "Bundle" && result.entry) {
+      result.entry.forEach((o) => {
+        if (o && o.resource) bundle.push({ resource: o.resource });
+      });
+    } else if (Array.isArray(result)) {
+      result.forEach((o) => {
+        if (o.resourceType == "Bundle" && o.entry) {
+          o.entry.forEach((item) => {
+            if (item && item.resource) {
+              bundle.push({ resource: item.resource });
+            }
+          });
+        } else bundle.push({ resource: o });
+      });
+    } else {
+      bundle.push({ resource: result });
+    }
+  });
+  return bundle;
+}
+
 export const applyDefinition = async (client, patientId) => {
   // Define a web worker for evaluating CQL expressions
   const cqlWorker = new Worker();
   // Initialize the cql-worker
   let [setupExecution, sendPatientBundle, evaluateExpression] =
     initialzieCqlWorker(cqlWorker);
-  
+
   let patientBundle = {
     resourceType: "Bundle",
     id: "survey-bundle",
@@ -89,26 +115,7 @@ export const applyDefinition = async (client, patientId) => {
   console.log("FHIR resources ", results);
 
   // add FHIR resources to patient bundle
-  results.forEach((result) => {
-    console.log("result ", result);
-    if (result.resourceType == "Bundle" && result.entry) {
-      result.entry.forEach((o) => {
-        if (o && o.resource) patientBundle.entry.push({ resource: o.resource });
-      });
-    } else if (Array.isArray(result)) {
-      result.forEach((o) => {
-        if (o.resourceType == "Bundle" && o.entry) {
-          o.entry.forEach((item) => {
-            if (item && item.resource) {
-              patientBundle.entry.push({ resource: item.resource });
-            }
-          });
-        } else patientBundle.entry.push({ resource: o });
-      });
-    } else {
-      patientBundle.entry.push({ resource: result });
-    }
-  });
+  patientBundle.entry = [...patientBundle.entry, ...getResultInBundle(results)];
 
   console.log("patient bundle ", patientBundle);
 
@@ -135,17 +142,6 @@ export const applyDefinition = async (client, patientId) => {
     });
   }
 
-  const patientResource = patientBundle.entry
-    .filter((entry) => entry.resource.resourceType === "Patient")
-    .map((entry) => entry.resource)[0];
-
-  const patientName = [
-    patientResource.name[0].family,
-    patientResource.name[0].given[0],
-  ];
-  console.log("patient id ", patientId);
-  console.log("patient name ", patientName.join(", "));
-
   let carePlan;
   let patientCarePlan = await getPatientCarePlan(client, patientId);
   const hasPatientCarePlan =
@@ -171,8 +167,7 @@ export const applyDefinition = async (client, patientId) => {
     };
   }
   carePlan.subject = {
-    reference: "Patient/" + patientId,
-    display: patientName,
+    reference: "Patient/" + patientId
   };
 
   // debug
