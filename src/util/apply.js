@@ -129,9 +129,9 @@ export const applyDefinition = async (client, patientId) => {
       }
     });
   }
-
-  const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
-  console.log("minicog score", minicogscore);
+  // debug
+  // const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
+  // console.log("minicog score", minicogscore);
   let evalResults = await Promise.all(evaluations);
   console.log("evaluation results ", evalResults);
 

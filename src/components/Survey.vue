@@ -514,7 +514,7 @@ export default {
 
       // if there are still questionnaire(s) left to do, reload the page to go to the next
       if (this.currentQuestionnaireList.length > 0) {
-        setTimeout(() => location.reload(), 350);
+        setTimeout(() => location.reload(), 500);
         return;
       }
       // no more questionnaire to do, handle it
