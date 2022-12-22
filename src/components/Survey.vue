@@ -472,12 +472,13 @@ export default {
               .then(() => {
                 this.handleAdvanceQuestionnaireList();
                 this.showDialog = true;
-                if (this.currentQuestionnaireList.length) {
-                  this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
-                } else {
-                  this.dialogMessage = `Processing data.  Please wait...`;
-                  //this.handleEndOfQuestionnaires();
-                }
+                this.dialogMessage = `Processing data.  Please wait...`;
+                // if (this.currentQuestionnaireList.length) {
+                //   this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
+                // } else {
+                //   this.dialogMessage = `Processing data.  Please wait...`;
+                //   //this.handleEndOfQuestionnaires();
+                // }
                 setTimeout(() => {
                   options.showDataSavingSuccess();
                   options.showDataSavingClear();
@@ -521,15 +522,6 @@ export default {
     },
     handleSkippingQuestionnaire() {
       this.reloadInProgress = true;
-      // let skippedList = [];
-      // const storageKey = getSkippedQuestionnaireListStorageKey(this.sessionKey);
-      // const storedItem = sessionStorage.getItem(storageKey);
-      // if (storedItem) {
-      //   skippedList = JSON.parse(storedItem);
-      //   skippedList.push(this.currentQuestionnaireId);
-      // }
-      // else skippedList = [this.currentQuestionnaireId];
-      // sessionStorage.setItem(storageKey, JSON.stringify(skippedList));
       setSessionSkippedQuestionnaireList(this.sessionKey, [
         this.currentQuestionnaireId,
       ]);
@@ -537,14 +529,9 @@ export default {
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
 
-      // if there are still questionnaire(s) left to do, reload the page to go to the next
-      // if (this.currentQuestionnaireList.length > 0) {
-      //   setTimeout(() => location.reload(), 500);
-      //   return;
-      // }
+      // reload page for re-processing of questionnaires to administer
       setTimeout(() => location.reload(), 500);
-      // no more questionnaire to do, handle it
-      // this.handleEndOfQuestionnaires();
+     
     },
     handleAdvanceQuestionnaireList() {
       setSessionInstrumentList(
