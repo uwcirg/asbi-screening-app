@@ -1,21 +1,24 @@
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
 import valueSetJson from "../cql/valueset-db.json";
-import { getPatientCarePlan } from "./screening-selector";
+import {
+  getPatientCarePlan,
+  getQuestionnaireResponsesForPatient,
+} from "./screening-selector";
 import { getEnv } from "./util";
 
-function fetchResources(client, patientId) {
+async function fetchStaticFhirResources(client, patientId) {
+  // client auth session key
+  const key = client.getState().key;
+  const storageKey = `fhir_resources_${key}`;
+  // get resources from storage cache if possible
+  if (sessionStorage.getItem(storageKey))
+    return JSON.parse(sessionStorage.getItem(storageKey));
+
+  // default FHIR resources, won't change during the current auth session
   const requests = [
     { url: "Patient/" + patientId },
     { url: "Questionnaire" },
-    // we need fresh data from questionnaire responses to evaluate condition(s) for administer a questionnaire correctly
-    {
-      url:
-        "QuestionnaireResponse?patient=" + patientId + "&_sort=-_lastUpdated",
-      headers: {
-        "Cache-Control": "no-cache",
-      },
-    },
     { url: "Condition?patient=" + patientId },
   ].map((item) => {
     return client.request({
@@ -23,14 +26,19 @@ function fetchResources(client, patientId) {
       pageLimit: 0,
     });
   });
-  return Promise.all(requests);
+  return Promise.all(requests).then((results) => {
+    if (results) {
+      sessionStorage.setItem(storageKey, JSON.stringify(results));
+    }
+    return results;
+  });
 }
 
 async function getQuestionnaireLogicLibrary(projectID) {
   const libraryName = `CirgLibraryQuestionnaireLogic_${projectID}`;
   if (sessionStorage.getItem(libraryName))
     return JSON.parse(sessionStorage.getItem(libraryName));
-  //get corresponding logic library
+  //get corresponding CQL logic library
   const QuestionnaireLogicLibraryJson = await import(
     `../cql/${libraryName}.json`
   )
@@ -177,14 +185,30 @@ export const applyDefinition = async (client, patientId) => {
   // get plan definition json
   const planDef = await getPlanDefinition(projectID);
 
-  // fetch FHIR resources
-  const results = await fetchResources(client, patientId).catch((e) => {
-    console.log("Error retrieving FHIR resources ", e);
-  });
+  // fetch default FHIR resources, will retrieve cached results if possible
+  const results = await fetchStaticFhirResources(client, patientId).catch(
+    (e) => {
+      console.log("Error retrieving FHIR resources ", e);
+    }
+  );
   console.log("FHIR resources ", results);
 
   // add FHIR resources to patient bundle
   patientBundle.entry = [...patientBundle.entry, ...getResultInBundle(results)];
+
+  // fetch questionnaire responses, NO cache here, as we want fresh responses
+  const questionnaireResponses = await getQuestionnaireResponsesForPatient(
+    client,
+    patientId
+  );
+
+  console.log("questionnaire responses ", questionnaireResponses);
+
+  // add questionnaire responses to patient bundle
+  patientBundle.entry = [
+    ...patientBundle.entry,
+    ...getResultInBundle(questionnaireResponses),
+  ];
 
   console.log("patient bundle ", patientBundle);
 
