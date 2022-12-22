@@ -1908,7 +1908,7 @@
                "else" : {
                   "type" : "If",
                   "condition" : {
-                     "type" : "LessOrEqual",
+                     "type" : "GreaterOrEqual",
                      "operand" : [ {
                         "type" : "First",
                         "source" : {
@@ -1917,7 +1917,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "7",
+                        "value" : "1",
                         "type" : "Literal"
                      } ]
                   },
