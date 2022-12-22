@@ -6,17 +6,20 @@ import { getEnv } from "./util";
 
 function fetchResources(client, patientId) {
   const requests = [
-    "Patient/" + patientId,
-    "Questionnaire",
-    "QuestionnaireResponse?patient=" + patientId + "&_sort=-_lastUpdated",
-    "Condition?patient=" + patientId,
-  ].map((item) => {
-    return client.request({
-      url: item,
-      pageLimit: 0,
+    { url: "Patient/" + patientId },
+    { url: "Questionnaire" },
+    {
+      url:
+        "QuestionnaireResponse?patient=" + patientId + "&_sort=-_lastUpdated",
       headers: {
         "Cache-Control": "no-cache",
       },
+    },
+    { url: "Condition?patient=" + patientId },
+  ].map((item) => {
+    return client.request({
+      ...item,
+      pageLimit: 0,
     });
   });
   return Promise.all(requests);
