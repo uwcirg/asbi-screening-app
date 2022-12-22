@@ -1934,6 +1934,71 @@
                }
             }
          }, {
+            "name" : "LessThanHighSchoolCondition",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "C",
+                  "expression" : {
+                     "dataType" : "{http://hl7.org/fhir}Condition",
+                     "templateId" : "http://hl7.org/fhir/StructureDefinition/Condition",
+                     "type" : "Retrieve"
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "Equal",
+                  "operand" : [ {
+                     "path" : "value",
+                     "type" : "Property",
+                     "source" : {
+                        "path" : "code",
+                        "type" : "Property",
+                        "source" : {
+                           "type" : "Indexer",
+                           "operand" : [ {
+                              "path" : "coding",
+                              "type" : "Property",
+                              "source" : {
+                                 "path" : "code",
+                                 "scope" : "C",
+                                 "type" : "Property"
+                              }
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                              "value" : "0",
+                              "type" : "Literal"
+                           } ]
+                        }
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                     "value" : "Z55.5",
+                     "type" : "Literal"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "HasHigerLevelEducation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Less",
+               "operand" : [ {
+                  "type" : "Length",
+                  "operand" : {
+                     "name" : "LessThanHighSchoolCondition",
+                     "type" : "ExpressionRef"
+                  }
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "value" : "1",
+                  "type" : "Literal"
+               } ]
+            }
+         }, {
             "name" : "PresentQnr_CIRG_MINICOG",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -2542,6 +2607,122 @@
                }
             }
          }, {
+            "name" : "HasNormalSLUMSScore",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "IsTrue",
+                  "operand" : {
+                     "name" : "HasHigerLevelEducation",
+                     "type" : "ExpressionRef"
+                  }
+               },
+               "then" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "First",
+                     "source" : {
+                        "name" : "SLUMS_Score",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "27",
+                     "type" : "Literal"
+                  } ]
+               },
+               "else" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "First",
+                     "source" : {
+                        "name" : "SLUMS_Score",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "25",
+                     "type" : "Literal"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "IsTrue",
+                  "operand" : {
+                     "name" : "HasHigerLevelEducation",
+                     "type" : "ExpressionRef"
+                  }
+               },
+               "then" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "21",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "26",
+                        "type" : "Literal"
+                     } ]
+                  } ]
+               },
+               "else" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "20",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "24",
+                        "type" : "Literal"
+                     } ]
+                  } ]
+               }
+            }
+         }, {
             "name" : "PresentQnr_CIRG_GAD7",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -2556,17 +2737,19 @@
                         "type" : "ExpressionRef"
                      }
                   }, {
-                     "type" : "GreaterOrEqual",
+                     "type" : "Or",
                      "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "HasNormalSLUMSScore",
                            "type" : "ExpressionRef"
                         }
                      }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "21",
-                        "type" : "Literal"
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
+                           "type" : "ExpressionRef"
+                        }
                      } ]
                   } ]
                },
@@ -2649,17 +2832,19 @@
                         "type" : "ExpressionRef"
                      }
                   }, {
-                     "type" : "GreaterOrEqual",
+                     "type" : "Or",
                      "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "HasNormalSLUMSScore",
                            "type" : "ExpressionRef"
                         }
                      }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "21",
-                        "type" : "Literal"
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
+                           "type" : "ExpressionRef"
+                        }
                      } ]
                   } ]
                },
@@ -2728,6 +2913,80 @@
                }
             }
          }, {
+            "name" : "HasSLUMSDementiaScore",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "IsTrue",
+                  "operand" : {
+                     "name" : "HasHigerLevelEducation",
+                     "type" : "ExpressionRef"
+                  }
+               },
+               "then" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "1",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "20",
+                        "type" : "Literal"
+                     } ]
+                  } ]
+               },
+               "else" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "1",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "19",
+                        "type" : "Literal"
+                     } ]
+                  } ]
+               }
+            }
+         }, {
             "name" : "PresentQnr_CIRG_C_IDAS",
             "context" : "Patient",
             "accessLevel" : "Public",
@@ -2751,18 +3010,11 @@
                         }
                      } ]
                   }, {
-                     "type" : "LessOrEqual",
-                     "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "20",
-                        "type" : "Literal"
-                     } ]
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "HasSLUMSDementiaScore",
+                        "type" : "ExpressionRef"
+                     }
                   } ]
                },
                "then" : {

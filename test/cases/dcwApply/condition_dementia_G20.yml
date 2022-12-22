@@ -15,3 +15,6 @@ results:
   HasDementia: true
   dcw_cog_level_1: false
   dcw_cog_level_2: true
+  PresentQnr_CIRG_SLUMS: $should exist
+  PresentQnr_CIRG_ECOG12: null
+  PresentQnr_CIRG_MINICOG: null

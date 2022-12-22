@@ -120,7 +120,6 @@ define dcw_mood_level_2:
   else if First(BEHAV5_Score) <= 7 then true
   else false
 
-
 // these draft additions based on clinical_quality_language/Examples/ChlamydiaScreening_Common.cql ,
 // however I think that's more about mapping conditions to lab tests...
 // valueset "Dementia NOS": 'F03.9'
@@ -148,6 +147,13 @@ define DementiaConditions:
 define HasDementia:
   Length(DementiaConditions) > 0
 
+define LessThanHighSchoolCondition:
+  ["Condition"] C where (
+    C.code.coding[0].code.value = 'Z55.5'
+  )
+
+define HasHigerLevelEducation:
+  Length(LessThanHighSchoolCondition) < 1
 
 //   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
 //   and/or 
@@ -170,7 +176,6 @@ define PresentQnr_CIRG_MINICOG:
     id: 'CIRG-MINICOG',
     schedule: Scheduled_Timing
   } else null
-
 
 define PresentQnr_CIRG_ECOG12:
   if dcw_cog_level_1 is true then {
@@ -204,29 +209,24 @@ define PresentQnr_CIRG_BEHAV5:
   } else null
 
 define PresentQnr_CIRG_GAD7:
- // TODO figure out what score this is supposed to be
  // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
- // dependent on education level? using High School Education criteria here 
-  if dcw_mood_level_2 is true and First(SLUMS_Score) >= 21 then {
+  if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
     id: 'CIRG-GAD7',
     schedule: Scheduled_Timing
   } else null
 
 define PresentQnr_CIRG_GDS:
-  // TODO figure out what score this is supposed to be
   // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
-  // dependent on education level? using High School Education criteria here 
-  if dcw_mood_level_2 is true and First(SLUMS_Score) >= 21 then {
+  if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
     id: 'CIRG-GDS',
     schedule: Scheduled_Timing
   } else null
 
 define PresentQnr_CIRG_C_IDAS:
-  // TODO figure out what score this is supposed to be
   // CIRG-SLUMS score indicates dementia 
   if dcw_mood_level_2 is true and 
      dcw_care_partner_present is true and 
-     First(SLUMS_Score) <= 20 // dependent on education level? using High School Education criteria here
+     HasSLUMSDementiaScore is true
   then {
     id: 'CIRG-C-IDAS',
     schedule: Scheduled_Timing
@@ -299,3 +299,15 @@ define SLUMS_Score:
       if Length(I) < 1 then null
       else if answerValue is not null then answerValue.value as Integer
       else null
+
+define HasSLUMSDementiaScore:
+  if HasHigerLevelEducation is true then First(SLUMS_Score) >= 1 and First(SLUMS_Score) <= 20
+  else First(SLUMS_Score) >= 1 and First(SLUMS_Score) <= 19
+
+define HasNormalSLUMSScore:
+  if HasHigerLevelEducation is true then First(SLUMS_Score) >= 27
+  else First(SLUMS_Score) >= 25
+
+define HasMildNeuroCognitiveDisorderSLUMSScore:
+  if HasHigerLevelEducation is true then First(SLUMS_Score) >= 21 and First(SLUMS_Score) <= 26
+  else First(SLUMS_Score) >= 20 and First(SLUMS_Score) <= 24

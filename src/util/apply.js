@@ -11,8 +11,12 @@ function fetchResources(client, patientId) {
     "QuestionnaireResponse?patient=" + patientId + "&_sort=-_lastUpdated",
     "Condition?patient=" + patientId,
   ].map((item) => {
-    return client.request(item, {
+    return client.request({
+      url: item,
       pageLimit: 0,
+      headers: {
+        "Cache-Control": "no-cache, no-store, max-age=0",
+      },
     });
   });
   return Promise.all(requests);

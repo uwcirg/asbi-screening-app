@@ -22,3 +22,4 @@ data:
       valueDecimal: 1
 results:
   dcw_cog_level_2: true
+  PresentQnr_CIRG_SLUMS: $should exist
