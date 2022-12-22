@@ -8,6 +8,7 @@ function fetchResources(client, patientId) {
   const requests = [
     { url: "Patient/" + patientId },
     { url: "Questionnaire" },
+    // we need fresh data from questionnaire responses to evaluate condition(s) for administer a questionnaire correctly
     {
       url:
         "QuestionnaireResponse?patient=" + patientId + "&_sort=-_lastUpdated",

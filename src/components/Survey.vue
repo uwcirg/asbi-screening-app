@@ -473,12 +473,6 @@ export default {
                 this.handleAdvanceQuestionnaireList();
                 this.showDialog = true;
                 this.dialogMessage = `Processing data.  Please wait...`;
-                // if (this.currentQuestionnaireList.length) {
-                //   this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
-                // } else {
-                //   this.dialogMessage = `Processing data.  Please wait...`;
-                //   //this.handleEndOfQuestionnaires();
-                // }
                 setTimeout(() => {
                   options.showDataSavingSuccess();
                   options.showDataSavingClear();
@@ -541,9 +535,6 @@ export default {
           this.currentQuestionnaireId
         )
       );
-      // if (this.currentQuestionnaireList.length === 0) {
-      //   removeSessionInstrumentList(this.sessionKey);
-      // }
     },
     shouldShowSkipQuestionnaireButton() {
       return !this.error && this.ready && this.allowSkip;
