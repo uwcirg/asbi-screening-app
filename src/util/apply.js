@@ -15,7 +15,7 @@ function fetchResources(client, patientId) {
       url: item,
       pageLimit: 0,
       headers: {
-        "Cache-Control": "no-cache, no-store, max-age=0",
+        "Cache-Control": "no-cache",
       },
     });
   });

@@ -30,7 +30,12 @@ export async function getPatientCarePlan(client, patientId) {
 export async function getQuestionnaireResponsesForPatient(client, patientId) {
   if (!client || !patientId) return null;
   const questionnaireResponsesResult = await client
-    .request(`QuestionnaireResponse?patient=${patientId}`)
+    .request({
+      url: `QuestionnaireResponse?patient=${patientId}`,
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    })
     .catch((e) => {
       console.log(
         "Error occurred retrieving patient questionnaire responses ",
