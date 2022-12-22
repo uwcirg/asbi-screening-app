@@ -1,5 +1,5 @@
 ---
-name: DCW SLUMS dementia score (higher education)
+name: DCW SLUMS dementia score (higher education) - with mood condtion
 externalData:
 - slums_reusable_resources
 data:
@@ -23,3 +23,4 @@ data:
 results:
   HasNormalSLUMSScore: false
   HasSLUMSDementiaScore: true
+  #PresentQnr_CIRG_C_IDAS: $should exist

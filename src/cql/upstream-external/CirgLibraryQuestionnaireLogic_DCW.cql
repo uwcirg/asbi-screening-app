@@ -151,9 +151,10 @@ define LessThanHighSchoolCondition:
   ["Condition"] C where (
     C.code.coding[0].code.value = 'Z55.5'
   )
-
+define HasLowerLevelEducation:
+  Length(LessThanHighSchoolCondition) >= 1
 define HasHigerLevelEducation:
-  Length(LessThanHighSchoolCondition) < 1
+  not HasLowerLevelEducation
 
 //   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
 //   and/or 
@@ -301,13 +302,13 @@ define SLUMS_Score:
       else null
 
 define HasSLUMSDementiaScore:
-  if HasHigerLevelEducation is true then First(SLUMS_Score) >= 1 and First(SLUMS_Score) <= 20
-  else First(SLUMS_Score) >= 1 and First(SLUMS_Score) <= 19
+  if HasLowerLevelEducation is true then First(SLUMS_Score) >= 1 and First(SLUMS_Score) <= 19
+  else First(SLUMS_Score) >= 1 and First(SLUMS_Score) <= 20
 
 define HasNormalSLUMSScore:
-  if HasHigerLevelEducation is true then First(SLUMS_Score) >= 27
-  else First(SLUMS_Score) >= 25
+  if HasLowerLevelEducation is true then First(SLUMS_Score) >= 25
+  else First(SLUMS_Score) >= 27
 
 define HasMildNeuroCognitiveDisorderSLUMSScore:
-  if HasHigerLevelEducation is true then First(SLUMS_Score) >= 21 and First(SLUMS_Score) <= 26
-  else First(SLUMS_Score) >= 20 and First(SLUMS_Score) <= 24
+  if HasLowerLevelEducation is true then First(SLUMS_Score) >= 20 and First(SLUMS_Score) <= 24
+  else First(SLUMS_Score) >= 21 and First(SLUMS_Score) <= 26

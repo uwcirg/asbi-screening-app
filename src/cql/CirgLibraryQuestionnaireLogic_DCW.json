@@ -1981,11 +1981,11 @@
                }
             }
          }, {
-            "name" : "HasHigerLevelEducation",
+            "name" : "HasLowerLevelEducation",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "Less",
+               "type" : "GreaterOrEqual",
                "operand" : [ {
                   "type" : "Length",
                   "operand" : {
@@ -1997,6 +1997,17 @@
                   "value" : "1",
                   "type" : "Literal"
                } ]
+            }
+         }, {
+            "name" : "HasHigerLevelEducation",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Not",
+               "operand" : {
+                  "name" : "HasLowerLevelEducation",
+                  "type" : "ExpressionRef"
+               }
             }
          }, {
             "name" : "PresentQnr_CIRG_MINICOG",
@@ -2615,7 +2626,7 @@
                "condition" : {
                   "type" : "IsTrue",
                   "operand" : {
-                     "name" : "HasHigerLevelEducation",
+                     "name" : "HasLowerLevelEducation",
                      "type" : "ExpressionRef"
                   }
                },
@@ -2629,7 +2640,7 @@
                      }
                   }, {
                      "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "27",
+                     "value" : "25",
                      "type" : "Literal"
                   } ]
                },
@@ -2643,7 +2654,7 @@
                      }
                   }, {
                      "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "25",
+                     "value" : "27",
                      "type" : "Literal"
                   } ]
                }
@@ -2657,41 +2668,11 @@
                "condition" : {
                   "type" : "IsTrue",
                   "operand" : {
-                     "name" : "HasHigerLevelEducation",
+                     "name" : "HasLowerLevelEducation",
                      "type" : "ExpressionRef"
                   }
                },
                "then" : {
-                  "type" : "And",
-                  "operand" : [ {
-                     "type" : "GreaterOrEqual",
-                     "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "21",
-                        "type" : "Literal"
-                     } ]
-                  }, {
-                     "type" : "LessOrEqual",
-                     "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "26",
-                        "type" : "Literal"
-                     } ]
-                  } ]
-               },
-               "else" : {
                   "type" : "And",
                   "operand" : [ {
                      "type" : "GreaterOrEqual",
@@ -2717,6 +2698,36 @@
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
                         "value" : "24",
+                        "type" : "Literal"
+                     } ]
+                  } ]
+               },
+               "else" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "21",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "26",
                         "type" : "Literal"
                      } ]
                   } ]
@@ -2921,7 +2932,7 @@
                "condition" : {
                   "type" : "IsTrue",
                   "operand" : {
-                     "name" : "HasHigerLevelEducation",
+                     "name" : "HasLowerLevelEducation",
                      "type" : "ExpressionRef"
                   }
                },
@@ -2950,7 +2961,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "20",
+                        "value" : "19",
                         "type" : "Literal"
                      } ]
                   } ]
@@ -2980,7 +2991,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "19",
+                        "value" : "20",
                         "type" : "Literal"
                      } ]
                   } ]

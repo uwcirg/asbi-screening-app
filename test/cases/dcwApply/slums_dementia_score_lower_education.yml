@@ -1,5 +1,5 @@
 ---
-name: DCW SLUMS dementia score (lower education)
+name: DCW SLUMS dementia score (lower education) - with mood condition
 externalData:
 - slums_reusable_resources
 data:
@@ -19,7 +19,14 @@ data:
   code:
     coding:
       -
+        code: F32.A
+-
+  resourceType: Condition
+  code:
+    coding:
+      -
         code: Z55.5
 results:
   HasNormalSLUMSScore: false
   HasSLUMSDementiaScore: true
+  #PresentQnr_CIRG_C_IDAS: $should exist
