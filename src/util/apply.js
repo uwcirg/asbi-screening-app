@@ -174,21 +174,32 @@ export const applyDefinition = async (client, patientId) => {
 
   const projectID = getEnv("VUE_APP_PROJECT_ID");
 
-  if (!projectID) throw new Error("A valid project ID must be supplied");
+  if (!projectID) throw new Error("A valid project ID must be supplied for a plan definition.");
 
   // get questionnaire logic library
   const QuestionnaireLogicLibrary = await getQuestionnaireLogicLibrary(
     projectID
-  );
+  ).catch((e) => {
+    console.log("Project ELM logic library error ", e);
+    throw new Error(
+      "Error retrieving project ELM logic library. See console for detail"
+    );
+  });
   console.log("Questionnaire lib ", QuestionnaireLogicLibrary);
 
   // get plan definition json
-  const planDef = await getPlanDefinition(projectID);
+  const planDef = await getPlanDefinition(projectID).catch(e => {
+    console.log("Plan definition error ", e);
+    throw new Error("Plan definition error.  See console for detail.");
+  });
 
   // fetch default FHIR resources, will retrieve cached results if possible
   const results = await fetchStaticFhirResources(client, patientId).catch(
     (e) => {
       console.log("Error retrieving FHIR resources ", e);
+      throw new Error(
+        "Error retrieving Fhir resources. See console for detail."
+      );
     }
   );
   console.log("FHIR resources ", results);
@@ -200,7 +211,12 @@ export const applyDefinition = async (client, patientId) => {
   const questionnaireResponses = await getQuestionnaireResponsesForPatient(
     client,
     patientId
-  );
+  ).catch((e) => {
+    console.log("Error retrieving questionnaire response ", e);
+    throw new Error(
+      "Error retrieving questionnaire response.  See console for detail."
+    );
+  });
 
   console.log("questionnaire responses ", questionnaireResponses);
 
