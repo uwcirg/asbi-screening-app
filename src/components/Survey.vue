@@ -32,6 +32,20 @@
         ><div v-html="dialogMessage" class="dialog-body-container"></div
       ></v-card>
     </v-dialog>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="snackbarTimeout"
+      color="deep-orange accent-4"
+      vertical="vertical"
+      multi-line
+    >
+      <h4>{{ notificationText }}</h4>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -40,9 +54,8 @@ import converter from "questionnaire-to-survey";
 import { getInstrumentCSS } from "../util/css-selector.js";
 import {
   getScreeningInstrument,
-  //removeSessionInstrumentList,
   setSessionInstrumentList,
-  setSessionSkippedQuestionnaireList,
+  setSessionAdministeredInstrumentList,
 } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
@@ -118,6 +131,9 @@ export default {
       allowSkip:
         String(getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE")) === "true",
       reloadInProgress: false,
+      snackbar: false,
+      snackbarTimeout: 5000,
+      notificationText: "",
     };
   },
   methods: {
@@ -199,7 +215,12 @@ export default {
       }, 350);
     },
     initializeInstrument() {
-      return getScreeningInstrument(this.client, this.patientId)
+      return getScreeningInstrument(this.client, this.patientId, (o) => {
+        if (o.notificationText) {
+          this.notificationText = o.notificationText;
+          this.snackbar = true;
+        }
+      })
         .then((data) => {
           // Load the Questionniare, CQL ELM JSON, and value set cache which represents the alcohol screening instrument
           const [instrumentList, questionnaire, elmJson, valueSetJson] = data;
@@ -516,18 +537,17 @@ export default {
     },
     handleSkippingQuestionnaire() {
       this.reloadInProgress = true;
-      setSessionSkippedQuestionnaireList(this.sessionKey, [
-        this.currentQuestionnaireId,
-      ]);
 
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
 
       // reload page for re-processing of questionnaires to administer
       setTimeout(() => location.reload(), 500);
-     
     },
     handleAdvanceQuestionnaireList() {
+      setSessionAdministeredInstrumentList(this.sessionKey, [
+        this.currentQuestionnaireId,
+      ]);
       setSessionInstrumentList(
         this.sessionKey,
         removeArrayItem(

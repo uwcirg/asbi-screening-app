@@ -1,10 +1,6 @@
 import valueSetJson from "../cql/valueset-db.json";
 import { applyDefinition } from "./apply";
-import {
-  getCorrectedDateByTimeZone,
-  getEnv,
-  getSkippedQuestionnaireListStorageKey,
-} from "./util.js";
+import { getCorrectedDateByTimeZone, getEnv, getErrorText } from "./util.js";
 
 export async function getPatientCarePlan(client, patientId) {
   if (!client || !patientId) return null;
@@ -170,18 +166,13 @@ export function getInstrumentListFromCarePlan(
   return instrumentList;
 }
 
-export async function getInstrumentList(client, patientId) {
+export async function getInstrumentList(client, patientId, carePlan) {
   // if no patient id provided, get the questionnaire(s) fron the environment variable
   if (!patientId) return getEnvInstrumentList();
 
   // client session key
   const key = client.getState().key;
-  // get questionnaire(s) from care plan
-  // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
-  let carePlan = await applyDefinition(client, patientId).catch((e) => {
-    console.log("Error loading care plan ", e);
-    carePlan = null;
-  });
+
   // if we don't find a specified questionnaire from a patient's careplan,
   // we look to see if it is specifed in the sessionStorage or environment variable
   if (!carePlan) {
@@ -191,6 +182,7 @@ export async function getInstrumentList(client, patientId) {
     return getEnvInstrumentList();
   }
   // get instruments from care plan if possible
+  // NOTE: this is looking to the care plan as the source of truth about what questionnaire(s) are required for the patient
   let instrumentList = carePlan
     ? getInstrumentListFromCarePlan(
         carePlan,
@@ -198,11 +190,11 @@ export async function getInstrumentList(client, patientId) {
       )
     : [];
 
-  const skippedQList = getSessionSkippedQuestionnaireList(key);
-  if (skippedQList) {
+  const administeredQList = getSessionAdministeredInstrumentList(key);
+  if (administeredQList) {
     let ListToAdminister = [];
     instrumentList.forEach((q) => {
-      if (skippedQList.indexOf(q) === -1) ListToAdminister.push(q);
+      if (administeredQList.indexOf(q) === -1) ListToAdminister.push(q);
     });
     return ListToAdminister;
   }
@@ -210,20 +202,24 @@ export async function getInstrumentList(client, patientId) {
   return instrumentList;
 }
 
-export function setSessionSkippedQuestionnaireList(key, list) {
-  let skippedList = [];
-  const storageKey = getSkippedQuestionnaireListStorageKey(key);
-  const storedItem = sessionStorage.getItem(storageKey);
-  if (storedItem) {
-    skippedList = JSON.parse(storedItem);
-    skippedList = [...skippedList, ...list];
-  } else skippedList = list;
-  sessionStorage.setItem(storageKey, JSON.stringify(skippedList));
+export function getAdministeredQuestionnaireListStorageKey(sessionKey) {
+  return `administered_questionnaires_${sessionKey}`;
 }
 
-export function getSessionSkippedQuestionnaireList(key) {
+export function setSessionAdministeredInstrumentList(key, list) {
+  let administeredList = [];
+  const storageKey = getAdministeredQuestionnaireListStorageKey(key);
+  const storedItem = sessionStorage.getItem(storageKey);
+  if (storedItem) {
+    administeredList = JSON.parse(storedItem);
+    administeredList = [...administeredList, ...list];
+  } else administeredList = list;
+  sessionStorage.setItem(storageKey, JSON.stringify(administeredList));
+}
+
+export function getSessionAdministeredInstrumentList(key) {
   const storedItem = sessionStorage.getItem(
-    getSkippedQuestionnaireListStorageKey(key)
+    getAdministeredQuestionnaireListStorageKey(key)
   );
   if (storedItem) return JSON.parse(storedItem);
   return null;
@@ -242,13 +238,26 @@ export function removeSessionInstrumentList(key) {
 }
 
 //dynamically load questionnaire and cql JSON
-export async function getScreeningInstrument(client, patientId) {
+export async function getScreeningInstrument(client, patientId, callback) {
   if (!client) throw new Error("invalid FHIR client provided");
-  const instrumentList = await getInstrumentList(client, patientId).catch(
-    (e) => {
-      throw new Error(e);
-    }
-  );
+  callback = callback || function() {};
+
+  // perform apply to plan definition
+  let carePlan = await applyDefinition(client, patientId).catch((e) => {
+    // need to let the callee know about error when performing apply here
+    callback({
+      notificationText: `Error retrieving careplan from plan definition: ${getErrorText(e)}`
+    });
+    carePlan = null;
+  });
+
+  const instrumentList = await getInstrumentList(
+    client,
+    patientId,
+    carePlan
+  ).catch((e) => {
+    throw new Error(e);
+  });
   if (!instrumentList || !instrumentList.length) {
     // TODO need to figure out if no questionnaire to administer is due to whether the user has completed all the survey(s)
     return [];
