@@ -240,13 +240,15 @@ export function removeSessionInstrumentList(key) {
 //dynamically load questionnaire and cql JSON
 export async function getScreeningInstrument(client, patientId, callback) {
   if (!client) throw new Error("invalid FHIR client provided");
-  callback = callback || function() {};
+  callback = callback || function () {};
 
   // perform apply to plan definition
   let carePlan = await applyDefinition(client, patientId).catch((e) => {
     // need to let the callee know about error when performing apply here
     callback({
-      notificationText: `Error retrieving careplan from plan definition: ${getErrorText(e)}`
+      notificationText: `Error occurred appying plan definition: ${getErrorText(
+        e
+      )}`,
     });
     carePlan = null;
   });

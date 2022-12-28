@@ -5,11 +5,16 @@ import {
   getPatientCarePlan,
   getQuestionnaireResponsesForPatient,
 } from "./screening-selector";
-import { getEnv } from "./util";
+import { getEnv, getErrorText } from "./util";
+
+function getAuthStateKey(client) {
+  if (!client) return null;
+  return client.getState().key;
+}
 
 async function fetchStaticFhirResources(client, patientId) {
   // client auth session key
-  const key = client.getState().key;
+  const key = getAuthStateKey(client);
   const storageKey = `fhir_resources_${key}`;
   // get resources from storage cache if possible
   if (sessionStorage.getItem(storageKey))
@@ -26,16 +31,21 @@ async function fetchStaticFhirResources(client, patientId) {
       pageLimit: 0,
     });
   });
-  return Promise.all(requests).then((results) => {
-    if (results) {
-      sessionStorage.setItem(storageKey, JSON.stringify(results));
-    }
-    return results;
-  });
+  return Promise.all(requests)
+    .then((results) => {
+      if (results) {
+        sessionStorage.setItem(storageKey, JSON.stringify(results));
+      }
+      return results;
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
 }
 
 async function getQuestionnaireLogicLibrary(projectID) {
   const libraryName = `CirgLibraryQuestionnaireLogic_${projectID}`;
+  // get it from session storage if there
   if (sessionStorage.getItem(libraryName))
     return JSON.parse(sessionStorage.getItem(libraryName));
   //get corresponding CQL logic library
@@ -91,7 +101,7 @@ function getResultInBundle(results) {
         } else bundle.push({ resource: o });
       });
     } else {
-      bundle.push({ resource: result });
+      if (result) bundle.push({ resource: result });
     }
   });
   return bundle;
@@ -101,23 +111,42 @@ function getResultInBundle(results) {
 async function getEvaluationsFromPlanActions(actions, evaluateExpressionFunc) {
   const evaluations = [];
   if (!actions || !Array.isArray(actions)) return evaluations;
+  if (typeof evaluateExpressionFunc !== "function")
+    throw new Error(
+      "An function must be provided to evaluate CQL expression(s)."
+    );
   actions.forEach((action) => {
-    if (Array.isArray(action.condition)) {
-      action.condition.forEach((item) => {
-        if (
-          item.kind === "applicability" &&
-          item.expression &&
-          item.expression.language === "text/cql"
-        ) {
-          evaluations.push(evaluateExpressionFunc(item.expression.expression));
+    if (!Array.isArray(action.condition)) return;
+    action.condition.forEach((item) => {
+      if (
+        item.kind === "applicability" &&
+        item.expression &&
+        item.expression.language === "text/cql"
+      ) {
+        let evalResult = null;
+        try {
+          evalResult = evaluateExpressionFunc(item.expression.expression).catch(
+            (e) => {
+              throw Error(getErrorText(e));
+            }
+          );
+          console.log("eval result ", evalResult);
+        } catch (e) {
+          throw new Error(
+            `Error evaluating ${item.expression.expression}: ${e}`
+          );
         }
-      });
-    }
+        if (evalResult) {
+          evaluations.push(evalResult);
+        }
+      }
+    });
   });
   return Promise.all(evaluations);
 }
 
 // generate activities from evaluated CQL results
+// e.g. { id: 'PHQ9', schedule: {repeat: {frequency: 1, period: 1, periodUnit: "d"}}
 function getActivitiesFromEvalResults(evalResults) {
   let activities = [];
   if (!evalResults) return activities;
@@ -174,7 +203,10 @@ export const applyDefinition = async (client, patientId) => {
 
   const projectID = getEnv("VUE_APP_PROJECT_ID");
 
-  if (!projectID) throw new Error("A valid project ID must be supplied for a plan definition.");
+  if (!projectID)
+    throw new Error(
+      "A valid project ID must be supplied for a plan definition."
+    );
 
   // get questionnaire logic library
   const QuestionnaireLogicLibrary = await getQuestionnaireLogicLibrary(
@@ -185,10 +217,9 @@ export const applyDefinition = async (client, patientId) => {
       "Error retrieving project ELM logic library. See console for detail"
     );
   });
-  console.log("Questionnaire lib ", QuestionnaireLogicLibrary);
 
   // get plan definition json
-  const planDef = await getPlanDefinition(projectID).catch(e => {
+  const planDef = await getPlanDefinition(projectID).catch((e) => {
     console.log("Plan definition error ", e);
     throw new Error("Plan definition error.  See console for detail.");
   });
@@ -239,7 +270,10 @@ export const applyDefinition = async (client, patientId) => {
   let evalResults = await getEvaluationsFromPlanActions(
     planDef.action,
     evaluateExpression
-  );
+  ).catch((e) => {
+    console.log("Error evaluating CQL expression ", e);
+    throw Error("Error evaluating CQL expression. See console for detail");
+  });
   console.log("CQL evaluation results ", evalResults);
 
   // filter out null results
