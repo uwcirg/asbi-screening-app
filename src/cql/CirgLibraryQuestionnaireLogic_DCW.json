@@ -2189,6 +2189,12 @@
                               }
                            } ]
                         }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
                      } ]
                   }
                },
@@ -2206,6 +2212,13 @@
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
                      }
                   } ]
                }
@@ -2237,6 +2250,13 @@
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
                      }
                   } ]
                },
@@ -2282,6 +2302,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -2315,6 +2341,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -2359,6 +2392,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -2401,6 +2440,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -2445,6 +2491,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -2478,6 +2530,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -2522,6 +2581,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -2564,6 +2629,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -2608,6 +2680,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -2641,6 +2719,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -2685,6 +2770,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -2980,6 +3071,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -3024,6 +3122,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -3075,6 +3179,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -3119,6 +3230,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }
@@ -3244,6 +3361,13 @@
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
                   } ]
                },
                "else" : {
@@ -3288,6 +3412,12 @@
                                  } ]
                               }
                            } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
                         }
                      } ]
                   }

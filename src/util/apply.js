@@ -159,7 +159,7 @@ function getActivitiesFromEvalResults(evalResults) {
     activities.push({
       detail: {
         instantiatesCanonical: ["Questionnaire/" + result.id],
-        status: "scheduled",
+        status: result.status ? result.status : "scheduled",
         scheduledTiming: result.schedule ? result.schedule : defaultSchedule,
       },
     });

@@ -176,7 +176,8 @@ define PresentQnr_CIRG_DCW_CarePartner:
   else
     {
       id: 'CIRG-DCW-CarePartner',
-      schedule: Scheduled_Timing
+      schedule: Scheduled_Timing,
+      status: 'scheduled'
     }
 
 
@@ -184,52 +185,61 @@ define PresentQnr_CIRG_DCW_CarePartner:
 define PresentQnr_CIRG_MINICOG:
   if dcw_cog_level_1 is true then {
     id: 'CIRG-MINICOG',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_ECOG12:
   if dcw_cog_level_1 is true then {
     id: 'CIRG-ECOG12',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   }
   else null
 
 define PresentQnr_CIRG_CP_ECOG:
   if dcw_cog_level_1 is true and dcw_care_partner_present is true then {
     id: 'CIRG-CP-ECOG',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_SLUMS:
   if dcw_cog_level_2 is true then {
     id: 'CIRG-SLUMS',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_ADL_IADL:
   if dcw_cog_level_2 is true and dcw_care_partner_present is true then {
     id: 'CIRG-ADL-IADL',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_BEHAV5:
   if dcw_mood_level_1 is true then {
     id: 'CIRG-BEHAV5',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_GAD7:
- // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
+  // dcw_mood_level_2 is true and
+  // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
   if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
     id: 'CIRG-GAD7',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_GDS:
   // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
   if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
     id: 'CIRG-GDS',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define PresentQnr_CIRG_C_IDAS:
@@ -239,7 +249,8 @@ define PresentQnr_CIRG_C_IDAS:
      HasSLUMSDementiaScore is true
   then {
     id: 'CIRG-C-IDAS',
-    schedule: Scheduled_Timing
+    schedule: Scheduled_Timing,
+    status: 'scheduled'
   } else null
 
 define CarePartner_Questionnaire:
