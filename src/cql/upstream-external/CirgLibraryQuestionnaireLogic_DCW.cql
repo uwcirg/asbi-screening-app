@@ -22,7 +22,7 @@ define function getAnswerValueByCode(questionnaire FHIR.Questionnaire, code Stri
   (singleton from ((questionnaire.item.answerOption) Q where Q.value.code = code)) a
   let 
     extensionItem: a.extension
-  return if extensionItem is not null then getAnswerOptionExtensionValue(extensionItem) else (0 as Integer)
+    return if extensionItem is not null then getAnswerOptionExtensionValue(extensionItem) else (0 as Integer)
 
 /*
  * return the numeric value as Integer for an questionnaire response item
@@ -89,18 +89,18 @@ define Scheduled_Timing: Tuple {
 }
 
 define dcw_care_partner_present:
-// TODO check Care Partner present (via CP gateway question, or field in FHIR?)
-  true
+  // check Care Partner present (via CP gateway question)
+  IsCarePartnerPresent is true
 
 define dcw_cog_level_1:
-// if (no dementia condition)
+  // if (no dementia condition)
   not HasDementia
 
 define dcw_cog_level_2:
-// if (dementia condition)
-// and/or 
-// CIRG-MINICOG score is fail
-// a failed score is 0,1,2, or 3
+  // if (dementia condition)
+  // and/or 
+  // CIRG-MINICOG score is fail
+  // a failed score is 0,1,2, or 3
   if HasDementia is true then true
   else if First(MINICOG_Score) <= 3 then true
   else false
@@ -109,13 +109,13 @@ define dcw_mood_level_1:
   dcw_care_partner_present
 
 define dcw_mood_level_2:
-// if (
-//   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
-//   and/or 
-//   anxiety condition ("F41.1 - Generalized Anxiety Disorder" - not present in our 3 test patients...)
-//   and/or 
-//   CIRG-BEHAV5 score is fail 
-// )
+  // if (
+  //   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
+  //   and/or 
+  //   anxiety condition ("F41.1 - Generalized Anxiety Disorder" - not present in our 3 test patients...)
+  //   and/or 
+  //   CIRG-BEHAV5 score is fail 
+  // )
   if HasMoodConditions is true then true 
   else if First(BEHAV5_Score) >= 1 then true
   else false
@@ -156,11 +156,11 @@ define HasLowerLevelEducation:
 define HasHigerLevelEducation:
   not HasLowerLevelEducation
 
-//   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
-//   and/or 
-//   anxiety condition ("F41.1 - Generalized Anxiety Disorder" - not present in our 3 test patients...)
+define MoodConditions:
+  //   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
+  //   and/or 
+  //   anxiety condition ("F41.1 - Generalized Anxiety Disorder" - not present in our 3 test patients...)
 
-define MoodConditions: 
   ["Condition"] C where (
     C.code.coding[0].code.value = 'F32.A' or
     C.code.coding[0].code.value = 'F33.1' or
@@ -169,6 +169,15 @@ define MoodConditions:
 
 define HasMoodConditions:
   Length(MoodConditions) > 0
+
+define PresentQnr_CIRG_DCW_CarePartner:
+  if // check if the questionnaire has been administered today
+    Length(CarePartnerResponseToday) >= 1 then null
+  else
+    {
+      id: 'CIRG-DCW-CarePartner',
+      schedule: Scheduled_Timing
+    }
 
 
 // Naming pattern: "CIRG_MINICOG" is Questionnaire.id
@@ -232,6 +241,23 @@ define PresentQnr_CIRG_C_IDAS:
     id: 'CIRG-C-IDAS',
     schedule: Scheduled_Timing
   } else null
+
+define CarePartner_Questionnaire:
+  getQuestionnaire('CIRG-DCW-CarePartner')
+
+define CarePartner_Response:
+  MatchedReponsesByQuestionnaire([QuestionnaireResponse], CarePartner_Questionnaire)
+
+define CarePartnerResponseToday:
+  (CarePartner_Response) QR 
+  where date from QR.authored.value >= Today()
+
+define CarePartnerPresentResponse:
+  (CarePartnerResponseToday) QR
+    return First(getValueByResponseItem(CarePartner_Questionnaire, QR.item, 'CIRG-DCW-CarePartner-0'))
+    
+define IsCarePartnerPresent:
+  First(CarePartnerPresentResponse) = 1
 
 define BEHAV5_Questionnaire:
   getQuestionnaire('BEHAV5')

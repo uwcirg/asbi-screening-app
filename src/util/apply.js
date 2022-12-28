@@ -5,7 +5,7 @@ import {
   getPatientCarePlan,
   getQuestionnaireResponsesForPatient,
 } from "./screening-selector";
-import { getEnv, getErrorText } from "./util";
+import { getEnv } from "./util";
 
 function getAuthStateKey(client) {
   if (!client) return null;
@@ -65,13 +65,14 @@ async function getQuestionnaireLogicLibrary(projectID) {
   return QuestionnaireLogicLibraryJson;
 }
 
-async function getPlanDefinition(projectID) {
-  const definitionName = `2_PlanDefinition_${projectID}`;
+async function getPlanDefinition(client, projectID) {
+  const definitionName = `CIRG-PlanDefinition-${projectID}`;
   if (sessionStorage.getItem(definitionName))
     return JSON.parse(sessionStorage.getItem(definitionName));
   //get plan definition json
-  const planDef = await import(`../fhir/${definitionName}.json`)
-    .then((module) => module.default)
+  // id = CIRG-PlanDefinition-{projectId}
+  const planDef = await client
+    .request(`/PlanDefinition/${definitionName}`)
     .catch((e) => {
       throw new Error(e);
     });
@@ -125,12 +126,7 @@ async function getEvaluationsFromPlanActions(actions, evaluateExpressionFunc) {
       ) {
         let evalResult = null;
         try {
-          evalResult = evaluateExpressionFunc(item.expression.expression).catch(
-            (e) => {
-              throw Error(getErrorText(e));
-            }
-          );
-          console.log("eval result ", evalResult);
+          evalResult = evaluateExpressionFunc(item.expression.expression);
         } catch (e) {
           throw new Error(
             `Error evaluating ${item.expression.expression}: ${e}`
@@ -142,7 +138,9 @@ async function getEvaluationsFromPlanActions(actions, evaluateExpressionFunc) {
       }
     });
   });
-  return Promise.all(evaluations);
+  return Promise.all(evaluations).catch((e) => {
+    throw new Error(e);
+  });
 }
 
 // generate activities from evaluated CQL results
@@ -219,10 +217,12 @@ export const applyDefinition = async (client, patientId) => {
   });
 
   // get plan definition json
-  const planDef = await getPlanDefinition(projectID).catch((e) => {
+  const planDef = await getPlanDefinition(client, projectID).catch((e) => {
     console.log("Plan definition error ", e);
     throw new Error("Plan definition error.  See console for detail.");
   });
+
+  if (!planDef) throw new Error("Unable to get plan definition");
 
   // fetch default FHIR resources, will retrieve cached results if possible
   const results = await fetchStaticFhirResources(client, patientId).catch(
@@ -261,11 +261,17 @@ export const applyDefinition = async (client, patientId) => {
 
   // Send the cqlWorker an initial message containing the ELM JSON representation of the CQL expressions
   setupExecution(QuestionnaireLogicLibrary, valueSetJson, {}); //empty CQL parameters for now
-  sendPatientBundle(patientBundle);
+  try {
+    sendPatientBundle(patientBundle);
+  } catch (e) {
+    throw new Error(e);
+  }
 
   // debug
-  // const minicogscore = await evaluateExpression("MINICOG_Clock_Draw_Score");
-  // console.log("minicog score", minicogscore);
+  // const debugResult = await evaluateExpression(
+  //   "PresentQnr_CIRG_DCW_CarePartner"
+  // );
+  // console.log("debug result - carepartner prsent", debugResult);
 
   let evalResults = await getEvaluationsFromPlanActions(
     planDef.action,

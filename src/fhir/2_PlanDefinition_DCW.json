@@ -8,6 +8,20 @@
   "copyright": "Copyright 2022, University of Washington.",
   "action": [
     {
+      "title": "Administer CIRG-DCW-CarePartner questionnaire",
+      "description": "Adapted from https://github.com/ccsm-cds-tools/ccsm-cds-with-tests/blob/main/fsh-tank/fsh-generated/resources/PlanDefinition-CervicalCancerScreening.json#L115",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/cql",
+            "expression": "PresentQnr_CIRG_DCW_CarePartner",
+            "reference": "cql/CirgLibraryQuestionnaireLogic_DCW|1.0"
+          }
+        }
+      ]
+    },
+    {
       "title": "Administer CIRG-MINICOG questionnaire",
       "description": "Adapted from https://github.com/ccsm-cds-tools/ccsm-cds-with-tests/blob/main/fsh-tank/fsh-generated/resources/PlanDefinition-CervicalCancerScreening.json#L115",
       "condition": [

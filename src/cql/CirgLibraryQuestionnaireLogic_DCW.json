@@ -851,13 +851,130 @@
                } ]
             }
          }, {
+            "name" : "CarePartner_Questionnaire",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "getQuestionnaire",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                  "value" : "CIRG-DCW-CarePartner",
+                  "type" : "Literal"
+               } ]
+            }
+         }, {
+            "name" : "CarePartner_Response",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "name" : "MatchedReponsesByQuestionnaire",
+               "type" : "FunctionRef",
+               "operand" : [ {
+                  "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                  "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                  "type" : "Retrieve"
+               }, {
+                  "name" : "CarePartner_Questionnaire",
+                  "type" : "ExpressionRef"
+               } ]
+            }
+         }, {
+            "name" : "CarePartnerResponseToday",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "CarePartner_Response",
+                     "type" : "ExpressionRef"
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "CarePartnerPresentResponse",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "CarePartnerResponseToday",
+                     "type" : "ExpressionRef"
+                  }
+               } ],
+               "relationship" : [ ],
+               "return" : {
+                  "expression" : {
+                     "type" : "First",
+                     "source" : {
+                        "name" : "getValueByResponseItem",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "name" : "CarePartner_Questionnaire",
+                           "type" : "ExpressionRef"
+                        }, {
+                           "path" : "item",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }, {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-DCW-CarePartner-0",
+                           "type" : "Literal"
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "IsCarePartnerPresent",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Equal",
+               "operand" : [ {
+                  "type" : "First",
+                  "source" : {
+                     "name" : "CarePartnerPresentResponse",
+                     "type" : "ExpressionRef"
+                  }
+               }, {
+                  "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                  "value" : "1",
+                  "type" : "Literal"
+               } ]
+            }
+         }, {
             "name" : "dcw_care_partner_present",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "valueType" : "{urn:hl7-org:elm-types:r1}Boolean",
-               "value" : "true",
-               "type" : "Literal"
+               "type" : "IsTrue",
+               "operand" : {
+                  "name" : "IsCarePartnerPresent",
+                  "type" : "ExpressionRef"
+               }
             }
          }, {
             "name" : "DementiaConditions",
@@ -2007,6 +2124,90 @@
                "operand" : {
                   "name" : "HasLowerLevelEducation",
                   "type" : "ExpressionRef"
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_DCW_CarePartner",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "CarePartnerResponseToday",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "id",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "schedule",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "Tuple",
+                  "element" : [ {
+                     "name" : "id",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "CIRG-DCW-CarePartner",
+                        "type" : "Literal"
+                     }
+                  }, {
+                     "name" : "schedule",
+                     "value" : {
+                        "name" : "Scheduled_Timing",
+                        "type" : "ExpressionRef"
+                     }
+                  } ]
                }
             }
          }, {
