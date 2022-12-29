@@ -2154,13 +2154,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -2201,14 +2201,14 @@
                "else" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-DCW-CarePartner",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2239,14 +2239,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-MINICOG",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2268,13 +2268,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -2329,14 +2329,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-ECOG12",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2358,13 +2358,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -2428,14 +2428,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-CP-ECOG",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2457,13 +2457,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -2518,14 +2518,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-SLUMS",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2547,13 +2547,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -2617,14 +2617,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-ADL-IADL",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2646,13 +2646,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -2707,14 +2707,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-BEHAV5",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -2736,13 +2736,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -3059,14 +3059,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-GAD7",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -3088,13 +3088,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -3167,14 +3167,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-GDS",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -3196,13 +3196,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {
@@ -3349,14 +3349,14 @@
                "then" : {
                   "type" : "Tuple",
                   "element" : [ {
-                     "name" : "id",
+                     "name" : "questionnaireId",
                      "value" : {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
                         "value" : "CIRG-C-IDAS",
                         "type" : "Literal"
                      }
                   }, {
-                     "name" : "schedule",
+                     "name" : "scheduledTiming",
                      "value" : {
                         "name" : "Scheduled_Timing",
                         "type" : "ExpressionRef"
@@ -3378,13 +3378,13 @@
                   "asTypeSpecifier" : {
                      "type" : "TupleTypeSpecifier",
                      "element" : [ {
-                        "name" : "id",
+                        "name" : "questionnaireId",
                         "elementType" : {
                            "name" : "{urn:hl7-org:elm-types:r1}String",
                            "type" : "NamedTypeSpecifier"
                         }
                      }, {
-                        "name" : "schedule",
+                        "name" : "scheduledTiming",
                         "elementType" : {
                            "type" : "TupleTypeSpecifier",
                            "element" : [ {

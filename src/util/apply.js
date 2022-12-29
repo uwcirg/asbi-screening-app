@@ -156,11 +156,14 @@ function getActivitiesFromEvalResults(evalResults) {
     },
   };
   evalResults.forEach((result) => {
+    //if (!result) return true;
     activities.push({
       detail: {
-        instantiatesCanonical: ["Questionnaire/" + result.id],
+        instantiatesCanonical: ["Questionnaire/" + result.questionnaireId],
         status: result.status ? result.status : "scheduled",
-        scheduledTiming: result.schedule ? result.schedule : defaultSchedule,
+        scheduledTiming: result.scheduledTiming
+          ? result.scheduledTiming
+          : defaultSchedule,
       },
     });
   });
@@ -283,7 +286,8 @@ export const applyDefinition = async (client, patientId) => {
   console.log("CQL evaluation results ", evalResults);
 
   // filter out null results
-  evalResults = evalResults.filter((result) => result && result.id);
+  evalResults = evalResults.filter((result) => result);
+  console.log("evaluated results ", evalResults);
 
   // initialize carePlan
   let carePlan;
@@ -298,7 +302,9 @@ export const applyDefinition = async (client, patientId) => {
     reference: "Patient/" + patientId,
   };
 
+  // create activities from evaluated results  
   const activities = getActivitiesFromEvalResults(evalResults);
+  console.log("activities ", activities);
   if (activities.length) {
     carePlan.activity = activities;
   }
