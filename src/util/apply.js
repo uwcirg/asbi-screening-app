@@ -271,10 +271,8 @@ export const applyDefinition = async (client, patientId) => {
   }
 
   // debug
-  // const debugResult = await evaluateExpression(
-  //   "PresentQnr_CIRG_DCW_CarePartner"
-  // );
-  // console.log("debug result - carepartner prsent", debugResult);
+  const debugResult = await evaluateExpression("CIRG_GDS_Responses_Today");
+  console.log("debug result - gds today ", debugResult);
 
   let evalResults = await getEvaluationsFromPlanActions(
     planDef.action,
@@ -305,9 +303,7 @@ export const applyDefinition = async (client, patientId) => {
   // create activities from evaluated results  
   const activities = getActivitiesFromEvalResults(evalResults);
   console.log("activities ", activities);
-  if (activities.length) {
-    carePlan.activity = activities;
-  }
+  carePlan.activity = activities;
 
   console.log("generated carePlan: ", carePlan);
   const requestParams = {
@@ -316,7 +312,14 @@ export const applyDefinition = async (client, patientId) => {
     },
   };
 
-  // save carePlan to FHIR server
+  // if (hasPatientCarePlan) {
+  //   carePlan.replace = {
+  //     reference: `CarePlan/${carePlan.id}`
+  //   };
+  // }
+  // client.create(carePlan, requestParams);
+
+  // // save carePlan to FHIR server
   if (hasPatientCarePlan) client.update(carePlan, requestParams);
   else client.create(carePlan, requestParams);
 

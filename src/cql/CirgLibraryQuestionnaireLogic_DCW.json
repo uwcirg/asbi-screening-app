@@ -880,7 +880,7 @@
                } ]
             }
          }, {
-            "name" : "CarePartnerResponseToday",
+            "name" : "CarePartner_Response_Today",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -912,7 +912,7 @@
                }
             }
          }, {
-            "name" : "CarePartnerPresentResponse",
+            "name" : "CarePartner_Present_Response",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
@@ -920,7 +920,7 @@
                "source" : [ {
                   "alias" : "QR",
                   "expression" : {
-                     "name" : "CarePartnerResponseToday",
+                     "name" : "CarePartner_Response_Today",
                      "type" : "ExpressionRef"
                   }
                } ],
@@ -956,7 +956,7 @@
                "operand" : [ {
                   "type" : "First",
                   "source" : {
-                     "name" : "CarePartnerPresentResponse",
+                     "name" : "CarePartner_Present_Response",
                      "type" : "ExpressionRef"
                   }
                }, {
@@ -2127,658 +2127,67 @@
                }
             }
          }, {
-            "name" : "PresentQnr_CIRG_DCW_CarePartner",
+            "name" : "BEHAV5_Responses_Today",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "BEHAV5_Responses",
+                     "type" : "ExpressionRef"
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
                   "type" : "GreaterOrEqual",
                   "operand" : [ {
-                     "type" : "Length",
+                     "type" : "DateFrom",
                      "operand" : {
-                        "name" : "CarePartnerResponseToday",
-                        "type" : "ExpressionRef"
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
                      }
                   }, {
-                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                     "value" : "1",
-                     "type" : "Literal"
-                  } ]
-               },
-               "then" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
-               },
-               "else" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-DCW-CarePartner",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
+                     "type" : "Today"
                   } ]
                }
             }
          }, {
-            "name" : "PresentQnr_CIRG_MINICOG",
+            "name" : "MINICOG_Responses_Today",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_cog_level_1",
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MINICOG_Responses",
                      "type" : "ExpressionRef"
                   }
-               },
-               "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-MINICOG",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
-               }
-            }
-         }, {
-            "name" : "PresentQnr_CIRG_ECOG12",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_cog_level_1",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-ECOG12",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
-               }
-            }
-         }, {
-            "name" : "PresentQnr_CIRG_CP_ECOG",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "And",
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
                   "operand" : [ {
-                     "type" : "IsTrue",
+                     "type" : "DateFrom",
                      "operand" : {
-                        "name" : "dcw_cog_level_1",
-                        "type" : "ExpressionRef"
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
                      }
                   }, {
-                     "type" : "IsTrue",
-                     "operand" : {
-                        "name" : "dcw_care_partner_present",
-                        "type" : "ExpressionRef"
-                     }
+                     "type" : "Today"
                   } ]
-               },
-               "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-CP-ECOG",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
-               }
-            }
-         }, {
-            "name" : "PresentQnr_CIRG_SLUMS",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_cog_level_2",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-SLUMS",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
-               }
-            }
-         }, {
-            "name" : "PresentQnr_CIRG_ADL_IADL",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "And",
-                  "operand" : [ {
-                     "type" : "IsTrue",
-                     "operand" : {
-                        "name" : "dcw_cog_level_2",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "type" : "IsTrue",
-                     "operand" : {
-                        "name" : "dcw_care_partner_present",
-                        "type" : "ExpressionRef"
-                     }
-                  } ]
-               },
-               "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-ADL-IADL",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
-               }
-            }
-         }, {
-            "name" : "PresentQnr_CIRG_BEHAV5",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "dcw_mood_level_1",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-BEHAV5",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
-                  "type" : "As",
-                  "operand" : {
-                     "type" : "Null"
-                  },
-                  "asTypeSpecifier" : {
-                     "type" : "TupleTypeSpecifier",
-                     "element" : [ {
-                        "name" : "questionnaireId",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     }, {
-                        "name" : "scheduledTiming",
-                        "elementType" : {
-                           "type" : "TupleTypeSpecifier",
-                           "element" : [ {
-                              "name" : "repeat",
-                              "elementType" : {
-                                 "type" : "TupleTypeSpecifier",
-                                 "element" : [ {
-                                    "name" : "frequency",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "period",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 }, {
-                                    "name" : "periodUnit",
-                                    "elementType" : {
-                                       "name" : "{urn:hl7-org:elm-types:r1}String",
-                                       "type" : "NamedTypeSpecifier"
-                                    }
-                                 } ]
-                              }
-                           } ]
-                        }
-                     }, {
-                        "name" : "status",
-                        "elementType" : {
-                           "name" : "{urn:hl7-org:elm-types:r1}String",
-                           "type" : "NamedTypeSpecifier"
-                        }
-                     } ]
-                  }
                }
             }
          }, {
@@ -2809,6 +2218,38 @@
                   "name" : "SLUMS_Questionnaire",
                   "type" : "ExpressionRef"
                } ]
+            }
+         }, {
+            "name" : "SLUMS_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "SLUMS_Responses",
+                     "type" : "ExpressionRef"
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
             }
          }, {
             "name" : "SLUMS_Score",
@@ -2907,6 +2348,80 @@
                         }
                      }
                   }
+               }
+            }
+         }, {
+            "name" : "HasSLUMSDementiaScore",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "IsTrue",
+                  "operand" : {
+                     "name" : "HasLowerLevelEducation",
+                     "type" : "ExpressionRef"
+                  }
+               },
+               "then" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "1",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "19",
+                        "type" : "Literal"
+                     } ]
+                  } ]
+               },
+               "else" : {
+                  "type" : "And",
+                  "operand" : [ {
+                     "type" : "GreaterOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "1",
+                        "type" : "Literal"
+                     } ]
+                  }, {
+                     "type" : "LessOrEqual",
+                     "operand" : [ {
+                        "type" : "First",
+                        "source" : {
+                           "name" : "SLUMS_Score",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                        "value" : "20",
+                        "type" : "Literal"
+                     } ]
+                  } ]
                }
             }
          }, {
@@ -3026,61 +2541,296 @@
                }
             }
          }, {
-            "name" : "PresentQnr_CIRG_GAD7",
+            "name" : "CIRG_ECOG12_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MatchedReponsesByQuestionnaire",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                        "type" : "Retrieve"
+                     }, {
+                        "name" : "getQuestionnaire",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-ECOG12",
+                           "type" : "Literal"
+                        } ]
+                     } ]
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "CIRG_CP_ECOG_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MatchedReponsesByQuestionnaire",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                        "type" : "Retrieve"
+                     }, {
+                        "name" : "getQuestionnaire",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-CP-ECOG",
+                           "type" : "Literal"
+                        } ]
+                     } ]
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "CIRG_ADL_IADL_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MatchedReponsesByQuestionnaire",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                        "type" : "Retrieve"
+                     }, {
+                        "name" : "getQuestionnaire",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-ADL-IADL",
+                           "type" : "Literal"
+                        } ]
+                     } ]
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "CIRG_GAD7_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MatchedReponsesByQuestionnaire",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                        "type" : "Retrieve"
+                     }, {
+                        "name" : "getQuestionnaire",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-GAD7",
+                           "type" : "Literal"
+                        } ]
+                     } ]
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "CIRG_GDS_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MatchedReponsesByQuestionnaire",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                        "type" : "Retrieve"
+                     }, {
+                        "name" : "getQuestionnaire",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-GDS",
+                           "type" : "Literal"
+                        } ]
+                     } ]
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "CIRG_C_IDAS_Responses_Today",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "Query",
+               "source" : [ {
+                  "alias" : "QR",
+                  "expression" : {
+                     "name" : "MatchedReponsesByQuestionnaire",
+                     "type" : "FunctionRef",
+                     "operand" : [ {
+                        "dataType" : "{http://hl7.org/fhir}QuestionnaireResponse",
+                        "templateId" : "http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse",
+                        "type" : "Retrieve"
+                     }, {
+                        "name" : "getQuestionnaire",
+                        "type" : "FunctionRef",
+                        "operand" : [ {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-C-IDAS",
+                           "type" : "Literal"
+                        } ]
+                     } ]
+                  }
+               } ],
+               "relationship" : [ ],
+               "where" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "DateFrom",
+                     "operand" : {
+                        "path" : "value",
+                        "type" : "Property",
+                        "source" : {
+                           "path" : "authored",
+                           "scope" : "QR",
+                           "type" : "Property"
+                        }
+                     }
+                  }, {
+                     "type" : "Today"
+                  } ]
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_DCW_CarePartner",
             "context" : "Patient",
             "accessLevel" : "Public",
             "expression" : {
                "type" : "If",
                "condition" : {
-                  "type" : "And",
+                  "type" : "GreaterOrEqual",
                   "operand" : [ {
-                     "type" : "IsTrue",
+                     "type" : "Length",
                      "operand" : {
-                        "name" : "dcw_mood_level_2",
+                        "name" : "CarePartner_Response_Today",
                         "type" : "ExpressionRef"
                      }
                   }, {
-                     "type" : "Or",
-                     "operand" : [ {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "HasNormalSLUMSScore",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
-                           "type" : "ExpressionRef"
-                        }
-                     } ]
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
                   } ]
                },
                "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-GAD7",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
                   "type" : "As",
                   "operand" : {
                      "type" : "Null"
@@ -3130,6 +2880,1179 @@
                            "type" : "NamedTypeSpecifier"
                         }
                      } ]
+                  }
+               },
+               "else" : {
+                  "type" : "Tuple",
+                  "element" : [ {
+                     "name" : "questionnaireId",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "CIRG-DCW-CarePartner",
+                        "type" : "Literal"
+                     }
+                  }, {
+                     "name" : "scheduledTiming",
+                     "value" : {
+                        "name" : "Scheduled_Timing",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "name" : "status",
+                     "value" : {
+                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                        "value" : "scheduled",
+                        "type" : "Literal"
+                     }
+                  } ]
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_MINICOG",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "MINICOG_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_cog_level_1",
+                        "type" : "ExpressionRef"
+                     }
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-MINICOG",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_ECOG12",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "CIRG_ECOG12_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_cog_level_1",
+                        "type" : "ExpressionRef"
+                     }
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-ECOG12",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_CP_ECOG",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "CIRG_CP_ECOG_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_cog_level_1",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_care_partner_present",
+                           "type" : "ExpressionRef"
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-CP-ECOG",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_SLUMS",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "SLUMS_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_cog_level_2",
+                        "type" : "ExpressionRef"
+                     }
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-SLUMS",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_ADL_IADL",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "CIRG_ADL_IADL_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_cog_level_2",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_care_partner_present",
+                           "type" : "ExpressionRef"
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-ADL-IADL",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_BEHAV5",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "BEHAV5_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_mood_level_1",
+                        "type" : "ExpressionRef"
+                     }
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-BEHAV5",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
+               }
+            }
+         }, {
+            "name" : "PresentQnr_CIRG_GAD7",
+            "context" : "Patient",
+            "accessLevel" : "Public",
+            "expression" : {
+               "type" : "If",
+               "condition" : {
+                  "type" : "GreaterOrEqual",
+                  "operand" : [ {
+                     "type" : "Length",
+                     "operand" : {
+                        "name" : "CIRG_GAD7_Responses_Today",
+                        "type" : "ExpressionRef"
+                     }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
+                  } ]
+               },
+               "then" : {
+                  "type" : "As",
+                  "operand" : {
+                     "type" : "Null"
+                  },
+                  "asTypeSpecifier" : {
+                     "type" : "TupleTypeSpecifier",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "elementType" : {
+                           "type" : "TupleTypeSpecifier",
+                           "element" : [ {
+                              "name" : "repeat",
+                              "elementType" : {
+                                 "type" : "TupleTypeSpecifier",
+                                 "element" : [ {
+                                    "name" : "frequency",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "period",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 }, {
+                                    "name" : "periodUnit",
+                                    "elementType" : {
+                                       "name" : "{urn:hl7-org:elm-types:r1}String",
+                                       "type" : "NamedTypeSpecifier"
+                                    }
+                                 } ]
+                              }
+                           } ]
+                        }
+                     }, {
+                        "name" : "status",
+                        "elementType" : {
+                           "name" : "{urn:hl7-org:elm-types:r1}String",
+                           "type" : "NamedTypeSpecifier"
+                        }
+                     } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_mood_level_2",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "type" : "Or",
+                        "operand" : [ {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "HasNormalSLUMSScore",
+                              "type" : "ExpressionRef"
+                           }
+                        }, {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
+                              "type" : "ExpressionRef"
+                           }
+                        } ]
+                     } ]
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-GAD7",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
                   }
                }
             }
@@ -3140,55 +4063,20 @@
             "expression" : {
                "type" : "If",
                "condition" : {
-                  "type" : "And",
+                  "type" : "GreaterOrEqual",
                   "operand" : [ {
-                     "type" : "IsTrue",
+                     "type" : "Length",
                      "operand" : {
-                        "name" : "dcw_mood_level_2",
+                        "name" : "CIRG_GDS_Responses_Today",
                         "type" : "ExpressionRef"
                      }
                   }, {
-                     "type" : "Or",
-                     "operand" : [ {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "HasNormalSLUMSScore",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
-                           "type" : "ExpressionRef"
-                        }
-                     } ]
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
                   } ]
                },
                "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-GDS",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
                   "type" : "As",
                   "operand" : {
                      "type" : "Null"
@@ -3239,80 +4127,110 @@
                         }
                      } ]
                   }
-               }
-            }
-         }, {
-            "name" : "HasSLUMSDementiaScore",
-            "context" : "Patient",
-            "accessLevel" : "Public",
-            "expression" : {
-               "type" : "If",
-               "condition" : {
-                  "type" : "IsTrue",
-                  "operand" : {
-                     "name" : "HasLowerLevelEducation",
-                     "type" : "ExpressionRef"
-                  }
-               },
-               "then" : {
-                  "type" : "And",
-                  "operand" : [ {
-                     "type" : "GreaterOrEqual",
-                     "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "1",
-                        "type" : "Literal"
-                     } ]
-                  }, {
-                     "type" : "LessOrEqual",
-                     "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "19",
-                        "type" : "Literal"
-                     } ]
-                  } ]
                },
                "else" : {
-                  "type" : "And",
-                  "operand" : [ {
-                     "type" : "GreaterOrEqual",
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "And",
                      "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_mood_level_2",
                            "type" : "ExpressionRef"
                         }
                      }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "1",
-                        "type" : "Literal"
+                        "type" : "Or",
+                        "operand" : [ {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "HasNormalSLUMSScore",
+                              "type" : "ExpressionRef"
+                           }
+                        }, {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "HasMildNeuroCognitiveDisorderSLUMSScore",
+                              "type" : "ExpressionRef"
+                           }
+                        } ]
                      } ]
-                  }, {
-                     "type" : "LessOrEqual",
-                     "operand" : [ {
-                        "type" : "First",
-                        "source" : {
-                           "name" : "SLUMS_Score",
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-GDS",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
                            "type" : "ExpressionRef"
                         }
                      }, {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                        "value" : "20",
-                        "type" : "Literal"
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
                      } ]
-                  } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
+                  }
                }
             }
          }, {
@@ -3322,55 +4240,20 @@
             "expression" : {
                "type" : "If",
                "condition" : {
-                  "type" : "And",
+                  "type" : "GreaterOrEqual",
                   "operand" : [ {
-                     "type" : "And",
-                     "operand" : [ {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "dcw_mood_level_2",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "dcw_care_partner_present",
-                           "type" : "ExpressionRef"
-                        }
-                     } ]
-                  }, {
-                     "type" : "IsTrue",
+                     "type" : "Length",
                      "operand" : {
-                        "name" : "HasSLUMSDementiaScore",
+                        "name" : "CIRG_C_IDAS_Responses_Today",
                         "type" : "ExpressionRef"
                      }
+                  }, {
+                     "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                     "value" : "1",
+                     "type" : "Literal"
                   } ]
                },
                "then" : {
-                  "type" : "Tuple",
-                  "element" : [ {
-                     "name" : "questionnaireId",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "CIRG-C-IDAS",
-                        "type" : "Literal"
-                     }
-                  }, {
-                     "name" : "scheduledTiming",
-                     "value" : {
-                        "name" : "Scheduled_Timing",
-                        "type" : "ExpressionRef"
-                     }
-                  }, {
-                     "name" : "status",
-                     "value" : {
-                        "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "scheduled",
-                        "type" : "Literal"
-                     }
-                  } ]
-               },
-               "else" : {
                   "type" : "As",
                   "operand" : {
                      "type" : "Null"
@@ -3420,6 +4303,110 @@
                            "type" : "NamedTypeSpecifier"
                         }
                      } ]
+                  }
+               },
+               "else" : {
+                  "type" : "If",
+                  "condition" : {
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "And",
+                        "operand" : [ {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "dcw_mood_level_2",
+                              "type" : "ExpressionRef"
+                           }
+                        }, {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "dcw_care_partner_present",
+                              "type" : "ExpressionRef"
+                           }
+                        } ]
+                     }, {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "HasSLUMSDementiaScore",
+                           "type" : "ExpressionRef"
+                        }
+                     } ]
+                  },
+                  "then" : {
+                     "type" : "Tuple",
+                     "element" : [ {
+                        "name" : "questionnaireId",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "CIRG-C-IDAS",
+                           "type" : "Literal"
+                        }
+                     }, {
+                        "name" : "scheduledTiming",
+                        "value" : {
+                           "name" : "Scheduled_Timing",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "name" : "status",
+                        "value" : {
+                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                           "value" : "scheduled",
+                           "type" : "Literal"
+                        }
+                     } ]
+                  },
+                  "else" : {
+                     "type" : "As",
+                     "operand" : {
+                        "type" : "Null"
+                     },
+                     "asTypeSpecifier" : {
+                        "type" : "TupleTypeSpecifier",
+                        "element" : [ {
+                           "name" : "questionnaireId",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        }, {
+                           "name" : "scheduledTiming",
+                           "elementType" : {
+                              "type" : "TupleTypeSpecifier",
+                              "element" : [ {
+                                 "name" : "repeat",
+                                 "elementType" : {
+                                    "type" : "TupleTypeSpecifier",
+                                    "element" : [ {
+                                       "name" : "frequency",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "period",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}Integer",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    }, {
+                                       "name" : "periodUnit",
+                                       "elementType" : {
+                                          "name" : "{urn:hl7-org:elm-types:r1}String",
+                                          "type" : "NamedTypeSpecifier"
+                                       }
+                                    } ]
+                                 }
+                              } ]
+                           }
+                        }, {
+                           "name" : "status",
+                           "elementType" : {
+                              "name" : "{urn:hl7-org:elm-types:r1}String",
+                              "type" : "NamedTypeSpecifier"
+                           }
+                        } ]
+                     }
                   }
                }
             }

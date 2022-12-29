@@ -170,111 +170,32 @@ define MoodConditions:
 define HasMoodConditions:
   Length(MoodConditions) > 0
 
-define PresentQnr_CIRG_DCW_CarePartner:
-  if // check if the questionnaire has been administered today
-    Length(CarePartnerResponseToday) >= 1 then null
-  else
-    {
-      questionnaireId: 'CIRG-DCW-CarePartner',
-      scheduledTiming: Scheduled_Timing,
-      status: 'scheduled'
-    }
-
-
-// Naming pattern: "CIRG_MINICOG" is Questionnaire.id
-define PresentQnr_CIRG_MINICOG:
-  if dcw_cog_level_1 is true then {
-    questionnaireId: 'CIRG-MINICOG',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_ECOG12:
-  if dcw_cog_level_1 is true then {
-    questionnaireId: 'CIRG-ECOG12',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  }
-  else null
-
-define PresentQnr_CIRG_CP_ECOG:
-  if dcw_cog_level_1 is true and dcw_care_partner_present is true then {
-    questionnaireId: 'CIRG-CP-ECOG',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_SLUMS:
-  if dcw_cog_level_2 is true then {
-    questionnaireId: 'CIRG-SLUMS',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_ADL_IADL:
-  if dcw_cog_level_2 is true and dcw_care_partner_present is true then {
-    questionnaireId: 'CIRG-ADL-IADL',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_BEHAV5:
-  if dcw_mood_level_1 is true then {
-    questionnaireId: 'CIRG-BEHAV5',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_GAD7:
-  // dcw_mood_level_2 is true and
-  // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
-  if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
-    questionnaireId: 'CIRG-GAD7',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_GDS:
-  // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
-  if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
-    questionnaireId: 'CIRG-GDS',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
-define PresentQnr_CIRG_C_IDAS:
-  // CIRG-SLUMS score indicates dementia 
-  if dcw_mood_level_2 is true and 
-     dcw_care_partner_present is true and 
-     HasSLUMSDementiaScore is true
-  then {
-    questionnaireId: 'CIRG-C-IDAS',
-    scheduledTiming: Scheduled_Timing,
-    status: 'scheduled'
-  } else null
-
 define CarePartner_Questionnaire:
   getQuestionnaire('CIRG-DCW-CarePartner')
 
 define CarePartner_Response:
   MatchedReponsesByQuestionnaire([QuestionnaireResponse], CarePartner_Questionnaire)
 
-define CarePartnerResponseToday:
+define CarePartner_Response_Today:
   (CarePartner_Response) QR 
   where date from QR.authored.value >= Today()
 
-define CarePartnerPresentResponse:
-  (CarePartnerResponseToday) QR
+define CarePartner_Present_Response:
+  (CarePartner_Response_Today) QR
     return First(getValueByResponseItem(CarePartner_Questionnaire, QR.item, 'CIRG-DCW-CarePartner-0'))
     
 define IsCarePartnerPresent:
-  First(CarePartnerPresentResponse) = 1
+  First(CarePartner_Present_Response) = 1
 
 define BEHAV5_Questionnaire:
   getQuestionnaire('BEHAV5')
 
 define BEHAV5_Responses:
   MatchedReponsesByQuestionnaire([QuestionnaireResponse], BEHAV5_Questionnaire)
+
+define BEHAV5_Responses_Today:
+  (BEHAV5_Responses) QR
+  where date from QR.authored.value >= Today()
 
 define BEHAV5_Score:
   (BEHAV5_Responses) I
@@ -293,6 +214,10 @@ define MINICOG_Questionnaire:
 
 define MINICOG_Responses:
   MatchedReponsesByQuestionnaire([QuestionnaireResponse], MINICOG_Questionnaire)
+
+define MINICOG_Responses_Today:
+  (MINICOG_Responses) QR
+  where date from QR.authored.value >= Today()
 
 define MINICOG_Word_Recall_Score:
 (MINICOG_Responses) I
@@ -330,6 +255,10 @@ define SLUMS_Questionnaire:
 define SLUMS_Responses:
   MatchedReponsesByQuestionnaire([QuestionnaireResponse], SLUMS_Questionnaire)
 
+define SLUMS_Responses_Today:
+  (SLUMS_Responses) QR
+  where date from QR.authored.value >= Today()
+
 define SLUMS_Score:
   (SLUMS_Responses) I
     let answerValue : First(GetResponseValueByLinkId('/71492-3', I.item))
@@ -349,3 +278,120 @@ define HasNormalSLUMSScore:
 define HasMildNeuroCognitiveDisorderSLUMSScore:
   if HasLowerLevelEducation is true then First(SLUMS_Score) >= 20 and First(SLUMS_Score) <= 24
   else First(SLUMS_Score) >= 21 and First(SLUMS_Score) <= 26
+
+define CIRG_ECOG12_Responses_Today:
+  (MatchedReponsesByQuestionnaire([QuestionnaireResponse], getQuestionnaire('CIRG-ECOG12'))) QR
+  where date from QR.authored.value >= Today()
+
+define CIRG_CP_ECOG_Responses_Today:
+  (MatchedReponsesByQuestionnaire([QuestionnaireResponse], getQuestionnaire('CIRG-CP-ECOG'))) QR
+  where date from QR.authored.value >= Today()
+
+define CIRG_ADL_IADL_Responses_Today:
+  (MatchedReponsesByQuestionnaire([QuestionnaireResponse], getQuestionnaire('CIRG-ADL-IADL'))) QR
+  where date from QR.authored.value >= Today()
+
+define CIRG_GAD7_Responses_Today:
+  (MatchedReponsesByQuestionnaire([QuestionnaireResponse], getQuestionnaire('CIRG-GAD7'))) QR
+  where date from QR.authored.value >= Today()
+
+define CIRG_GDS_Responses_Today:
+  (MatchedReponsesByQuestionnaire([QuestionnaireResponse], getQuestionnaire('CIRG-GDS'))) QR
+  where date from QR.authored.value >= Today()
+
+define CIRG_C_IDAS_Responses_Today:
+  (MatchedReponsesByQuestionnaire([QuestionnaireResponse], getQuestionnaire('CIRG-C-IDAS'))) QR
+  where date from QR.authored.value >= Today()
+
+
+define PresentQnr_CIRG_DCW_CarePartner:
+  if // check if the questionnaire has been administered today
+    Length(CarePartner_Response_Today) >= 1 then null
+  else
+    {
+      questionnaireId: 'CIRG-DCW-CarePartner',
+      scheduledTiming: Scheduled_Timing,
+      status: 'scheduled'
+    }
+
+// Naming pattern: "CIRG_MINICOG" is Questionnaire.id
+define PresentQnr_CIRG_MINICOG:
+  if Length(MINICOG_Responses_Today) >=1 then null
+  else if dcw_cog_level_1 is true then {
+    questionnaireId: 'CIRG-MINICOG',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_ECOG12:
+  if Length(CIRG_ECOG12_Responses_Today) >= 1 then null
+  else if dcw_cog_level_1 is true then {
+    questionnaireId: 'CIRG-ECOG12',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  }
+  else null
+
+define PresentQnr_CIRG_CP_ECOG:
+  if Length(CIRG_CP_ECOG_Responses_Today) >= 1 then null
+  else if dcw_cog_level_1 is true and dcw_care_partner_present is true then {
+    questionnaireId: 'CIRG-CP-ECOG',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_SLUMS:
+  if Length(SLUMS_Responses_Today) >= 1 then null
+  else if dcw_cog_level_2 is true then {
+    questionnaireId: 'CIRG-SLUMS',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_ADL_IADL:
+  if Length(CIRG_ADL_IADL_Responses_Today) >= 1 then null
+  else if dcw_cog_level_2 is true and dcw_care_partner_present is true then {
+    questionnaireId: 'CIRG-ADL-IADL',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_BEHAV5:
+  if Length(BEHAV5_Responses_Today) >= 1 then null
+  else if dcw_mood_level_1 is true then {
+    questionnaireId: 'CIRG-BEHAV5',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_GAD7:
+  if Length(CIRG_GAD7_Responses_Today) >= 1 then null
+  // dcw_mood_level_2 is true and
+  // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
+  else if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
+    questionnaireId: 'CIRG-GAD7',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_GDS:
+  if Length(CIRG_GDS_Responses_Today) >= 1 then null
+  // CIRG-SLUMS score is Normal or Mild Neurocognitive Disorder
+  else if dcw_mood_level_2 is true and (HasNormalSLUMSScore is true or HasMildNeuroCognitiveDisorderSLUMSScore is true) then {
+    questionnaireId: 'CIRG-GDS',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
+define PresentQnr_CIRG_C_IDAS:
+  if Length(CIRG_C_IDAS_Responses_Today) >= 1 then null
+  // CIRG-SLUMS score indicates dementia 
+  else if dcw_mood_level_2 is true and 
+     dcw_care_partner_present is true and 
+     HasSLUMSDementiaScore is true
+  then {
+    questionnaireId: 'CIRG-C-IDAS',
+    scheduledTiming: Scheduled_Timing,
+    status: 'scheduled'
+  } else null
+
