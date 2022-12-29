@@ -303,8 +303,9 @@ export const applyDefinition = async (client, patientId) => {
   // create activities from evaluated results  
   const activities = getActivitiesFromEvalResults(evalResults);
   console.log("activities ", activities);
+  // update care plan activities
   carePlan.activity = activities;
-
+  
   console.log("generated carePlan: ", carePlan);
   const requestParams = {
     headers: {
