@@ -417,7 +417,6 @@ export default {
           // if a text input element, focus on it
           if (inputType === "text") {
             inputElement.focus();
-            console.log("GET HERE");
           }
           // an input has been found so break out of the loop
           if (inputType !== "hidden") break;
