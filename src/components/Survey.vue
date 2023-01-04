@@ -162,7 +162,7 @@ export default {
           this.initializeSurveyObjEvents();
           this.setQuestionnaireSubject();
           this.setQuestionnaireAuthor();
-          this.setFirstInputFocus();
+          setTimeout(() => this.setFirstInputFocus(), 500);
 
           // Add both the Questionnaire and QuestionnaireResponses to the patient bundle.
           // Note: Objects are pushed onto the array by reference (no copy), so we don't
@@ -209,10 +209,7 @@ export default {
     },
     setFirstInputFocus() {
       if (!this.surveyOptions.focusFirstQuestionAutomatic) return;
-      setTimeout(() => {
-        const textElement = document.querySelector("input[type=text]");
-        if (textElement) textElement.focus();
-      }, 350);
+      this.handleFocusOnFirstTextField();
     },
     initializeInstrument() {
       return getScreeningInstrument(this.client, this.patientId, (o) => {
@@ -389,130 +386,148 @@ export default {
 
       this.survey.onCurrentPageChanged.add(
         function (sender) {
-          console.log(
-            "sender page number on page changed ",
-            sender.currentPageNo
-          );
-          // only allow skip questionnaire botón on the first page
-          this.allowSkip = !sender.currentPageNo;
-          setTimeout(() => {
-            // find all question elements
-            const questionElements = document.querySelectorAll(".sv-question");
-            if (questionElements.length) {
-              // get the first question
-              const firstQuestionElement = questionElements[0];
-              // check if the first question contains a text input field
-              const inputTextElement = firstQuestionElement
-                ? firstQuestionElement.querySelector("input[type='text']")
-                : null;
-              // if so, focus on it
-              if (inputTextElement) inputTextElement.focus();
-            }
-          }, 300);
+          this.handleOnCurrentPageChanged(sender);
         }.bind(this)
       ),
         // Add an event listener which updates questionnaireResponse based upon user responses
         this.survey.onValueChanging.add(
           function (sender, options) {
-            // We don't want to modify anything if the survey has been submitted/completed.
-            if (sender.isCompleted == true) return;
-
-            // Find the index of this item (may not exist)
-            // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
-            let answerItemIndex = this.questionnaireResponse.item.findIndex(
-              (itm) => itm.linkId == options.name
-            );
-
-            if (options.value != null) {
-              let responseValue = getResponseValue(
-                this.questionnaire,
-                options.name,
-                options.value
-              );
-
-              let question = this.questionnaire.item.filter(
-                (item) => item.linkId === options.name
-              )[0];
-              let questionText = question && question.text ? question.text : "";
-
-              // If the index is undefined, add a new entry to questionnaireResponse.item
-              if (answerItemIndex == -1) {
-                this.questionnaireResponse.item.push({
-                  linkId: options.name,
-                  text: questionText,
-                  answer: [
-                    {
-                      [responseValue.type]: responseValue.value,
-                    },
-                  ],
-                });
-              } else {
-                // Otherwise update the existing index with the new response
-                this.questionnaireResponse.item[answerItemIndex] = {
-                  linkId: options.name,
-                  text: questionText,
-                  answer: [
-                    {
-                      [responseValue.type]: responseValue.value,
-                    },
-                  ],
-                };
-              }
-            } // end check if value is null
-            else {
-              // if answer item is null, e.g. due to user hitting clear button
-              // remove it from questionnaire responses
-              if (answerItemIndex !== -1) {
-                const items = this.questionnaireResponse.item;
-                items.splice(answerItemIndex, 1);
-                this.questionnaireResponse.item = items;
-              }
-            }
-
-            // Need to reload the patient bundle since the responses have been updated
-            cqlWorker.postMessage({ patientBundle: this.patientBundle });
+            this.handleOnValueChanging(sender, options);
           }.bind(this)
         );
       // Add a handler which will fire when the Questionnaire is submittedc
       this.survey.onComplete.add(
         function (sender, options) {
-          console.log("sender ", sender);
-          // Mark the QuestionnaireResponse as completed
-          this.questionnaireResponse.status = "completed";
-
-          // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
-          if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
-            options.showDataSaving();
-            this.showDialog = true;
-            this.client
-              .create(this.questionnaireResponse, {
-                headers: {
-                  "Content-Type": "application/fhir+json",
-                },
-              })
-              .then(() => {
-                this.handleAdvanceQuestionnaireList();
-                this.showDialog = true;
-                this.dialogMessage = `Processing data.  Please wait...`;
-                setTimeout(() => {
-                  options.showDataSavingSuccess();
-                  options.showDataSavingClear();
-                }, 500);
-              })
-              .catch((e) => {
-                this.error = `Error saving the questionnaire response for ${this.currentQuestionnaireId.toUpperCase()}.  See console for details.`;
-                this.showDialog = false;
-                console.log(e);
-              });
-          } else this.handleAdvanceQuestionnaireList();
-          if (this.isDevelopment()) {
-            console.log(
-              "questionnaire responses ",
-              JSON.stringify(this.questionnaireResponse, null, 2)
-            );
-          }
+          this.handleOnComplete(sender, options);
         }.bind(this)
       );
+    },
+    handleFocusOnFirstTextField() {
+      // find all question elements
+      const questionElements = document.querySelectorAll(".sv-question");
+      if (!questionElements.length) {
+        return;
+      }
+      for (let index = 0; index < questionElements.length; index++) {
+        const qElement = questionElements[index];
+        // check if the question contains input field
+        const inputElement = qElement ? qElement.querySelector("input") : null;
+        if (inputElement) {
+          const inputType = inputElement.getAttribute("type");
+          // if a text input element, focus on it
+          if (inputType === "text") {
+            inputElement.focus();
+            console.log("GET HERE");
+          }
+          // an input has been found so break out of the loop
+          if (inputType !== "hidden") break;
+        }
+      }
+    },
+    handleOnCurrentPageChanged(sender) {
+      console.log("sender page number on page changed ", sender.currentPageNo);
+      // only allow skip questionnaire botón on the first page
+      this.allowSkip = !sender.currentPageNo;
+      setTimeout(() => {
+        this.handleFocusOnFirstTextField();
+      }, 300);
+    },
+    handleOnValueChanging(sender, options) {
+      // We don't want to modify anything if the survey has been submitted/completed.
+      if (sender.isCompleted == true) return;
+
+      // Find the index of this item (may not exist)
+      // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
+      let answerItemIndex = this.questionnaireResponse.item.findIndex(
+        (itm) => itm.linkId == options.name
+      );
+
+      if (options.value != null) {
+        let responseValue = getResponseValue(
+          this.questionnaire,
+          options.name,
+          options.value
+        );
+
+        let question = this.questionnaire.item.filter(
+          (item) => item.linkId === options.name
+        )[0];
+        let questionText = question && question.text ? question.text : "";
+
+        // If the index is undefined, add a new entry to questionnaireResponse.item
+        if (answerItemIndex == -1) {
+          this.questionnaireResponse.item.push({
+            linkId: options.name,
+            text: questionText,
+            answer: [
+              {
+                [responseValue.type]: responseValue.value,
+              },
+            ],
+          });
+        } else {
+          // Otherwise update the existing index with the new response
+          this.questionnaireResponse.item[answerItemIndex] = {
+            linkId: options.name,
+            text: questionText,
+            answer: [
+              {
+                [responseValue.type]: responseValue.value,
+              },
+            ],
+          };
+        }
+      } // end check if value is null
+      else {
+        // if answer item is null, e.g. due to user hitting clear button
+        // remove it from questionnaire responses
+        if (answerItemIndex !== -1) {
+          const items = this.questionnaireResponse.item;
+          items.splice(answerItemIndex, 1);
+          this.questionnaireResponse.item = items;
+        }
+      }
+
+      // Need to reload the patient bundle since the responses have been updated
+      cqlWorker.postMessage({ patientBundle: this.patientBundle });
+    },
+    handleOnComplete(sender, options) {
+      console.log("sender object on complete: ", sender);
+
+      // Mark the QuestionnaireResponse as completed
+      this.questionnaireResponse.status = "completed";
+
+      // Write back to EHR only if `VUE_APP_WRITE_BACK_MODE` is set to 'smart'
+      if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
+        options.showDataSaving();
+        this.showDialog = true;
+        this.client
+          .create(this.questionnaireResponse, {
+            headers: {
+              "Content-Type": "application/fhir+json",
+            },
+          })
+          .then(() => {
+            this.handleAdvanceQuestionnaireList();
+            this.showDialog = true;
+            this.dialogMessage = `Processing data.  Please wait...`;
+            setTimeout(() => {
+              options.showDataSavingSuccess();
+              options.showDataSavingClear();
+            }, 500);
+          })
+          .catch((e) => {
+            this.error = `Error saving the questionnaire response for ${this.currentQuestionnaireId.toUpperCase()}.  See console for details.`;
+            this.showDialog = false;
+            console.log(e);
+          });
+      } else this.handleAdvanceQuestionnaireList();
+      if (this.isDevelopment()) {
+        console.log(
+          "questionnaire responses ",
+          JSON.stringify(this.questionnaireResponse, null, 2)
+        );
+      }
     },
     handleEndOfQuestionnaires(message) {
       // don't end survey session if there is still questionnaire to do

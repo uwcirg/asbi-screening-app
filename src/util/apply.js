@@ -173,6 +173,10 @@ function getActivitiesFromEvalResults(evalResults) {
 export const applyDefinition = async (client, patientId) => {
   // Define a web worker for evaluating CQL expressions
   const cqlWorker = new Worker();
+  cqlWorker.onerror = (error) => {
+    console.log("CQL worker error ", error);
+    throw new Error("Error occurred associated with CQL web worker.  See console for detail.");
+  }
   // Initialize the cql-worker
   let [setupExecution, sendPatientBundle, evaluateExpression] =
     initialzieCqlWorker(cqlWorker);
