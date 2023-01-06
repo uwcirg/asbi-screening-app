@@ -171,16 +171,20 @@ export default {
           this.patientBundle.entry.push({
             resource: this.questionnaireResponse,
           });
-          this.getFhirResources()
-            .then(() => {
-              // Send the patient bundle to the CQL web worker WITH FHIR resources
-              sendPatientBundle(this.patientBundle);
-            })
-            .catch((e) => {
-              console.log("Error retrieving FHIR resources ", e);
-              // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
-              sendPatientBundle(this.patientBundle);
-            });
+          // Send the patient bundle to the CQL web worker WITH FHIR resources
+          sendPatientBundle(this.patientBundle);
+          // by this point we already have all the FHIR resources we need, e.g. questionnaireResponse & questionnaires
+          // no need to make this call to get FHIR resources, comment out for now
+          // this.getFhirResources()
+          //   .then(() => {
+          //     // Send the patient bundle to the CQL web worker WITH FHIR resources
+          //     sendPatientBundle(this.patientBundle);
+          //   })
+          //   .catch((e) => {
+          //     console.log("Error retrieving FHIR resources ", e);
+          //     // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
+          //     sendPatientBundle(this.patientBundle);
+          //   });
           this.done();
           this.ready = true; // We don't show this component until `ready=true`
         })
