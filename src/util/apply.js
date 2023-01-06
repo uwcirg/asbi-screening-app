@@ -5,7 +5,7 @@ import {
   getPatientCarePlan,
   getQuestionnaireResponsesForPatient,
 } from "./screening-selector";
-import { getEnv } from "./util";
+import { clearSessionStorageByKeyword, getEnv } from "./util";
 
 function getAuthStateKey(client) {
   if (!client) return null;
@@ -15,7 +15,8 @@ function getAuthStateKey(client) {
 async function fetchStaticFhirResources(client, patientId) {
   // client auth session key
   const key = getAuthStateKey(client);
-  const storageKey = `fhir_resources_${key}`;
+  const prefix = "fhir_resources";
+  const storageKey = `${prefix}_${key}`;
   // get resources from storage cache if possible
   if (sessionStorage.getItem(storageKey))
     return JSON.parse(sessionStorage.getItem(storageKey));
@@ -34,7 +35,12 @@ async function fetchStaticFhirResources(client, patientId) {
   return Promise.all(requests)
     .then((results) => {
       if (results) {
-        sessionStorage.setItem(storageKey, JSON.stringify(results));
+        try {
+          clearSessionStorageByKeyword(prefix);
+          sessionStorage.setItem(storageKey, JSON.stringify(results));
+        } catch (e) {
+          console.log("Error saving FHIR results to session Storage ", e);
+        }
       }
       return results;
     })
@@ -44,7 +50,8 @@ async function fetchStaticFhirResources(client, patientId) {
 }
 
 async function getQuestionnaireLogicLibrary(projectID) {
-  const libraryName = `CirgLibraryQuestionnaireLogic_${projectID}`;
+  const prefix = "CirgLibraryQuestionnaireLogic";
+  const libraryName = `${prefix}_${projectID}`;
   // get it from session storage if there
   if (sessionStorage.getItem(libraryName))
     return JSON.parse(sessionStorage.getItem(libraryName));
@@ -57,10 +64,15 @@ async function getQuestionnaireLogicLibrary(projectID) {
       throw new Error(e);
     });
   if (QuestionnaireLogicLibraryJson) {
-    sessionStorage.setItem(
-      libraryName,
-      JSON.stringify(QuestionnaireLogicLibraryJson)
-    );
+    try {
+      clearSessionStorageByKeyword(prefix);
+      sessionStorage.setItem(
+        libraryName,
+        JSON.stringify(QuestionnaireLogicLibraryJson)
+      );
+    } catch (e) {
+      console.log("Error saving CQL library json to session storage ", e);
+    }
   }
   return QuestionnaireLogicLibraryJson;
 }
@@ -77,7 +89,11 @@ async function getPlanDefinition(client, projectID) {
       throw new Error(e);
     });
   if (planDef) {
-    sessionStorage.setItem(definitionName, JSON.stringify(planDef));
+    try {
+      sessionStorage.setItem(definitionName, JSON.stringify(planDef));
+    } catch (e) {
+      console.log("Error saving plan definition to session storage ", e);
+    }
   }
   return planDef;
 }
@@ -175,8 +191,10 @@ export const applyDefinition = async (client, patientId) => {
   const cqlWorker = new Worker();
   cqlWorker.onerror = (error) => {
     console.log("CQL worker error ", error);
-    throw new Error("Error occurred associated with CQL web worker.  See console for detail.");
-  }
+    throw new Error(
+      "Error occurred associated with CQL web worker.  See console for detail."
+    );
+  };
   // Initialize the cql-worker
   let [setupExecution, sendPatientBundle, evaluateExpression] =
     initialzieCqlWorker(cqlWorker);
@@ -275,8 +293,8 @@ export const applyDefinition = async (client, patientId) => {
   }
 
   // debug
-  const debugResult = await evaluateExpression("CIRG_GDS_Responses_Today");
-  console.log("debug result - gds today ", debugResult);
+  //const debugResult = await evaluateExpression("CIRG_GDS_Responses_Today");
+  //console.log("debug result - gds today ", debugResult);
 
   let evalResults = await getEvaluationsFromPlanActions(
     planDef.action,
@@ -304,12 +322,12 @@ export const applyDefinition = async (client, patientId) => {
     reference: "Patient/" + patientId,
   };
 
-  // create activities from evaluated results  
+  // create activities from evaluated results
   const activities = getActivitiesFromEvalResults(evalResults);
   console.log("activities ", activities);
   // update care plan activities
   carePlan.activity = activities;
-  
+
   console.log("generated carePlan: ", carePlan);
   const requestParams = {
     headers: {
