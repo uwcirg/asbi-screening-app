@@ -4,22 +4,25 @@ function getDefaultLogObject() {
   return {
     level: "info",
     tags: ["screener-front-end"],
-    message: {
-      systemURL: window.location.href,
-    },
-  };
+    systemURL: window.location.href,
+    deployment: getEnv("VUE_APP_SYSTEM_TYPE"),
+    message: {}
+  }
 }
 //write to audit log
 // @param level, expect string
-// @param tags, expect array, e.g. ['etc']
+// @param tags, expect array, e.g. ['etc'],
+// @param body, log main body content, expect object, e.g. {subect: "Patient/12"}
 // @param message, expect object, e.g. { "questionId": "123"}
-export function writeToLog(level, tags, message) {
+export function writeToLog(level, tags, body, message) {
   const confidentialBackendURL = getEnv("VUE_APP_CONF_API_URL");
   if (!confidentialBackendURL) {
     console.log("audit log skipped; confidential backend URL is not set");
     return;
   }
-  let postBody = getDefaultLogObject();
+  let postBody = {
+    ...getDefaultLogObject(),
+    ...body};
   if (level) postBody.level = level;
   if (tags) postBody.tags = [...postBody.tags, ...tags];
   if (message)
@@ -53,8 +56,9 @@ export function writeToLog(level, tags, message) {
 // write to log on survey page change event
 // @param options, see options object available on SurveyJS onCurrentPageChanged event
 // https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onCurrentPageChanged
-// @param params, of type object, optional, additional params post to log server
-export function writeLogOnSurveyPageChange(options, params) {
+// @param logBody, expect object, main log body content
+// @param messageParams, of type object, optional, additional params post to log server
+export function writeLogOnSurveyPageChange(options, logBody, messageParams) {
   if (!options) return;
   const questionElements = options.oldCurrentPage
     ? options.oldCurrentPage.questions
@@ -62,7 +66,7 @@ export function writeLogOnSurveyPageChange(options, params) {
   if (!questionElements) {
     return;
   }
-  params = params || {};
+  messageParams = messageParams || {};
   let arrVisibleQuestions = questionElements
     .filter((q) => q.isVisible)
     .map((q) => q.name);
@@ -73,9 +77,9 @@ export function writeLogOnSurveyPageChange(options, params) {
     ? "clickPrev"
     : "";
   if (arrVisibleQuestions.length) {
-    writeToLog("info", ["questionDisplayed", "onPageChanged", navDirection], {
+    writeToLog("info", ["questionDisplayed", "onPageChanged", navDirection], logBody, {
       questionID: arrVisibleQuestions,
-      ...params,
+      ...messageParams,
     });
   }
 }
@@ -83,8 +87,9 @@ export function writeLogOnSurveyPageChange(options, params) {
 // write to log on survey page rendered event
 // @param options, see options object available on SurveyJS onAfterRenderPage event
 // https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onAfterRenderPage
-// @param params, of type object, optional, additional params post to log server
-export function writeLogOnSurveyPageRendered(options, params) {
+// @param logBody, expect object, main log body content
+// @param messageParams, of type object, optional, additional params post to log server
+export function writeLogOnSurveyPageRendered(options, logBody, messageParams) {
   if (!options) return;
   const questionElements = options.page ?
     options.page.questions
@@ -92,35 +97,37 @@ export function writeLogOnSurveyPageRendered(options, params) {
   if (!questionElements) {
     return;
   }
-  params = params || {};
+  messageParams = messageParams || {};
   let arrVisibleQuestions = questionElements
     .filter((q) => q.isVisible)
     .map((q) => q.name);
   if (arrVisibleQuestions.length) {
-    writeToLog("info", ["questionDisplayed", "onPageRendered"], {
+    writeToLog("info", ["questionDisplayed", "onPageRendered"], logBody, {
       questionID: arrVisibleQuestions,
-      ...params,
+      ...messageParams,
     });
   }
 }
 // write to log on survey question value change event
 // @param options, see options object available on SurveyJS onValueChanging event
 // https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onValueChanging
-// @param params, of type object, optional, additional params post to log server
-export function writeLogOnSurveyQuestionValueChange(options, params) {
+// @param logBody, expect object, main log body content
+// @param messageParams, of type object, optional, additional params post to log server
+export function writeLogOnSurveyQuestionValueChange(options, logBody, messageParams) {
   if (!options) return;
-  params = params || {};
-  writeToLog("info", ["answerEvent"], {
+  messageParams = messageParams || {};
+  writeToLog("info", ["answerEvent"], logBody, {
     questionId: options.name,
     answerEntered: options.value,
-    ...params,
+    ...messageParams,
   });
 }
 
 // write to log on survey completing
 // @params sender, see sender object available on SurveyJs OnComplete event
 // https://surveyjs.io/form-library/documentation/api-reference/surveymodel#onComplete
-// @param params, of type object, optional, additional params post to log server
-export function writeLogOnSurveySubmit(params) {
-    writeToLog("info", ["onSubmit"], params);
+// @param logBody, expect object, main log body content
+// @param messageParams, of type object, optional, additional params post to log server
+export function writeLogOnSurveySubmit(logBody, messageParams) {
+    writeToLog("info", ["onSubmit"], logBody, messageParams);
 }

@@ -122,7 +122,8 @@ export default {
       LogHelper.writeToLog(
         "info",
         ["authSessionStarted"],
-        this.getDefaultLogMessageObject()
+        this.getDefaultLogObject(),
+        { ...this.getDefaultLogMessageObject(), text: "auth session started" }
       );
     },
     init() {
@@ -187,13 +188,17 @@ export default {
         this.careplan = carePlan.entry.map((item) => item.resource)[0];
       }
     },
+    // top level log params
+    getDefaultLogObject() {
+      return {
+        subject: `Patient/${this.patientId}`,
+      };
+    },
+    // params in log message body
     getDefaultLogMessageObject() {
       return {
-        patientID: this.patientId,
         projectID: this.projectID,
         authSessionID: this.sessionKey,
-        systemType: this.systemType,
-        systemURL: window.location.href,
         careplanID: this.careplan ? this.careplan.id : null,
       };
     },
@@ -406,10 +411,15 @@ export default {
     onAfterRenderPage(sender, options) {
       console.log("sender object on page rendered ", sender);
       // write to log
-      LogHelper.writeLogOnSurveyPageRendered(options, {
-        questionnaireId: this.questionnaire.id,
-        ...this.getDefaultLogMessageObject(),
-      });
+      LogHelper.writeLogOnSurveyPageRendered(
+        options,
+        this.getDefaultLogObject(),
+        {
+          questionnaireId: this.questionnaire.id,
+          ...this.getDefaultLogMessageObject(),
+          text: "page rendered"
+        }
+      );
     },
     onCurrentPageChanged(sender) {
       console.log(
@@ -466,13 +476,18 @@ export default {
           };
         }
         // write to log
-        LogHelper.writeLogOnSurveyQuestionValueChange(options, {
-          questionnaireId: this.questionnaire.id,
-          questionText: questionText,
-          answerType: responseValue.type,
-          answerValue: responseValue.value,
-          ...this.getDefaultLogMessageObject(),
-        });
+        LogHelper.writeLogOnSurveyQuestionValueChange(
+          options,
+          this.getDefaultLogObject(),
+          {
+            questionnaireId: this.questionnaire.id,
+            questionText: questionText,
+            answerType: responseValue.type,
+            answerValue: responseValue.value,
+            text: "answer value changed",
+            ...this.getDefaultLogMessageObject(),
+          }
+        );
       } // end check if value is null
       else {
         // if answer item is null, e.g. due to user hitting clear button
@@ -492,8 +507,9 @@ export default {
       this.questionnaireResponse.status = "completed";
 
       // write log
-      LogHelper.writeLogOnSurveySubmit({
+      LogHelper.writeLogOnSurveySubmit(this.getDefaultLogObject(), {
         questionnaireId: this.questionnaire.id,
+        text: "submit questionnaire",
         ...this.getDefaultLogMessageObject(),
       });
 
