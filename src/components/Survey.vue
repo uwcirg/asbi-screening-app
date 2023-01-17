@@ -21,11 +21,31 @@
         color="primary"
       ></v-progress-circular>
     </div>
-    <v-dialog v-model="showDialog" fullscreen hide-overlay :transition="false">
-      <v-card
+    <v-dialog
+      content-class="dialog-container"
+      v-model="showDialog"
+      fullscreen
+      hide-overlay
+      :transition="false"
+    >
+      <v-card :rounded="false"
         ><div v-html="dialogMessage" class="dialog-body-container"></div
       ></v-card>
     </v-dialog>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="snackbarTimeout"
+      color="deep-orange accent-4"
+      vertical="vertical"
+      multi-line
+    >
+      <h4>{{ notificationText }}</h4>
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -35,8 +55,8 @@ import { getInstrumentCSS } from "../util/css-selector.js";
 import {
   getPatientCarePlan,
   getScreeningInstrument,
-  removeSessionInstrumentList,
-  setSessionInstrumentList,
+  setSessionAdministeredInstrumentList,
+  setSessionInstrumentList
 } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
@@ -50,9 +70,9 @@ import {
   setFavicon,
   removeArrayItem,
 } from "../util/util.js";
+import * as LogHelper from "../util/log";
 import surveyOptions from "../context/surveyjs.options.js";
 import themes from "../context/themes.js";
-import * as LogHelper from "../util/log";
 import { FunctionFactory, Model, Serializer, StylesManager } from "survey-vue";
 
 // Define a web worker for evaluating CQL expressions
@@ -115,6 +135,9 @@ export default {
       allowSkip:
         String(getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE")) === "true",
       reloadInProgress: false,
+      snackbar: false,
+      snackbarTimeout: 5000,
+      notificationText: "",
     };
   },
   methods: {
@@ -129,7 +152,7 @@ export default {
     init() {
       if (this.error || !this.patient) return false;
       //console.log("state ", this.client.getState("tokenResponse.id_token"));
-      console.log("client state ", this.client.getState());
+      //console.log("client state ", this.client.getState());
       this.sessionKey = this.client.getState().key;
       console.log("environment variables ", getEnvs());
       this.patientId = this.patient.id;
@@ -152,7 +175,7 @@ export default {
           this.initializeSurveyObjEvents();
           this.setQuestionnaireSubject();
           this.setQuestionnaireAuthor();
-          this.setFirstInputFocus();
+          setTimeout(() => this.setFirstInputFocus(), 500);
 
           // Add both the Questionnaire and QuestionnaireResponses to the patient bundle.
           // Note: Objects are pushed onto the array by reference (no copy), so we don't
@@ -161,16 +184,20 @@ export default {
           this.patientBundle.entry.push({
             resource: this.questionnaireResponse,
           });
-          this.getFhirResources()
-            .then(() => {
-              // Send the patient bundle to the CQL web worker WITH FHIR resources
-              sendPatientBundle(this.patientBundle);
-            })
-            .catch((e) => {
-              console.log("Error retrieving FHIR resources ", e);
-              // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
-              sendPatientBundle(this.patientBundle);
-            });
+          // Send the patient bundle to the CQL web worker WITH FHIR resources
+          sendPatientBundle(this.patientBundle);
+          // by this point we already have all the FHIR resources we need, e.g. questionnaireResponse & questionnaires
+          // no need to make this call to get FHIR resources, comment out for now
+          // this.getFhirResources()
+          //   .then(() => {
+          //     // Send the patient bundle to the CQL web worker WITH FHIR resources
+          //     sendPatientBundle(this.patientBundle);
+          //   })
+          //   .catch((e) => {
+          //     console.log("Error retrieving FHIR resources ", e);
+          //     // Send the patient bundle to the CQL web worker WITHOUT FHIR resources
+          //     sendPatientBundle(this.patientBundle);
+          //   });
           this.done();
           this.ready = true; // We don't show this component until `ready=true`
         })
@@ -222,18 +249,22 @@ export default {
     },
     setFirstInputFocus() {
       if (!this.surveyOptions.focusFirstQuestionAutomatic) return;
-      setTimeout(() => {
-        const textElement = document.querySelector("input[type=text]");
-        if (textElement) textElement.focus();
-      }, 350);
+      this.handleFocusOnFirstTextField();
     },
     initializeInstrument() {
-      return getScreeningInstrument(this.client, this.patientId)
+      return getScreeningInstrument(this.client, this.patientId, (o) => {
+        if (o.notificationText) {
+          this.notificationText = o.notificationText;
+          this.snackbar = true;
+        }
+      })
         .then((data) => {
           // Load the Questionniare, CQL ELM JSON, and value set cache which represents the alcohol screening instrument
           const [instrumentList, questionnaire, elmJson, valueSetJson] = data;
           if (!instrumentList || !instrumentList.length) {
-            this.error = "No questionnaire to administer.";
+            this.handleEndOfQuestionnaires(
+              `<h3><span class='text-warning'>No questionnaire left to adminster.</span><br/>All questionnaires completed.</h3>`
+            );
             return;
           }
           this.currentQuestionnaireList = instrumentList;
@@ -303,8 +334,7 @@ export default {
       var options = {
         ...surveyOptions["default"],
         ...(surveyOptions[optionsKeys] || {}),
-        navigateToUrl:
-          this.currentQuestionnaireList.length > 1 ? location.href : null,
+        navigateToUrl: location.href,
       };
 
       if (this.dashboardURL) {
@@ -385,30 +415,61 @@ export default {
         };
       }
     },
-    setFocusOnFirstQuestion() {
-      // find all question elements
-      const questionElements = document.querySelectorAll(".sv-question");
-      if (!questionElements.length) {
-        return;
-      }
-      // get the first question
-      const firstQuestionElement = questionElements[0];
-      // check if the first question contains a text input field
-      const inputTextElement = firstQuestionElement
-        ? firstQuestionElement.querySelector("input[type='text']")
-        : null;
-      if (!inputTextElement) return;
-      // if so, focus on it
-      setTimeout(() => {
-        inputTextElement.focus();
-      }, 250);
-    },
     getSurveyQuestionValidator() {
       if (!this.surveyOptions || !this.surveyOptions.questionValidator)
         return function () {};
       return this.surveyOptions.questionValidator;
     },
-    onAfterRenderPage(sender, options) {
+    initializeSurveyObjEvents() {
+      //add validation to question
+      this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
+
+      this.survey.onAfterRenderPage.add(
+        function (sender, options) {
+          this.handleOnAfterRenderPage(sender, options);
+        }.bind(this)
+      );
+
+      this.survey.onCurrentPageChanged.add(
+        function (sender) {
+          this.handleOnCurrentPageChanged(sender);
+        }.bind(this)
+      ),
+        // Add an event listener which updates questionnaireResponse based upon user responses
+        this.survey.onValueChanging.add(
+          function (sender, options) {
+            this.handleOnValueChanging(sender, options);
+          }.bind(this)
+        );
+      // Add a handler which will fire when the Questionnaire is submittedc
+      this.survey.onComplete.add(
+        function (sender, options) {
+          this.handleOnComplete(sender, options);
+        }.bind(this)
+      );
+    },
+    handleFocusOnFirstTextField() {
+      // find all question elements
+      const questionElements = document.querySelectorAll(".sv-question");
+      if (!questionElements.length) {
+        return;
+      }
+      for (let index = 0; index < questionElements.length; index++) {
+        const qElement = questionElements[index];
+        // check if the question contains input field
+        const inputElement = qElement ? qElement.querySelector("input") : null;
+        if (inputElement) {
+          const inputType = inputElement.getAttribute("type");
+          // if a text input element, focus on it
+          if (inputType === "text") {
+            inputElement.focus();
+          }
+          // an input has been found so break out of the loop
+          if (inputType !== "hidden") break;
+        }
+      }
+    },
+    handleOnAfterRenderPage(sender, options) {
       console.log("sender object on page rendered ", sender);
       // write to log
       LogHelper.writeLogOnSurveyPageRendered(
@@ -421,26 +482,25 @@ export default {
         }
       );
     },
-    onCurrentPageChanged(sender) {
-      console.log(
-        "sender page number on page changed ",
-        sender.currentPageNo,
-        " sender object ",
-        sender
-      );
+    handleOnCurrentPageChanged(sender) {
+      console.log("sender page number on page changed ", sender.currentPageNo);
       // only allow skip questionnaire botón on the first page
       this.allowSkip = !sender.currentPageNo;
-      this.setFocusOnFirstQuestion();
+      setTimeout(() => {
+        this.handleFocusOnFirstTextField();
+      }, 300);
     },
-    onValueChanging(sender, options) {
-      console.log("sender object on value changing ", sender);
+    handleOnValueChanging(sender, options) {
+      // We don't want to modify anything if the survey has been submitted/completed.
+      if (sender.isCompleted == true) return;
+
       // Find the index of this item (may not exist)
       // NOTE: THIS WON'T WORK WITH QUESTIONNAIRES THAT HAVE NESTED ITEMS
       let answerItemIndex = this.questionnaireResponse.item.findIndex(
         (itm) => itm.linkId == options.name
       );
 
-      if (options.value != null) {
+      if (options.value !== null) {
         let responseValue = getResponseValue(
           this.questionnaire,
           options.name,
@@ -498,11 +558,13 @@ export default {
           this.questionnaireResponse.item = items;
         }
       }
+
       // Need to reload the patient bundle since the responses have been updated
       cqlWorker.postMessage({ patientBundle: this.patientBundle });
     },
-    onComplete(sender, options) {
-      console.log("sender object on complete ", sender);
+    handleOnComplete(sender, options) {
+      console.log("sender object on complete: ", sender);
+
       // Mark the QuestionnaireResponse as completed
       this.questionnaireResponse.status = "completed";
 
@@ -524,15 +586,13 @@ export default {
             },
           })
           .then(() => {
-            options.showDataSavingSuccess();
-            options.showDataSavingClear();
             this.handleAdvanceQuestionnaireList();
-            this.showDialog = this.currentQuestionnaireList.length > 0;
-            if (this.currentQuestionnaireList.length) {
-              this.dialogMessage = `Loading ${this.currentQuestionnaireList[0].toUpperCase()} questionnaire`;
-            } else {
-              this.handleEndOfQuestionnaires();
-            }
+            this.showDialog = true;
+            this.dialogMessage = `Processing data.  Please wait...`;
+            setTimeout(() => {
+              options.showDataSavingSuccess();
+              options.showDataSavingClear();
+            }, 500);
           })
           .catch((e) => {
             this.error = `Error saving the questionnaire response for ${this.currentQuestionnaireId.toUpperCase()}.  See console for details.`;
@@ -540,63 +600,33 @@ export default {
             console.log(e);
           });
       } else this.handleAdvanceQuestionnaireList();
-    },
-    initializeSurveyObjEvents() {
-      //add validation to question
-      this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
-
-      this.survey.onAfterRenderPage.add(
-        function (sender, options) {
-          this.onAfterRenderPage(sender, options);
-        }.bind(this)
-      );
-
-      this.survey.onCurrentPageChanged.add(
-        function (sender) {
-          this.onCurrentPageChanged(sender);
-        }.bind(this)
-      ),
-        // Add an event listener which updates questionnaireResponse based upon user responses
-        this.survey.onValueChanging.add(
-          function (sender, options) {
-            // We don't want to modify anything if the survey has been submitted/completed.
-            if (sender.isCompleted == true) return;
-
-            this.onValueChanging(sender, options);
-          }.bind(this)
+      if (this.isDevelopment()) {
+        console.log(
+          "questionnaire responses ",
+          JSON.stringify(this.questionnaireResponse, null, 2)
         );
-      // Add a handler which will fire when the Questionnaire is submittedc
-      this.survey.onComplete.add(
-        function (sender, options) {
-          console.log("sender ", sender);
-          this.onComplete(sender, options);
-          if (this.isDevelopment()) {
-            console.log(
-              "questionnaire responses ",
-              JSON.stringify(this.questionnaireResponse, null, 2)
-            );
-          }
-        }.bind(this)
-      );
+      }
     },
-    handleEndOfQuestionnaires() {
+    handleEndOfQuestionnaires(message) {
       // don't end survey session if there is still questionnaire to do
       if (this.currentQuestionnaireList.length > 0) return;
 
       // turn off skip flag
       this.allowSkip = false;
 
+      // if no dashboard URL is specified, just show a message informing user that all questionnaires are completed
+      this.dialogMessage = message
+        ? message
+        : "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
+      this.showDialog = true;
+
       if (this.dashboardURL) {
         setTimeout(
           () => (window.location = this.dashboardURL + "/clear_session"),
-          1000
+          1500
         );
         return;
       }
-      // if no dashboard URL is specified, just show a message informing user that all questionnaires are completed
-      this.dialogMessage =
-        "<h3>All questionnaire(s) are completed. You may now close the window.</h3>";
-      this.showDialog = true;
     },
     handleSkippingQuestionnaire() {
       this.reloadInProgress = true;
@@ -604,15 +634,13 @@ export default {
       // advance to the next questionnaire if possible
       this.handleAdvanceQuestionnaireList();
 
-      // if there are still questionnaire(s) left to do, reload the page to go to the next
-      if (this.currentQuestionnaireList.length > 0) {
-        setTimeout(() => location.reload(), 350);
-        return;
-      }
-      // no more questionnaire to do, handle it
-      this.handleEndOfQuestionnaires();
+      // reload page for re-processing of questionnaires to administer
+      setTimeout(() => location.reload(), 500);
     },
     handleAdvanceQuestionnaireList() {
+      setSessionAdministeredInstrumentList(this.sessionKey, [
+        this.currentQuestionnaireId,
+      ]);
       setSessionInstrumentList(
         this.sessionKey,
         removeArrayItem(
@@ -620,9 +648,6 @@ export default {
           this.currentQuestionnaireId
         )
       );
-      if (this.currentQuestionnaireList.length === 0) {
-        removeSessionInstrumentList(this.sessionKey);
-      }
     },
     shouldShowSkipQuestionnaireButton() {
       return !this.error && this.ready && this.allowSkip;
