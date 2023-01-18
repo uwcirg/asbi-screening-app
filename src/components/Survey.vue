@@ -219,12 +219,12 @@ export default {
     getDefaultLogObject() {
       return {
         subject: `Patient/${this.patientId}`,
+        projectID: this.projectID,
       };
     },
     // params in log message body
     getDefaultLogMessageObject() {
       return {
-        projectID: this.projectID,
         authSessionID: this.sessionKey,
         careplanID: this.careplan ? this.careplan.id : null,
       };
