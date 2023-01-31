@@ -1000,34 +1000,67 @@
                         "operand" : [ {
                            "type" : "Or",
                            "operand" : [ {
-                              "type" : "Equal",
+                              "type" : "Or",
                               "operand" : [ {
-                                 "path" : "value",
-                                 "type" : "Property",
-                                 "source" : {
-                                    "path" : "code",
+                                 "type" : "Equal",
+                                 "operand" : [ {
+                                    "path" : "value",
                                     "type" : "Property",
                                     "source" : {
-                                       "type" : "Indexer",
-                                       "operand" : [ {
-                                          "path" : "coding",
-                                          "type" : "Property",
-                                          "source" : {
-                                             "path" : "code",
-                                             "scope" : "C",
-                                             "type" : "Property"
-                                          }
-                                       }, {
-                                          "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                                          "value" : "0",
-                                          "type" : "Literal"
-                                       } ]
+                                       "path" : "code",
+                                       "type" : "Property",
+                                       "source" : {
+                                          "type" : "Indexer",
+                                          "operand" : [ {
+                                             "path" : "coding",
+                                             "type" : "Property",
+                                             "source" : {
+                                                "path" : "code",
+                                                "scope" : "C",
+                                                "type" : "Property"
+                                             }
+                                          }, {
+                                             "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                             "value" : "0",
+                                             "type" : "Literal"
+                                          } ]
+                                       }
                                     }
-                                 }
+                                 }, {
+                                    "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                                    "value" : "F03.9",
+                                    "type" : "Literal"
+                                 } ]
                               }, {
-                                 "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "value" : "F03.9",
-                                 "type" : "Literal"
+                                 "type" : "Equal",
+                                 "operand" : [ {
+                                    "path" : "value",
+                                    "type" : "Property",
+                                    "source" : {
+                                       "path" : "code",
+                                       "type" : "Property",
+                                       "source" : {
+                                          "type" : "Indexer",
+                                          "operand" : [ {
+                                             "path" : "coding",
+                                             "type" : "Property",
+                                             "source" : {
+                                                "path" : "code",
+                                                "scope" : "C",
+                                                "type" : "Property"
+                                             }
+                                          }, {
+                                             "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                             "value" : "0",
+                                             "type" : "Literal"
+                                          } ]
+                                       }
+                                    }
+                                 }, {
+                                    "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                                    "value" : "F01.5",
+                                    "type" : "Literal"
+                                 } ]
                               } ]
                            }, {
                               "type" : "Equal",
@@ -1056,7 +1089,7 @@
                                  }
                               }, {
                                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "value" : "F01.5",
+                                 "value" : "G31.0",
                                  "type" : "Literal"
                               } ]
                            } ]
@@ -1087,7 +1120,7 @@
                               }
                            }, {
                               "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                              "value" : "G31.0",
+                              "value" : "G20",
                               "type" : "Literal"
                            } ]
                         } ]
@@ -1118,7 +1151,7 @@
                            }
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "G20",
+                           "value" : "F03.91",
                            "type" : "Literal"
                         } ]
                      } ]
@@ -1149,7 +1182,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "F03.91",
+                        "value" : "G30.9",
                         "type" : "Literal"
                      } ]
                   } ]
@@ -3627,20 +3660,11 @@
                "else" : {
                   "type" : "If",
                   "condition" : {
-                     "type" : "And",
-                     "operand" : [ {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "dcw_cog_level_2",
-                           "type" : "ExpressionRef"
-                        }
-                     }, {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "dcw_care_partner_present",
-                           "type" : "ExpressionRef"
-                        }
-                     } ]
+                     "type" : "IsTrue",
+                     "operand" : {
+                        "name" : "dcw_cog_level_1",
+                        "type" : "ExpressionRef"
+                     }
                   },
                   "then" : {
                      "type" : "Tuple",
@@ -4308,28 +4332,34 @@
                "else" : {
                   "type" : "If",
                   "condition" : {
-                     "type" : "And",
+                     "type" : "Or",
                      "operand" : [ {
+                        "name" : "HasDementia",
+                        "type" : "ExpressionRef"
+                     }, {
                         "type" : "And",
                         "operand" : [ {
-                           "type" : "IsTrue",
-                           "operand" : {
-                              "name" : "dcw_mood_level_2",
-                              "type" : "ExpressionRef"
-                           }
+                           "type" : "And",
+                           "operand" : [ {
+                              "type" : "IsTrue",
+                              "operand" : {
+                                 "name" : "dcw_mood_level_2",
+                                 "type" : "ExpressionRef"
+                              }
+                           }, {
+                              "type" : "IsTrue",
+                              "operand" : {
+                                 "name" : "dcw_care_partner_present",
+                                 "type" : "ExpressionRef"
+                              }
+                           } ]
                         }, {
                            "type" : "IsTrue",
                            "operand" : {
-                              "name" : "dcw_care_partner_present",
+                              "name" : "HasSLUMSDementiaScore",
                               "type" : "ExpressionRef"
                            }
                         } ]
-                     }, {
-                        "type" : "IsTrue",
-                        "operand" : {
-                           "name" : "HasSLUMSDementiaScore",
-                           "type" : "ExpressionRef"
-                        }
                      } ]
                   },
                   "then" : {
