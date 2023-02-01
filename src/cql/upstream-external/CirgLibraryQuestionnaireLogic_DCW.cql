@@ -135,15 +135,16 @@ define dcw_mood_level_2:
 //     union ["Condition": "Parkinson's disease"]
 //     union ["Condition": "Unspecified dementia, with behavioral disturbance"]
 // G30.9 Alzheimer's disease, unspecified
+// G31.0 Frontotemporal dementia
 
 define DementiaConditions:
   (["Condition"] C where (
-    C.code.coding[0].code.value = 'F03.9' or
     C.code.coding[0].code.value = 'F01.5' or
-    C.code.coding[0].code.value = 'G31.0' or
-    C.code.coding[0].code.value = 'G20' or
+    C.code.coding[0].code.value = 'F03.9' or
     C.code.coding[0].code.value = 'F03.91' or
-    C.code.coding[0].code.value = 'G30.9'
+    C.code.coding[0].code.value = 'G20' or
+    C.code.coding[0].code.value = 'G30.9' or
+    C.code.coding[0].code.value = 'G31.0'
   ))
 
 define HasDementia:
@@ -162,10 +163,11 @@ define MoodConditions:
   //   depression condition ("F32.A - Depression, unspecified" and "F33.1 - Major Depressive Disorder, Recurrent, Moderate")
   //   and/or 
   //   anxiety condition ("F41.1 - Generalized Anxiety Disorder" - not present in our 3 test patients...)
-
+  //   F33.41, Major depressive disorder, recurrent, in partial remission
   ["Condition"] C where (
     C.code.coding[0].code.value = 'F32.A' or
     C.code.coding[0].code.value = 'F33.1' or
+    C.code.coding[0].code.value = 'F33.41' or
     C.code.coding[0].code.value = 'F41.1'
   )
 

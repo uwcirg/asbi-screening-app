@@ -1028,7 +1028,7 @@
                                     }
                                  }, {
                                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                    "value" : "F03.9",
+                                    "value" : "F01.5",
                                     "type" : "Literal"
                                  } ]
                               }, {
@@ -1058,7 +1058,7 @@
                                     }
                                  }, {
                                     "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                    "value" : "F01.5",
+                                    "value" : "F03.9",
                                     "type" : "Literal"
                                  } ]
                               } ]
@@ -1089,7 +1089,7 @@
                                  }
                               }, {
                                  "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                                 "value" : "G31.0",
+                                 "value" : "F03.91",
                                  "type" : "Literal"
                               } ]
                            } ]
@@ -1151,7 +1151,7 @@
                            }
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "F03.91",
+                           "value" : "G30.9",
                            "type" : "Literal"
                         } ]
                      } ]
@@ -1182,7 +1182,7 @@
                         }
                      }, {
                         "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                        "value" : "G30.9",
+                        "value" : "G31.0",
                         "type" : "Literal"
                      } ]
                   } ]
@@ -1687,34 +1687,67 @@
                   "operand" : [ {
                      "type" : "Or",
                      "operand" : [ {
-                        "type" : "Equal",
+                        "type" : "Or",
                         "operand" : [ {
-                           "path" : "value",
-                           "type" : "Property",
-                           "source" : {
-                              "path" : "code",
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "path" : "value",
                               "type" : "Property",
                               "source" : {
-                                 "type" : "Indexer",
-                                 "operand" : [ {
-                                    "path" : "coding",
-                                    "type" : "Property",
-                                    "source" : {
-                                       "path" : "code",
-                                       "scope" : "C",
-                                       "type" : "Property"
-                                    }
-                                 }, {
-                                    "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
-                                    "value" : "0",
-                                    "type" : "Literal"
-                                 } ]
+                                 "path" : "code",
+                                 "type" : "Property",
+                                 "source" : {
+                                    "type" : "Indexer",
+                                    "operand" : [ {
+                                       "path" : "coding",
+                                       "type" : "Property",
+                                       "source" : {
+                                          "path" : "code",
+                                          "scope" : "C",
+                                          "type" : "Property"
+                                       }
+                                    }, {
+                                       "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "value" : "0",
+                                       "type" : "Literal"
+                                    } ]
+                                 }
                               }
-                           }
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                              "value" : "F32.A",
+                              "type" : "Literal"
+                           } ]
                         }, {
-                           "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "F32.A",
-                           "type" : "Literal"
+                           "type" : "Equal",
+                           "operand" : [ {
+                              "path" : "value",
+                              "type" : "Property",
+                              "source" : {
+                                 "path" : "code",
+                                 "type" : "Property",
+                                 "source" : {
+                                    "type" : "Indexer",
+                                    "operand" : [ {
+                                       "path" : "coding",
+                                       "type" : "Property",
+                                       "source" : {
+                                          "path" : "code",
+                                          "scope" : "C",
+                                          "type" : "Property"
+                                       }
+                                    }, {
+                                       "valueType" : "{urn:hl7-org:elm-types:r1}Integer",
+                                       "value" : "0",
+                                       "type" : "Literal"
+                                    } ]
+                                 }
+                              }
+                           }, {
+                              "valueType" : "{urn:hl7-org:elm-types:r1}String",
+                              "value" : "F33.1",
+                              "type" : "Literal"
+                           } ]
                         } ]
                      }, {
                         "type" : "Equal",
@@ -1743,7 +1776,7 @@
                            }
                         }, {
                            "valueType" : "{urn:hl7-org:elm-types:r1}String",
-                           "value" : "F33.1",
+                           "value" : "F33.41",
                            "type" : "Literal"
                         } ]
                      } ]
