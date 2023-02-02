@@ -4365,27 +4365,27 @@
                "else" : {
                   "type" : "If",
                   "condition" : {
-                     "type" : "Or",
+                     "type" : "And",
                      "operand" : [ {
-                        "name" : "HasDementia",
-                        "type" : "ExpressionRef"
-                     }, {
                         "type" : "And",
                         "operand" : [ {
-                           "type" : "And",
-                           "operand" : [ {
-                              "type" : "IsTrue",
-                              "operand" : {
-                                 "name" : "dcw_mood_level_2",
-                                 "type" : "ExpressionRef"
-                              }
-                           }, {
-                              "type" : "IsTrue",
-                              "operand" : {
-                                 "name" : "dcw_care_partner_present",
-                                 "type" : "ExpressionRef"
-                              }
-                           } ]
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "dcw_mood_level_2",
+                              "type" : "ExpressionRef"
+                           }
+                        }, {
+                           "type" : "IsTrue",
+                           "operand" : {
+                              "name" : "dcw_care_partner_present",
+                              "type" : "ExpressionRef"
+                           }
+                        } ]
+                     }, {
+                        "type" : "Or",
+                        "operand" : [ {
+                           "name" : "HasDementia",
+                           "type" : "ExpressionRef"
                         }, {
                            "type" : "IsTrue",
                            "operand" : {

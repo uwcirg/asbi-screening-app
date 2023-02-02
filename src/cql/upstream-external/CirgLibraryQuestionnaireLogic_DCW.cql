@@ -398,11 +398,10 @@ define PresentQnr_CIRG_GDS:
 define PresentQnr_CIRG_C_IDAS:
   // check if there are already questionnaire responses for today
   if Length(CIRG_C_IDAS_Responses_Today) >= 1 then null
-  // dementia diagnosis/condition or CIRG-SLUMS score indicates dementia 
-  else if HasDementia or (
+  else if (
     dcw_mood_level_2 is true and 
     dcw_care_partner_present is true and 
-    HasSLUMSDementiaScore is true)
+    (HasDementia or HasSLUMSDementiaScore is true)) // dementia diagnosis/condition or CIRG-SLUMS score indicates dementia 
   then {
     questionnaireId: 'CIRG-C-IDAS',
     scheduledTiming: Scheduled_Timing,

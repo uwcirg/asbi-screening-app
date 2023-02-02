@@ -35,4 +35,4 @@ data:
 results:
   HasNormalSLUMSScore: false
   HasSLUMSDementiaScore: true
-  PresentQnr_CIRG_C_IDAS: $should exist
+  PresentQnr_CIRG_C_IDAS: null
