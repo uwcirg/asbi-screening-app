@@ -3693,11 +3693,20 @@
                "else" : {
                   "type" : "If",
                   "condition" : {
-                     "type" : "IsTrue",
-                     "operand" : {
-                        "name" : "dcw_cog_level_1",
-                        "type" : "ExpressionRef"
-                     }
+                     "type" : "And",
+                     "operand" : [ {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_cog_level_2",
+                           "type" : "ExpressionRef"
+                        }
+                     }, {
+                        "type" : "IsTrue",
+                        "operand" : {
+                           "name" : "dcw_care_partner_present",
+                           "type" : "ExpressionRef"
+                        }
+                     } ]
                   },
                   "then" : {
                      "type" : "Tuple",

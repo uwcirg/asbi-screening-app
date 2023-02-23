@@ -359,7 +359,8 @@ define PresentQnr_CIRG_SLUMS:
 define PresentQnr_CIRG_ADL_IADL:
   // check if there are already questionnaire responses for today
   if Length(CIRG_ADL_IADL_Responses_Today) >= 1 then null
-  else if dcw_cog_level_1 is true then {
+  // dementia dx or failed MINICOG score AND care partner present
+  else if dcw_cog_level_2 is true and dcw_care_partner_present is true then {
     questionnaireId: 'CIRG-ADL-IADL',
     scheduledTiming: Scheduled_Timing,
     status: 'scheduled'
