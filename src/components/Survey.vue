@@ -61,12 +61,14 @@ import {
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
 import {
+  addMamotoTracking,
   getCurrentISODate,
   getEnv,
   getEnvs,
   getErrorText,
   getFHIRResourcePaths,
   getResponseValue,
+  parseJwt,
   setFavicon,
   removeArrayItem,
 } from "../util/util.js";
@@ -149,12 +151,16 @@ export default {
         { ...this.getDefaultLogMessageObject(), text: "auth session started" }
       );
     },
+    getUserId() {
+      if (this.client.user && this.client.user.id) return this.client.user.id;
+      const accessToken = parseJwt(this.client.getState("tokenResponse.access_token"));
+      if (accessToken) return accessToken["preferred_username"];
+    },
     init() {
       if (this.error || !this.patient) return false;
-      //console.log("state ", this.client.getState("tokenResponse.id_token"));
-      //console.log("client state ", this.client.getState());
       this.sessionKey = this.client.getState().key;
       console.log("environment variables ", getEnvs());
+      addMamotoTracking(this.getUserId());
       this.patientId = this.patient.id;
       this.patientBundle.entry.unshift({ resource: this.patient });
       this.setCarePlan().then(() => this.onAuthSessionStarted());
