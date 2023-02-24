@@ -155,6 +155,7 @@ export default {
       if (this.client.user && this.client.user.id) return this.client.user.id;
       const accessToken = parseJwt(this.client.getState("tokenResponse.access_token"));
       if (accessToken) return accessToken["preferred_username"];
+      return null;
     },
     init() {
       if (this.error || !this.patient) return false;
