@@ -94,9 +94,9 @@ export function getFHIRResourcePaths(patientId) {
   const envFHIRResources = getEnv("VUE_APP_FHIR_RESOURCES");
   const envObCategories = getEnv("VUE_APP_FHIR_OBSERVATION_CATEGORY_QUERIES");
   let resources = envFHIRResources ? envFHIRResources.split(",") : [];
-  const hasQuestionnaireResponses = resources.filter(
-    (item) => item.toLowerCase() === "questionnaireresponse"
-  ).length > 0;
+  const hasQuestionnaireResponses =
+    resources.filter((item) => item.toLowerCase() === "questionnaireresponse")
+      .length > 0;
   if (!hasQuestionnaireResponses) {
     // load questionnaire response(s) by default
     resources.push("QuestionnaireResponse");
@@ -126,7 +126,7 @@ export function fetchEnvData() {
     console.log("Window config variables added. ");
     return;
   }
-  const setConfig = function() {
+  const setConfig = function () {
     if (!xhr.readyState === xhr.DONE) {
       return;
     }
@@ -146,7 +146,7 @@ export function fetchEnvData() {
   };
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/env.json", false);
-  xhr.onreadystatechange = function() {
+  xhr.onreadystatechange = function () {
     //in the event of a communication error (such as the server going down),
     //or error happens when parsing data
     //an exception will be thrown in the onreadystatechange method when accessing the response properties, e.g. status.
@@ -161,7 +161,7 @@ export function fetchEnvData() {
   } catch (e) {
     console.log("Request failed to send.  Error: ", e);
   }
-  xhr.ontimeout = function(e) {
+  xhr.ontimeout = function (e) {
     // XMLHttpRequest timed out.
     console.log("request to fetch env.json file timed out ", e);
   };
@@ -218,7 +218,7 @@ export function setFavicon(href) {
   faviconEl.href = href;
 }
 
-export function removeArrayItem (arr, value) {
+export function removeArrayItem(arr, value) {
   if (!arr || !Array.isArray(arr)) return [];
   let index = arr.indexOf(value);
   if (index > -1) {
@@ -233,8 +233,48 @@ export function clearSessionStorageByKeyword(matchString) {
     const key = sessionStorage.key(i);
     if (key.includes(matchString)) sessionStorage.removeItem(key);
   }
+}
 
+export function parseJwt(token) {
+  if (!token) return null;
+  var base64Url = token.split(".")[1];
+  var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  var jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
+  );
+  return JSON.parse(jsonPayload);
+}
+
+export function addMamotoTracking(userId) {
+  if (document.querySelector("#matomoScript")) return;
+  const siteId = getEnv("VUE_APP_MATOMO_SITE_ID");
+  // no site ID specified, not proceeding
+  if (!siteId) return;
+  window._paq = [];
+  window._paq.push(["trackPageView"]);
+  window._paq.push(["enableLinkTracking"]);
+  window._paq.push(["setSiteId", siteId]);
+
+  if (userId) {
+    window._paq.push(["setUserId", userId]);
+  }
+
+  let u = "https://piwik.cirg.washington.edu/";
+  window._paq.push(["setTrackerUrl", u + "matomo.php"]);
+  let d = document,
+    g = d.createElement("script"),
+    headElement = document.querySelector("head");
+  g.type = "text/javascript";
+  g.async = true;
+  g.defer = true;
+  g.setAttribute("src", u + "matomo.js");
+  g.setAttribute("id", "matomoScript");
+  headElement.appendChild(g);
 }
 
 export const queryPatientIdKey = "launch_queryPatientId";
-
