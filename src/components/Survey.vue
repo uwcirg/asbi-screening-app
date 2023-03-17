@@ -14,12 +14,8 @@
       >
     </div>
     <survey v-if="!error && ready" :survey="survey" :css="getTheme()"></survey>
-    <div v-if="!error && !ready" class="ma-4 pa-4">
-      <v-progress-circular
-        :value="100"
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
+    <div v-if="!error && !ready" class="loader-container">
+      <LoadingIndicator size="56"></LoadingIndicator>
     </div>
     <v-dialog
       content-class="dialog-container"
@@ -29,8 +25,11 @@
       :transition="false"
     >
       <v-card :rounded="false"
-        ><div v-html="dialogMessage" class="dialog-body-container"></div
-      ></v-card>
+        ><div class="dialog-body-container">
+          <div v-html="dialogMessage" v-if="dialogMessage"></div>
+          <LoadingIndicator v-else></LoadingIndicator>
+        </div>
+      </v-card>
     </v-dialog>
     <v-snackbar
       v-model="snackbar"
@@ -56,7 +55,7 @@ import {
   getPatientCarePlan,
   getScreeningInstrument,
   setSessionAdministeredInstrumentList,
-  setSessionInstrumentList
+  setSessionInstrumentList,
 } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
@@ -76,6 +75,7 @@ import * as LogHelper from "../util/log";
 import surveyOptions from "../context/surveyjs.options.js";
 import themes from "../context/themes.js";
 import { FunctionFactory, Model, Serializer, StylesManager } from "survey-vue";
+import Loader from "./Loader.vue";
 
 // Define a web worker for evaluating CQL expressions
 const cqlWorker = new Worker();
@@ -89,6 +89,9 @@ export default {
     client: Object,
     patient: Object,
     authError: [String, Object, Error],
+  },
+  components: {
+    LoadingIndicator: Loader,
   },
   watch: {
     patient(newVal, oldVal) {
@@ -133,7 +136,7 @@ export default {
       ready: false,
       error: false,
       showDialog: false,
-      dialogMessage: "Saving in progress ...",
+      dialogMessage: "",
       allowSkip:
         String(getEnv("VUE_APP_ALLOW_SKIPPING_QUESTIONNAIRE")) === "true",
       reloadInProgress: false,
@@ -153,7 +156,9 @@ export default {
     },
     getUserId() {
       if (this.client.user && this.client.user.id) return this.client.user.id;
-      const accessToken = parseJwt(this.client.getState("tokenResponse.access_token"));
+      const accessToken = parseJwt(
+        this.client.getState("tokenResponse.access_token")
+      );
       if (accessToken) return accessToken["preferred_username"];
       return null;
     },
@@ -270,7 +275,14 @@ export default {
           const [instrumentList, questionnaire, elmJson, valueSetJson] = data;
           if (!instrumentList || !instrumentList.length) {
             this.handleEndOfQuestionnaires(
-              `<h3><span class='text-warning'>No questionnaire left to adminster.</span><br/>All questionnaires completed.</h3>`
+              `<h3>
+                <span class='text-warning'>No questionnaire left to adminster.</span><br/>
+                All questionnaires completed.</h3>
+              ${
+                this.dashboardURL
+                  ? "<br/><p>Redirecting back to patient list...</p>"
+                  : ""
+              }`
             );
             return;
           }
@@ -448,6 +460,13 @@ export default {
             this.handleOnValueChanging(sender, options);
           }.bind(this)
         );
+
+      // save questionnaire response on user clicking on "Next" button
+      this.survey.onPartialSend.add(
+        function () {
+          this.handleOnPartialSend();
+        }.bind(this)
+      );
       // Add a handler which will fire when the Questionnaire is submittedc
       this.survey.onComplete.add(
         function (sender, options) {
@@ -485,7 +504,7 @@ export default {
         {
           questionnaireId: this.questionnaire.id,
           ...this.getDefaultLogMessageObject(),
-          text: "page rendered"
+          text: "page rendered",
         }
       );
     },
@@ -569,6 +588,30 @@ export default {
       // Need to reload the patient bundle since the responses have been updated
       cqlWorker.postMessage({ patientBundle: this.patientBundle });
     },
+    async handleOnPartialSend() {
+      this.notificationText = "";
+      this.snackbar = false;
+      if (!this.hasQuestionnaireResponse()) return;
+      let result = null;
+      this.showDialog = true;
+      try {
+        result = await this.saveQuestionnaireResponse().catch((e) => {
+          // display error if there is trouble saving the response
+          console.log("Saving response error ", e);
+          this.notificationText = `Error saving response. See console for detail.`;
+          this.snackbar = true;
+        });
+      } catch (e) {
+        console.log("Unable to save questionnaire response ", e);
+        this.notificationText = `Error saving response. See console for detail.`;
+        this.snackbar = true;
+      }
+      if (result) {
+        console.log("save result ", result);
+        if (result.id) this.questionnaireResponse.id = result.id;
+      }
+      setTimeout(() => (this.showDialog = false), 150);
+    },
     handleOnComplete(sender, options) {
       console.log("sender object on complete: ", sender);
 
@@ -586,15 +629,10 @@ export default {
       if (getEnv("VUE_APP_WRITE_BACK_MODE").toLowerCase() == "smart") {
         options.showDataSaving();
         this.showDialog = true;
-        this.client
-          .create(this.questionnaireResponse, {
-            headers: {
-              "Content-Type": "application/fhir+json",
-            },
-          })
+        this.dialogMessage = "Saving in progress ...";
+        this.saveQuestionnaireResponse()
           .then(() => {
             this.handleAdvanceQuestionnaireList();
-            this.showDialog = true;
             this.dialogMessage = `Processing data.  Please wait...`;
             setTimeout(() => {
               options.showDataSavingSuccess();
@@ -658,6 +696,25 @@ export default {
     },
     shouldShowSkipQuestionnaireButton() {
       return !this.error && this.ready && this.allowSkip;
+    },
+    hasQuestionnaireResponse() {
+      return (
+        this.questionnaireResponse.item &&
+        this.questionnaireResponse.item.length > 0
+      );
+    },
+    saveQuestionnaireResponse() {
+      const requestOptions = {
+        headers: {
+          "Content-Type": "application/fhir+json",
+        },
+      };
+      console.log(
+        "questionnaire response to be updated ",
+        this.questionnaireResponse
+      );
+      const method = this.questionnaireResponse.id ? "update" : "create";
+      return this.client[method](this.questionnaireResponse, requestOptions);
     },
     getError() {
       return getErrorText(this.error);

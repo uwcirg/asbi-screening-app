@@ -7,179 +7,189 @@ $body-bg-color: #f7f6f6;
 $survey-body-width: 900px;
 
 body {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-size: 18px;
-    line-height: 1.45;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 18px;
+  line-height: 1.45;
 }
 .v-application {
-    background: $body-bg-color !important;
+  background: $body-bg-color !important;
 }
 .logo-container {
-    img {
-        width: 160px;
-    }
+  img {
+    width: 160px;
+  }
 }
 .ghost {
-    display: none;
-    z-index: -1;
+  display: none;
+  z-index: -1;
 }
 .text-overflow {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 #surveyElement {
-    margin-top: 64px;
+  margin-top: 64px;
 }
 #surveyElement:empty {
-    margin-top: 0;
+  margin-top: 0;
 }
 .v-toolbar__title {
-    max-width: 60%;
+  max-width: 60%;
 }
 @media (min-width: 501px) {
-    .v-toolbar__title {
-        max-width: 100%;
-    }
+  .v-toolbar__title {
+    max-width: 100%;
+  }
 }
 .sv-body {
-    background: #FFF;
-    padding: 8px 0 40px;
-    max-width: $survey-body-width;
-    margin: auto;
+  background: #fff;
+  padding: 8px 0 40px;
+  max-width: $survey-body-width;
+  margin: auto;
 
-    input[type=text]:focus {
-        border-bottom-width: 2px;
-    }
+  input[type="text"]:focus {
+    border-bottom-width: 2px;
+  }
 }
 .sv-container-modern__title {
-    padding-top: 1em;
+  padding-top: 1em;
 }
 .sv-logo--left {
-    margin-right: 1em;
+  margin-right: 1em;
 }
 .sv-btn {
-    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 1.75;
-    letter-spacing: 0.02857em;
-    text-transform: uppercase;
-    min-width: 64px;
-    padding: 6px 16px;
-    border-radius: 4px;
-    vertical-align: middle;
-    border: 0;
+  box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%),
+    0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  min-width: 64px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  vertical-align: middle;
+  border: 0;
 }
 .sv-header__text {
-    margin-top: 12px;
+  margin-top: 12px;
 }
 .sv-string-viewer {
-    line-height: 1.45;
+  line-height: 1.45;
 }
 
 .sv-footer {
-    border-top: 2px solid $hr-color;
-    padding-top: 16px;
+  border-top: 2px solid $hr-color;
+  padding-top: 16px;
 }
 .sv-footer__next-btn,
 .sv-footer__prev-btn,
 .sv-footer__complete-btn {
-    padding: 8px 24px;
+  padding: 8px 24px;
 }
 .sv-footer__complete-btn,
 .sv-footer__next-btn {
-    float: left;
-    margin-left: 24px;
+  float: left;
+  margin-left: 24px;
 }
 .sv-footer__next-btn {
-    min-width: 120px;
-    text-align: center;
+  min-width: 120px;
+  text-align: center;
 }
 .sv-footer__prev-btn {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 .sv-footer__next-btn {
-    min-width: 120px;
-    text-align: center;
+  min-width: 120px;
+  text-align: center;
 }
 .info {
-    position: relative;
-    padding: 8px 32px;
-    background: $info-color;
-    color: #FFF;
-    border-radius: 4px;
-    &:after {
-        content: '\24D8';
-        display: block;
-        position: absolute;
-        top: 8px;
-        left: 8px;
-    }
+  position: relative;
+  padding: 8px 32px;
+  background: $info-color;
+  color: #fff;
+  border-radius: 4px;
+  &:after {
+    content: "\24D8";
+    display: block;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
 }
 .sv-completedpage {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 
 .sv-selectbase__clear-btn {
-    color: $link-color !important;
-    box-shadow: none;
-    background: transparent !important;
-    padding: 0;
-    margin-top: 20px;
+  color: $link-color !important;
+  box-shadow: none;
+  background: transparent !important;
+  padding: 0;
+  margin-top: 20px;
 }
 
 .sv-item:not(.sv-radio--checked):hover {
-    .sv-radio__svg {
-        border: 3px solid $muted-color;
-        use {
-            fill: none
-        }
+  .sv-radio__svg {
+    border: 3px solid $muted-color;
+    use {
+      fill: none;
     }
+  }
 }
 
+.loader-container,
 .dialog-body-container {
-    position: absolute;
-    top: 25%;
-    left: 25%;
-    font-size: 1.5rem;
-    font-weight: 600
+  top: 25%;
+  left: 25%;
+  transform: translate(0, -50%);
+  font-size: 1.5rem;
+  font-weight: 600;
+  position: absolute;
+}
+.loader-container {
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  top: 50%;
+  margin: -50px 0 0 -50px;
 }
 
 .app__version {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 8px;
-    margin-top: 16px;
-    color: $muted-color;
-    font-size: 0.9em;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8px;
+  margin-top: 16px;
+  color: $muted-color;
+  font-size: 0.9em;
 }
 
 .survey--actions-container {
-    text-align: right;
-    max-width: $survey-body-width;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    margin: auto;
-    &:empty {
-        padding-top: 0;
-        padding-bottom: 0;
-    }
+  text-align: right;
+  max-width: $survey-body-width;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  margin: auto;
+  &:empty {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 
 .text-warning {
-    color: $warning-color;
+  color: $warning-color;
 }
 
 .dialog-container {
-    top: 56px;
+  top: 56px;
 }
 @media (min-width: 960px) {
-    .dialog-container {
-        top: 64px;
-    }
+  .dialog-container {
+    top: 64px;
+  }
 }
