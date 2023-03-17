@@ -7,9 +7,8 @@
         @error="handleImageLoaded"
       />
     </div>
-    <v-toolbar-title
-      class="text-h5 secondary--text font-weight-bold"
-      v-text="title"
+    <v-toolbar-title class="text-h5 secondary--text font-weight-bold"
+      ><div v-text="title"></div
     ></v-toolbar-title>
     <div class="ml-6">
       <div
@@ -22,7 +21,11 @@
         v-text="getPatientDob()"
       ></div>
     </div>
-    <div v-if="getReturnURL()"><v-btn color="primary" :href="getReturnURL()" class="ml-4">Patient List</v-btn></div>
+    <div v-if="getReturnURL()" class="text-right" style="flex: 1">
+      <v-btn color="primary" :href="getReturnURL()" class="ml-4"
+        >Patient List</v-btn
+      >
+    </div>
   </v-app-bar>
 </template>
 
@@ -41,7 +44,7 @@ export default {
       return `/${getEnv("VUE_APP_PROJECT_ID")}/img/logo.png`;
     },
     getReturnURL() {
-      const dashboardURL = getEnv('VUE_APP_DASHBOARD_URL');
+      const dashboardURL = getEnv("VUE_APP_DASHBOARD_URL");
       if (!dashboardURL) return false;
       return dashboardURL + "/clear_session";
     },
