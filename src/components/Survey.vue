@@ -715,10 +715,6 @@ export default {
       );
       const method = this.questionnaireResponse.id ? "update" : "create";
       return this.client[method](this.questionnaireResponse, requestOptions);
-      // if (this.questionnaireResponse.id) {
-      //   return this.client.update(this.questionnaireResponse, requestOptions);
-      // } else
-      //   return this.client.create(this.questionnaireResponse + "e", requestOptions);
     },
     getError() {
       return getErrorText(this.error);
