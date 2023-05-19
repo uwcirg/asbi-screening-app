@@ -555,7 +555,7 @@ export default {
             questionnaireId: this.questionnaire.id,
             questionText: questionText,
             answerType: responseValues[0].type,
-            answerValue: Array.isArray(options.value) ? responseValues.map(item => item.value) : responseValues[0].valu,
+            answerValue: Array.isArray(options.value) ? responseValues.map(item => item.value) : responseValues[0].value,
             text: "answer value changed",
             ...this.getDefaultLogMessageObject(),
           }
