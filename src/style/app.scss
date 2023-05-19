@@ -141,6 +141,13 @@ body {
     }
 }
 
+.sv-item:not(.sv-checkbox--checked):hover {
+    .sv-checkbox__svg {
+        border: 3px solid $muted-color;
+        background-color: transparent !important;
+    }
+}
+
 .dialog-body-container {
     position: absolute;
     top: 25%;

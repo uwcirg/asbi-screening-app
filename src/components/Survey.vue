@@ -56,7 +56,7 @@ import {
   getPatientCarePlan,
   getScreeningInstrument,
   setSessionAdministeredInstrumentList,
-  setSessionInstrumentList
+  setSessionInstrumentList,
 } from "../util/screening-selector.js";
 import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack-contrib/worker-loader
 import { initialzieCqlWorker } from "cql-worker";
@@ -80,8 +80,11 @@ import { FunctionFactory, Model, Serializer, StylesManager } from "survey-vue";
 // Define a web worker for evaluating CQL expressions
 const cqlWorker = new Worker();
 // Initialize the cql-worker
-let [setupExecution, sendPatientBundle, evaluateExpression] =
-  initialzieCqlWorker(cqlWorker);
+let [
+  setupExecution,
+  sendPatientBundle,
+  evaluateExpression,
+] = initialzieCqlWorker(cqlWorker);
 
 // Define the survey component for Vue
 export default {
@@ -153,7 +156,9 @@ export default {
     },
     getUserId() {
       if (this.client.user && this.client.user.id) return this.client.user.id;
-      const accessToken = parseJwt(this.client.getState("tokenResponse.access_token"));
+      const accessToken = parseJwt(
+        this.client.getState("tokenResponse.access_token")
+      );
       if (accessToken) return accessToken["preferred_username"];
       return null;
     },
@@ -312,7 +317,7 @@ export default {
       // call `this.returnResult(result)` when it completes. Here we create a wrapper
       // calls `returnResult()` when the promise resolves.
       // See: https://surveyjs.io/Examples/Library/?id=questiontype-expression-async#content-js
-      let wrappedExpression = function (expression) {
+      let wrappedExpression = function(expression) {
         let self = this;
         // For some reason SurveyJS wraps `expression` in an array
         evaluateExpression(expression[0]).then((result) => {
@@ -424,7 +429,7 @@ export default {
     },
     getSurveyQuestionValidator() {
       if (!this.surveyOptions || !this.surveyOptions.questionValidator)
-        return function () {};
+        return function() {};
       return this.surveyOptions.questionValidator;
     },
     initializeSurveyObjEvents() {
@@ -432,25 +437,25 @@ export default {
       this.survey.onValidateQuestion.add(this.getSurveyQuestionValidator());
 
       this.survey.onAfterRenderPage.add(
-        function (sender, options) {
+        function(sender, options) {
           this.handleOnAfterRenderPage(sender, options);
         }.bind(this)
       );
 
       this.survey.onCurrentPageChanged.add(
-        function (sender) {
+        function(sender) {
           this.handleOnCurrentPageChanged(sender);
         }.bind(this)
       ),
         // Add an event listener which updates questionnaireResponse based upon user responses
         this.survey.onValueChanging.add(
-          function (sender, options) {
+          function(sender, options) {
             this.handleOnValueChanging(sender, options);
           }.bind(this)
         );
       // Add a handler which will fire when the Questionnaire is submittedc
       this.survey.onComplete.add(
-        function (sender, options) {
+        function(sender, options) {
           this.handleOnComplete(sender, options);
         }.bind(this)
       );
@@ -485,7 +490,7 @@ export default {
         {
           questionnaireId: this.questionnaire.id,
           ...this.getDefaultLogMessageObject(),
-          text: "page rendered"
+          text: "page rendered",
         }
       );
     },
@@ -508,39 +513,39 @@ export default {
       );
 
       if (options.value !== null) {
-        let responseValue = getResponseValue(
+        let responseValues = [];
+        if (Array.isArray(options.value)) {
+            responseValues = (options.value).map(item => {
+                return getResponseValue(
+                    this.questionnaire,
+                    options.name,
+                    item
+                );
+            })
+        } else responseValues.push(getResponseValue(
           this.questionnaire,
           options.name,
           options.value
-        );
-
+        ));
         let question = this.questionnaire.item.filter(
           (item) => item.linkId === options.name
         )[0];
         let questionText = question && question.text ? question.text : "";
 
+        const answerOption = {
+            linkId: options.name,
+            text: questionText,
+            answer: responseValues.map(item => ({
+                [item.type] : item.value
+            })),
+        };
+
         // If the index is undefined, add a new entry to questionnaireResponse.item
         if (answerItemIndex == -1) {
-          this.questionnaireResponse.item.push({
-            linkId: options.name,
-            text: questionText,
-            answer: [
-              {
-                [responseValue.type]: responseValue.value,
-              },
-            ],
-          });
+          this.questionnaireResponse.item.push(answerOption);
         } else {
           // Otherwise update the existing index with the new response
-          this.questionnaireResponse.item[answerItemIndex] = {
-            linkId: options.name,
-            text: questionText,
-            answer: [
-              {
-                [responseValue.type]: responseValue.value,
-              },
-            ],
-          };
+          this.questionnaireResponse.item[answerItemIndex] = answerOption;
         }
         // write to log
         LogHelper.writeLogOnSurveyQuestionValueChange(
@@ -549,8 +554,8 @@ export default {
           {
             questionnaireId: this.questionnaire.id,
             questionText: questionText,
-            answerType: responseValue.type,
-            answerValue: responseValue.value,
+            answerType: responseValues[0].type,
+            answerValue: Array.isArray(options.value) ? responseValues.map(item => item.value) : responseValues[0].valu,
             text: "answer value changed",
             ...this.getDefaultLogMessageObject(),
           }
