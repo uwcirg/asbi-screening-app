@@ -2,6 +2,7 @@
   "resourceType": "Questionnaire",
   "id": "CIRG-GAD7",
   "name": "GAD7",
+  "description": "The **Generalized Anxiety Disorder Assessment** (GAD-7) is a seven-item instrument that is used to measure or assess the severity of generalized anxiety disorder (GAD). Each item asks the individual to rate the severity of his or her symptoms over the past two weeks.</br></br>These questions are to be answered by the **patient**. Reference: [https://www.mdcalc.com/calc/1727/gad7-general-anxiety-disorder7](https://www.mdcalc.com/calc/1727/gad7-general-anxiety-disorder7).",
   "code": [
     {
       "code": "69737-5",

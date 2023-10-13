@@ -2,6 +2,7 @@
   "resourceType": "Questionnaire",
   "id": "CIRG-PHQ9",
   "name": "phq9",
+  "description": "PHQ-9 quick depression assessment panel. References: [https://www.phqscreeners.com/select-screener](https://www.phqscreeners.com/select-screener), [https://www.phqscreeners.com/images/sites/g/files/g10016261/f/201412/instructions.pdf](https://www.phqscreeners.com/images/sites/g/files/g10016261/f/201412/instructions.pdf).",
   "url": "http://www.cdc.gov/ncbddd/fasd/phq9",
   "identifier": [
     {
