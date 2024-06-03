@@ -1,0 +1,41 @@
+{
+  "resourceType": "PlanDefinition",
+  "id": "CirgPlanDefinitionPhq9Gad7",
+  "url": "https://fhir.fl.ivanc.dcw.dev.cirg.uw.edu/fhir/PlanDefinition/CirgPlanDefinitionPhq9Gad7",
+  "title": "PlanDefinition - mostly for logic around collection administering questionnaires",
+  "status": "active",
+  "experimental": "false",
+  "publisher": "Clinical Informatics Research Group, School of Nursing, University of Washington.",
+  "copyright": "Copyright 2022, University of Washington.",
+  "library" : ["https://fhir.fl.ivanc.dcw.dev.cirg.uw.edu/fhir/Library/CirgLibraryQuestionnaireLogicDCW|0.1.0"],
+  "action": [
+    {
+      "title": "Administer PHQ-9 questionnaire",
+      "description": "Adapted from https://github.com/ccsm-cds-tools/ccsm-cds-with-tests/blob/main/fsh-tank/fsh-generated/resources/PlanDefinition-CervicalCancerScreening.json#L115",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/cql-identifier",
+            "expression": "PresentPHQ9",
+            "reference": "Library/CirgLibraryQuestionnaireLogicDCW|0.1.0"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Administer GAD-7 questionnaire",
+      "description": "Adapted from https://github.com/ccsm-cds-tools/ccsm-cds-with-tests/blob/main/fsh-tank/fsh-generated/resources/PlanDefinition-CervicalCancerScreening.json#L115",
+      "condition": [
+        {
+          "kind": "applicability",
+          "expression": {
+            "language": "text/cql-identifier",
+            "expression": "PresentGAD7",
+            "reference": "Library/CirgLibraryQuestionnaireLogicDCW|0.1.0"
+          }
+        }
+      ]
+    }
+  ]
+}
