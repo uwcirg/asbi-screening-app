@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 /**
  * Parses a Questionnaire and determines what value choice (value[x]) each of its items are.
  * @param {object} allOrPartQuestionnaire - A FHIR Questionnaire or a subset of its items
@@ -19,10 +20,12 @@ export function getItemTypes(allOrPartQuestionnaire, typeHash) {
 }
 
 export function getCurrentISODate() {
-  let now = new Date(Date.now()); // Date.now() returns [millisecods]
-  let timeZoneCorrection = now.getTimezoneOffset() * 60 * 1000; // [minutes] * [seconds/minutes] * [milliseconds/second]
-  let correctedDate = new Date(now.getTime() - timeZoneCorrection);
-  return correctedDate.toISOString().split("T")[0]; // just the date portion
+  return dayjs().format("YYYY-MM-DD");
+}
+
+export function getCurrentISODateTime() {
+  // current date time in ISO date time format with timezone offset: 2014-01-01T14:30:00.0-07:00
+  return dayjs().format();
 }
 
 /*

@@ -62,7 +62,7 @@ import Worker from "cql-worker/src/cql.worker.js"; // https://github.com/webpack
 import { initialzieCqlWorker } from "cql-worker";
 import {
   addMamotoTracking,
-  getCurrentISODate,
+  getCurrentISODateTime,
   getEnv,
   getEnvs,
   getErrorText,
@@ -131,7 +131,7 @@ export default {
         resourceType: "QuestionnaireResponse",
         status: "in-progress",
         item: [],
-        authored: getCurrentISODate(),
+        authored: getCurrentISODateTime(),
       },
       ready: false,
       error: false,
